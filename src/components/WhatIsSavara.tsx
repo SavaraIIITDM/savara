@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 export default function WhatIsSavara() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -36,57 +37,52 @@ export default function WhatIsSavara() {
         >
             {/* Content */}
             <div className="relative z-10 mx-auto max-w-5xl px-6 py-20 text-center sm:px-8 lg:px-12">
-                {/* Decorative top line */}
-                <div
-                    className={`mx-auto mb-8 h-px w-24 transition-all duration-1000 ease-out ${isVisible ? "opacity-100 w-24" : "opacity-0 w-0"
-                        }`}
-                    style={{
-                        background:
-                            "linear-gradient(to right, transparent, rgba(230, 81, 0, 0.6), rgba(74, 20, 140, 0.6), transparent)",
-                    }}
-                />
 
-                {/* Sub-label
-                <p
-                    className={`mb-4 text-sm font-bold uppercase tracking-[0.5em] transition-all duration-700 delay-100 ease-out sm:text-base ${isVisible
-                            ? "opacity-100 translate-y-0"
-                            : "opacity-0 translate-y-4"
+                {/* Big bold heading */}
+                <h2
+                    className={`mb-10 transition-all duration-1000 ease-out ${isVisible
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 translate-y-8"
                         }`}
                     style={{
                         fontFamily: "var(--font-rajdhani), sans-serif",
-                        color: "var(--savara-gold)",
+                        fontSize: "clamp(3rem, 8vw, 7rem)",
+                        fontWeight: 800,
+                        lineHeight: 1,
+                        letterSpacing: "-0.02em",
                     }}
-                >
-                    IIITDM Prese
-                </p> */}
-
-                {/* Main heading */}
-                <h2
-                    className={`mb-6 text-5xl font-black uppercase tracking-tight transition-all duration-1000 delay-200 ease-out sm:text-6xl md:text-7xl lg:text-8xl ${isVisible
-                        ? "opacity-100 translate-y-0 blur-0"
-                        : "opacity-0 translate-y-8 blur-sm"
-                        }`}
-                    style={{ fontFamily: "var(--font-cinzel), serif" }}
                 >
                     <span
                         style={{
-                            background:
-                                "linear-gradient(135deg, #e65100, #c62828, #4a148c)",
+                            background: "linear-gradient(90deg, #c62828, #e65100, #d84315)",
                             WebkitBackgroundClip: "text",
                             WebkitTextFillColor: "transparent",
                             backgroundClip: "text",
                         }}
                     >
-                        What is
-                    </span>{" "}
-                    <span style={{ color: "var(--savara-cream)" }}>Savāra?</span>
+                        WHAT IS{" "}
+                    </span>
+                    <Image
+                        src="/white_logo_hero.webp"
+                        alt="Savāra"
+                        width={512}
+                        height={187}
+                        priority
+                        className="inline-block align-baseline"
+                        style={{
+                            height: "clamp(2.8rem, 7.5vw, 6.5rem)",
+                            width: "auto",
+                            marginLeft: "1rem",   // move right
+                            transform: "translateY(1.5rem)",  // move down
+                        }}
+                    />
                 </h2>
 
                 {/* Description */}
                 <p
                     className={`mx-auto max-w-3xl text-lg font-medium leading-relaxed text-pretty transition-all duration-1000 delay-400 ease-out sm:text-xl md:text-2xl ${isVisible
-                        ? "opacity-100 translate-y-0 blur-0"
-                        : "opacity-0 translate-y-8 blur-sm"
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 translate-y-8"
                         }`}
                     style={{
                         fontFamily: "var(--font-rajdhani), sans-serif",
@@ -116,8 +112,8 @@ export default function WhatIsSavara() {
                 {/* Sub-description */}
                 <p
                     className={`mx-auto mt-6 max-w-2xl text-base font-medium leading-relaxed text-pretty transition-all duration-1000 delay-500 ease-out sm:text-lg ${isVisible
-                        ? "opacity-100 translate-y-0 blur-0"
-                        : "opacity-0 translate-y-6 blur-sm"
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 translate-y-6"
                         }`}
                     style={{
                         fontFamily: "var(--font-rajdhani), sans-serif",
@@ -129,16 +125,6 @@ export default function WhatIsSavara() {
                     this edition transcends time itself — where the ancient meets the
                     futuristic in a spectacle unlike any other.
                 </p>
-
-                {/* Decorative bottom line */}
-                <div
-                    className={`mx-auto mt-10 h-px w-24 transition-all duration-1000 delay-600 ease-out ${isVisible ? "opacity-100 w-24" : "opacity-0 w-0"
-                        }`}
-                    style={{
-                        background:
-                            "linear-gradient(to right, transparent, rgba(74, 20, 140, 0.6), rgba(230, 81, 0, 0.6), transparent)",
-                    }}
-                />
             </div>
         </section>
     );

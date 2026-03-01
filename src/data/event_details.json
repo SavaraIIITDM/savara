@@ -6,7 +6,20 @@
     "short_desc": "A combat robotics competition where participants build and control robots in a tournament-style arena battle.",
     "club_name": "Robotics Club",
     "prize_pool": 30000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "flagship",
@@ -15,7 +28,20 @@
     "short_desc": "An aeromodelling competition challenging students to design and fly radio-controlled aircraft for payload delivery and precision tasks.",
     "club_name": "TALPADE AERO DESIGN CLUB",
     "prize_pool": 30000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "flagship",
@@ -24,7 +50,20 @@
     "short_desc": "Design and pilot a highly maneuverable quadcopter through a challenging race track to achieve the fastest time.",
     "club_name": "SAE - Team Astra",
     "prize_pool": 30000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "flagship",
@@ -33,7 +72,20 @@
     "short_desc": "Build and remotely pilot a wireless boat through a challenging obstacle course in the fastest time possible.",
     "club_name": "AUV Society",
     "prize_pool": 25000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "flagship",
@@ -42,7 +94,20 @@
     "short_desc": "Test your circuit knowledge by identifying configurations and simulating analog designs using LTspice in a time-bound challenge.",
     "club_name": "System coding club",
     "prize_pool": 24000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "flagship",
@@ -51,7 +116,20 @@
     "short_desc": "A 48-hour offline game development challenge fostering collaboration, creativity, and rapid prototyping among participants.",
     "club_name": "Game Dev Community",
     "prize_pool": 25000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "flagship",
@@ -60,7 +138,20 @@
     "short_desc": "An open hackathon across various CS domains like AI and web development, focusing on solving real-world challenges.",
     "club_name": "Developers Club",
     "prize_pool": 50000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "flagship",
@@ -69,7 +160,20 @@
     "short_desc": "An attack-and-defend competition where teams secure their vulnerable web services while attempting to exploit opponents' systems.",
     "club_name": "Cybersecurity Club",
     "prize_pool": 15000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "flagship",
@@ -78,7 +182,20 @@
     "short_desc": "A three-round case study challenge testing problem-solving, analytical thinking, and business presentation skills through real-world scenarios.",
     "club_name": "Pivot",
     "prize_pool": 15000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "flagship",
@@ -87,7 +204,20 @@
     "short_desc": "A startup pitching competition evaluating clarity, pitch structure, and the ability to present and defend innovative ideas.",
     "club_name": "E-Cell IIITDM",
     "prize_pool": 20000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "flagship",
@@ -96,7 +226,20 @@
     "short_desc": "An optics-themed presentation competition for students to showcase innovative ideas and emerging technologies in optics and photonics.",
     "club_name": "Optica Student Chapter",
     "prize_pool": 10000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "flagship",
@@ -105,7 +248,20 @@
     "short_desc": "A platform for students to present technical ideas, research, and innovative concepts to an expert panel.",
     "club_name": "IEEE",
     "prize_pool": 10000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "flagship",
@@ -114,7 +270,20 @@
     "short_desc": "A 2-day coding competition featuring a debugging contest, competitive programming, and an intensive AI/ML data challenge.",
     "club_name": "CS Club",
     "prize_pool": 35000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "flagship",
@@ -123,7 +292,20 @@
     "short_desc": "Navigate a simulated maze with a rover using teleoperation or autonomous programming via ROS and robotics simulation.",
     "club_name": "MARS",
     "prize_pool": 25000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_formal",
@@ -132,7 +314,20 @@
     "short_desc": "Design and program an autonomous robot to navigate complex, predefined paths with precision and speed.",
     "club_name": "Robotics Club",
     "prize_pool": 10000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_formal",
@@ -141,7 +336,20 @@
     "short_desc": "A technical challenge encouraging innovative aerodynamic and aerospace designs, emphasizing hybrid and electric flight systems.",
     "club_name": "TALPADE AERO DESIGN CLUB",
     "prize_pool": 8000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_informal",
@@ -150,7 +358,20 @@
     "short_desc": "Learn fundamental aerodynamics by building and flying simple paper aircraft in a fun, engaging competition.",
     "club_name": "TALPADE AERO DESIGN CLUB",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_formal",
@@ -159,7 +380,20 @@
     "short_desc": "A high-intensity CAD challenge where participants develop 3D models to solve real-world engineering problems.",
     "club_name": "SAE Club - Revolt Racers",
     "prize_pool": 10000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_informal",
@@ -168,7 +402,20 @@
     "short_desc": "An interactive trivia and strategy competition testing motorsport knowledge and analytical thinking for racing enthusiasts.",
     "club_name": "SAE Club - Revolt Racers",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_informal",
@@ -177,7 +424,20 @@
     "short_desc": "An interactive showcase exploring the functioning, structure, and technical depth of the Revolt Racers motorsport team.",
     "club_name": "SAE Club - Revolt Racers",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_informal",
@@ -186,7 +446,20 @@
     "short_desc": "Transform static vehicle photographs into engaging, dynamic video edits to showcase your creativity and storytelling skills.",
     "club_name": "SAE Club - Revolt Racers",
     "prize_pool": 6000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_formal",
@@ -195,7 +468,20 @@
     "short_desc": "Program an Autonomous Underwater Vehicle for swift navigation, mastering PID control and path planning.",
     "club_name": "AUV Society",
     "prize_pool": 10000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_formal",
@@ -204,7 +490,20 @@
     "short_desc": "A robotics competition where teams build and maneuver robots to play a high-energy game of soccer.",
     "club_name": "MARS",
     "prize_pool": 15000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_formal",
@@ -213,7 +512,20 @@
     "short_desc": "Design a custom 8-bit instruction system with Verilog and Assembly, focusing on micro-architectural optimizations and efficiency.",
     "club_name": "System coding club",
     "prize_pool": 10000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_informal",
@@ -222,7 +534,20 @@
     "short_desc": "A hands-on soldering and prototyping workshop for first-year students to learn foundational electronics skills.",
     "club_name": "System coding club",
     "prize_pool": 6000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_informal",
@@ -231,7 +556,20 @@
     "short_desc": "Navigate a graph-based journey collecting story fragments and game mechanics to present a coherent, unique narrative.",
     "club_name": "Game Dev Community",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_formal",
@@ -240,7 +578,20 @@
     "short_desc": "Capture raw photographs and process them entirely with code to create algorithmic art without standard editing software.",
     "club_name": "Developers Club",
     "prize_pool": 5000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_formal",
@@ -249,7 +600,20 @@
     "short_desc": "An offline hackathon demanding real-world backend engineering skills to debug and fix a broken system without AI tools.",
     "club_name": "Developers Club",
     "prize_pool": 7000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_informal",
@@ -258,7 +622,20 @@
     "short_desc": "A fast-paced collaborative coding event where teammates take turns adding to a shared codebase to solve challenges.",
     "club_name": "Developers Club",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_formal",
@@ -267,7 +644,20 @@
     "short_desc": "A live attack-and-defend cybersecurity contest where teams secure their services while exploiting opponents' vulnerabilities.",
     "club_name": "Cybersecurity Club",
     "prize_pool": 10000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_formal",
@@ -276,7 +666,20 @@
     "short_desc": "Test your Linux problem-solving and aesthetic design skills in a desktop customization and live scripting challenge.",
     "club_name": "Cybersecurity Club",
     "prize_pool": 5000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_informal",
@@ -285,7 +688,20 @@
     "short_desc": "A theme-based treasure hunt exploring the convergence of past, present, and future timelines across campus.",
     "club_name": "Optica Student Chapter",
     "prize_pool": 5000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_formal",
@@ -294,7 +710,20 @@
     "short_desc": "A tech quiz competition testing logic, engineering concepts, and knowledge of crucial IEEE standards and their applications.",
     "club_name": "IEEE",
     "prize_pool": 8000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_informal",
@@ -303,7 +732,20 @@
     "short_desc": "A high-energy team event blending rapid-fire questions and engaging games to test speed, logic, and teamwork.",
     "club_name": "IEEE",
     "prize_pool": 5000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_formal",
@@ -312,7 +754,20 @@
     "short_desc": "Balance strategy and speed in this coding contest where you invest points to unlock and solve algorithmic problems.",
     "club_name": "CS Club",
     "prize_pool": 6000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_formal",
@@ -321,7 +776,20 @@
     "short_desc": "A challenging assembly-level programming contest focusing on precision and efficiency using ARM or MIPS assembly.",
     "club_name": "CS Club",
     "prize_pool": 5000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "tech_informal",
@@ -330,7 +798,20 @@
     "short_desc": "A code-based treasure hunt where participants decode puzzles and debug logic to unlock clues and advance.",
     "club_name": "CS Club",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report at the venue at least 30 minutes before the event starts.",
+      "Use of any unfair means will lead to immediate disqualification.",
+      "Judges' decisions will be final and binding.",
+      "Pre-built solutions or plagiarized work is strictly prohibited."
+    ],
+    "guidelines": [
+      "Bring your own laptops, chargers, and any required hardware.",
+      "Ensure all required software is pre-installed before the event.",
+      "Participants are encouraged to collaborate and maintain sportsmanship.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_formal",
@@ -339,7 +820,20 @@
     "short_desc": "An inter-college multilingual debate celebrating logic and cultural diversity, featuring engaging Tamil and English sessions.",
     "club_name": "Tamil Saalaram",
     "prize_pool": 15000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_formal",
@@ -348,7 +842,20 @@
     "short_desc": "Create a complete artwork using a single, continuous line synchronized with the rhythm and mood of playing music.",
     "club_name": "Art Club",
     "prize_pool": 15000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_formal",
@@ -357,7 +864,20 @@
     "short_desc": "A thought-provoking stage play exploring the entrapment of instant gratification and the hidden costs of modern addictions.",
     "club_name": "Theatrix Drama Club",
     "prize_pool": 15000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_formal",
@@ -366,7 +886,20 @@
     "short_desc": "A fun, interactive acting event showcasing teamwork, quick thinking, and creative collaboration.",
     "club_name": "Theatrix Drama Club",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_formal",
@@ -375,7 +908,20 @@
     "short_desc": "Solve puzzles and uncover clues within a limited time to break out of this thrilling, immersive escape room.",
     "club_name": "Theatrix Drama Club",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_formal",
@@ -384,7 +930,20 @@
     "short_desc": "A time-travel photography challenge where participants capture and weave vintage and futuristic aesthetics into a compelling visual narrative.",
     "club_name": "Imagix",
     "prize_pool": 10000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_formal",
@@ -393,7 +952,20 @@
     "short_desc": "A comprehensive quiz covering sports, history, culture, and literature, tying into the major fest themes.",
     "club_name": "Quriosity Quiz Club",
     "prize_pool": 18000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_formal",
@@ -402,25 +974,86 @@
     "short_desc": "An interactive storytelling experience where choices, perspective, and hidden clues shape your real-time narrative journey.",
     "club_name": "Literati Society",
     "prize_pool": 10500,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
-    "event_type": "cult_formal",
-    "event_name": "Battle of bands -Solo instrumental Publicity event - Open mic",
+    "event_type": "cult_flagship",
+    "event_name": "Battle of Bands",
     "full_desc": "Battle of bands - This is a live band competition where groups perform original compositions or covers across any genre. Bands will be judged on musical technicality, stage presence, arrangement, and overall performance. Whether you’re into rock, indie, metal, fusion, or experimental sounds, this stage is for bands that know how to play together and own the crowd. Bring your best set and let the music speak. Solo vocals and instrumental - A solo singing and instrumental event open to all genres and styles. Solo singing - This event is about individuality - how you interpret a song and connect with the audience using just your voice. It's all about how you make a song your own and make it shine in your own style. Participants can use an instrumental backing track. Judges will focus on pitch, dynamics, expression, clarity, and stage presence. Solo instrumental - An instrumental performance event where musicians present a solo piece on an instrument of their choice. Any style is welcome - classical, contemporary, or fusion. Evaluation will be based on technique, musicality, rhythm, and overall presentation. This is a space for musicians who communicate through sound rather than lyrics. Publicity event - Open mic An exclusive open mic night celebrating the musical talent of IIITDM Kancheepuram. This event is open to singers, instrumentalists, and bands who want to take the stage and perform live. From soulful vocals and acoustic sets to full-band jams, the evening is all about melody, rhythm, and live performance. Top performances of the night will be awarded exciting surprise gifts.",
-    "short_desc": "A massive musical showdown featuring battle of the bands, solo singing and instrumental showcases, and an open mic.",
+    "short_desc": "Gear up for a high-octane musical battle as bands of all genres compete for the ultimate title.",
     "club_name": "Music Club",
     "prize_pool": 40000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_formal",
+    "event_name": "Solos - Vocals and Instrumentals",
+    "full_desc": "Battle of bands - This is a live band competition where groups perform original compositions or covers across any genre. Bands will be judged on musical technicality, stage presence, arrangement, and overall performance. Whether you’re into rock, indie, metal, fusion, or experimental sounds, this stage is for bands that know how to play together and own the crowd. Bring your best set and let the music speak. Solo vocals and instrumental - A solo singing and instrumental event open to all genres and styles. Solo singing - This event is about individuality - how you interpret a song and connect with the audience using just your voice. It's all about how you make a song your own and make it shine in your own style. Participants can use an instrumental backing track. Judges will focus on pitch, dynamics, expression, clarity, and stage presence. Solo instrumental - An instrumental performance event where musicians present a solo piece on an instrument of their choice. Any style is welcome - classical, contemporary, or fusion. Evaluation will be based on technique, musicality, rhythm, and overall presentation. This is a space for musicians who communicate through sound rather than lyrics. Publicity event - Open mic An exclusive open mic night celebrating the musical talent of IIITDM Kancheepuram. This event is open to singers, instrumentalists, and bands who want to take the stage and perform live. From soulful vocals and acoustic sets to full-band jams, the evening is all about melody, rhythm, and live performance. Top performances of the night will be awarded exciting surprise gifts.",
+    "short_desc": "Showcase your talent in solo singing and instrumental performances across all genres.",
+    "club_name": "Music Club",
+    "prize_pool": 5000,
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
+  },
+  {
+    "event_type": "cult_flagship",
     "event_name": "spotlight",
     "full_desc": "Event 1:Solo Dance Competition Round 1:Participants must submit a video performance of 1-2 minutes. Round 2:Qualifiers will perform live(on stage) for 3-5 minutes. Event 2:Group Dance Competition (maximum of 15 participants) Round 1:Participants must submit a group dance video performance of 1-2 minutes. Round 2:Teams will perform live(on stage) for 4-7 minutes.",
     "short_desc": "Showcase your moves in solo and group dance competitions featuring video prelims and electrifying live stage finals.",
     "club_name": "Footlights",
     "prize_pool": 45000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_formal",
@@ -429,7 +1062,20 @@
     "short_desc": "A competitive Free Fire e-sports tournament featuring group stages and high-stakes playoffs.",
     "club_name": "E-Sports",
     "prize_pool": 9000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_formal",
@@ -438,7 +1084,20 @@
     "short_desc": "A 4-man squad BGMI tournament with intense lobby battles across Erangel, Sanhok, Miramar, and Vikendi maps.",
     "club_name": "E-Sports",
     "prize_pool": 7000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_formal",
@@ -447,7 +1106,20 @@
     "short_desc": "A Valorant tournament starting with online group stages and culminating in thrilling offline best-of series playoffs.",
     "club_name": "E-Sports",
     "prize_pool": 9000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_formal",
@@ -456,16 +1128,42 @@
     "short_desc": "A short film competition celebrating cinematic freedom, inviting filmmakers to showcase their storytelling and technical mastery.",
     "club_name": "CINEMATICS",
     "prize_pool": 5000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
-    "event_type": "cult_formal",
+    "event_type": "cult_flagship",
     "event_name": "Spectrum: ONE MINUITE EDITION",
     "full_desc": "Unlike the binary nature of Duality, Spectrum is a celebration of cinematic freedom. There are no sides, no prescribed emotions, and no creative boundaries. This One Minute Edition challenges filmmakers to tell a powerful story within just 60 seconds, turning time itself into the ultimate canvas. Whether abstract, narrative-driven, experimental, or poetic—Spectrum rewards pure storytelling, originality, and technical finesse in its most concise form.",
     "short_desc": "Tell a powerful, creative story within just 60 seconds in this highly constrained but creatively liberating filmmaking challenge.",
     "club_name": "CINEMATICS",
     "prize_pool": 12000,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_informal",
@@ -474,7 +1172,20 @@
     "short_desc": "An entertaining, informal movie-guessing game that tests your knowledge of Tamil cinema frames.",
     "club_name": "Tamil Saalaram",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_informal",
@@ -483,7 +1194,20 @@
     "short_desc": "Unleash your creativity in pairs or solo by transforming faces into vibrant artwork using provided paints.",
     "club_name": "Art Club",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_informal",
@@ -492,7 +1216,20 @@
     "short_desc": "Enjoy the classic game of Tambola full of excitement, suspense, and quick wins with friends.",
     "club_name": "Theatrix Drama Club",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_informal",
@@ -501,7 +1238,20 @@
     "short_desc": "A collaborative interactive event bringing together literature and game development for a unique experience.",
     "club_name": "Literati Society",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_informal",
@@ -510,7 +1260,20 @@
     "short_desc": "Act out dance steps and songs without speaking in this lively and fun dumb charades event.",
     "club_name": "Footlights",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_informal",
@@ -519,7 +1282,20 @@
     "short_desc": "A high-energy open dance session featuring nonstop DJ beats for everyone to celebrate and dance freely.",
     "club_name": "Footlights",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   },
   {
     "event_type": "cult_informal",
@@ -528,6 +1304,19 @@
     "short_desc": "An action-packed PC gaming experience with immersive gear, testing player reflexes, speed, and competitive strategies.",
     "club_name": "E-Sports",
     "prize_pool": 0,
-    "unstop_link": ""
+    "unstop_link": "",
+    "rules": [
+      "All participants must carry a valid college ID.",
+      "Teams must report backstage at least 30 minutes before their slot.",
+      "Only campus-appropriate and non-offensive content is permitted.",
+      "Judges' decisions will be final and binding.",
+      "Time limits must be strictly adhered to; exceeding them may lead to penalties."
+    ],
+    "guidelines": [
+      "Costumes and props should be planned for quick setup and exit.",
+      "Audio tracks must be submitted in advance in .mp3 or .wav format.",
+      "Participants are encouraged to be creative and original in their performances.",
+      "Contact the event coordinators for any queries beforehand."
+    ]
   }
 ]

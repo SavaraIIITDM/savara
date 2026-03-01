@@ -20,6 +20,7 @@ export default function TechnicalEventsPage() {
       accentSoft="rgba(124, 77, 255, 0.55)"
       background="radial-gradient(circle at top right, rgba(124,77,255,0.3), transparent 55%), radial-gradient(circle at bottom left, rgba(26,0,51,0.65), #05030a 70%)"
       events={technicalEvents}
+      basePath="/events/technical"
     />
   );
 }

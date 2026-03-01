@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { slugify } from "@/lib/slugify";
 
 export type EventItem = {
-  event_type: "flagship" | "tech_formal" | "tech_informal" | "cult_formal" | "cult_informal";
+  event_type: "flagship" | "cult_flagship" | "tech_formal" | "tech_informal" | "cult_formal" | "cult_informal";
   event_name: string;
   full_desc: string;
   short_desc: string;
@@ -18,6 +19,7 @@ type EventsCategoryPageProps = {
   accentSoft: string;
   background: string;
   events: EventItem[];
+  basePath: string;
 };
 
 export default function EventsCategoryPage({
@@ -28,11 +30,13 @@ export default function EventsCategoryPage({
   accentSoft,
   background,
   events,
+  basePath,
 }: EventsCategoryPageProps) {
   const formatPrize = (value: number) => `₹${value.toLocaleString("en-IN")}`;
   const formatEventType = (value: EventItem["event_type"]) => {
     switch (value) {
       case "flagship":
+      case "cult_flagship":
         return "Flagship";
       case "tech_formal":
         return "Formal";
@@ -96,9 +100,23 @@ export default function EventsCategoryPage({
           </Link>
         </header>
 
-        {/* Events grid */}
-        <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {events.map((event) => {
+        {/* Event sections grouped by type */}
+        {(() => {
+          const flagshipEvents = events.filter((e) => e.event_type === "flagship" || e.event_type === "cult_flagship");
+          const formalEvents = events.filter(
+            (e) => e.event_type === "tech_formal" || e.event_type === "cult_formal"
+          );
+          const informalEvents = events.filter(
+            (e) => e.event_type === "tech_informal" || e.event_type === "cult_informal"
+          );
+
+          const sections = [
+            { label: "Flagship Events", events: flagshipEvents },
+            { label: "Formal Events", events: formalEvents },
+            { label: "Informal Events", events: informalEvents },
+          ].filter((s) => s.events.length > 0);
+
+          const renderCard = (event: EventItem) => {
             const card = (
               <article
                 key={`${event.event_type}-${event.event_name}`}
@@ -113,7 +131,7 @@ export default function EventsCategoryPage({
 
                 <div className="relative flex flex-col gap-4">
                   <div className="flex items-start justify-between gap-2">
-                    <h2
+                    <h3
                       className="text-xl font-semibold uppercase tracking-wide sm:text-2xl"
                       style={{
                         fontFamily: "var(--font-cinzel), serif",
@@ -121,17 +139,17 @@ export default function EventsCategoryPage({
                       }}
                     >
                       {event.event_name}
-                    </h2>
+                    </h3>
                     {event.event_type && (
                       <span
-                        className="rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em]"
+                        className="shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em]"
                         style={{
                           fontFamily: "var(--font-rajdhani), sans-serif",
                           backgroundColor: "rgba(10,4,8,0.85)",
                           color: accent,
                           border: `1px solid ${accentSoft}`,
                           boxShadow:
-                            event.event_type === "flagship"
+                            (event.event_type === "flagship" || event.event_type === "cult_flagship")
                               ? "0 0 16px rgba(212, 165, 116, 0.45), 0 0 30px rgba(212, 165, 116, 0.25)"
                               : "none",
                         }}
@@ -209,21 +227,53 @@ export default function EventsCategoryPage({
 
             if (event.unstop_link) {
               return (
-                <a
+                <Link
                   key={`${event.event_type}-${event.event_name}`}
-                  href={event.unstop_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`${basePath}/${slugify(event.event_name)}`}
                   className="block"
                 >
                   {card}
-                </a>
+                </Link>
               );
             }
 
-            return card;
-          })}
-        </section>
+            return (
+              <Link
+                key={`${event.event_type}-${event.event_name}-link`}
+                href={`${basePath}/${slugify(event.event_name)}`}
+                className="block"
+              >
+                {card}
+              </Link>
+            );
+          };
+
+          return sections.map((section) => (
+            <section key={section.label} className="flex flex-col gap-6">
+              {/* Section header */}
+              <div className="flex items-center gap-4">
+                <h2
+                  className="whitespace-nowrap text-2xl font-bold uppercase tracking-wide sm:text-3xl"
+                  style={{
+                    fontFamily: "var(--font-cinzel), serif",
+                    color: accent,
+                  }}
+                >
+                  {section.label}
+                </h2>
+                <div
+                  className="h-px w-full"
+                  style={{ background: `linear-gradient(to right, ${accentSoft}, transparent)` }}
+                />
+              </div>
+
+              {/* Cards grid */}
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {section.events.map(renderCard)}
+              </div>
+            </section>
+          ));
+        })()}
       </div>
     </main>
   );
