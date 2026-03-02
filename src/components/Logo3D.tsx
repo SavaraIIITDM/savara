@@ -3,15 +3,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import HamburgerMenu from "./HamburgerMenu";
-import Navbar from "./Navbar";
 import ChronoCountdown from "./ChronoCountdown";
 import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Logo3D() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
@@ -83,15 +80,6 @@ export default function Logo3D() {
       ref={containerRef}
       className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden"
     >
-      {/* Navbar with Logo and Hamburger Button */}
-      <Navbar
-        isMenuOpen={isMenuOpen}
-        onMenuToggle={() => setIsMenuOpen(!isMenuOpen)}
-      />
-
-      {/* Hamburger Menu */}
-      <HamburgerMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
-
       {/* Animated glow orbs */}
       {!isMobile && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden">

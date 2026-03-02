@@ -4,6 +4,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Analytics } from "@vercel/analytics/next"
+import GlobalNav from "@/components/GlobalNav";
 
 const cinzel = Cinzel({
   variable: "--font-cinzel",
@@ -47,6 +48,7 @@ export default function RootLayout({
       >
         <Analytics />
         <SmoothScroll>
+          <GlobalNav />
           {children}
         </SmoothScroll>
         <ScrollToTop />

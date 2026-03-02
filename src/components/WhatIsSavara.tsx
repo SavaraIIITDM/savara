@@ -68,12 +68,11 @@ export default function WhatIsSavara() {
                         width={512}
                         height={187}
                         priority
-                        className="inline-block align-baseline"
+                        className="inline-block align-middle"
                         style={{
                             height: "clamp(2.8rem, 7.5vw, 6.5rem)",
                             width: "auto",
-                            marginLeft: "1rem",   // move right
-                            transform: "translateY(1.5rem)",  // move down
+                            marginLeft: "1rem",
                         }}
                     />
                 </h2>
