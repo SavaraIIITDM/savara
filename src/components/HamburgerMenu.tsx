@@ -127,10 +127,21 @@ function MenuItem({ label, index, isOpen, isMobile, onClose }: MenuItemProps) {
     onClose();
   };
 
+  const hrefMap: Record<string, string> = {
+    Home: "/",
+    About: "/#about",
+    Events: "/events",
+    Accomodation: "/accomodation",
+    Tickets: "/tickets",
+    Merch: "/merch",
+    Sponsors: "/#sponsors",
+    Contact: "/#contact",
+  };
+
   return (
     <a
       ref={itemRef}
-      href={label === "Events" ? "/events" : `#${label.toLowerCase()}`}
+      href={hrefMap[label] ?? `#${label.toLowerCase()}`}
       className="group relative block cursor-pointer py-2 opacity-0"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
