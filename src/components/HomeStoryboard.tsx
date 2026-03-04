@@ -5,6 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Logo3D from "@/components/Logo3D";
+import HomeHeroCountdown from "@/components/HomeHeroCountdown";
 import WhatIsSavara from "@/components/WhatIsSavara";
 import AboutSection from "@/components/AboutSection";
 import Sponsors from "@/components/Sponsors";
@@ -88,8 +89,21 @@ export default function HomeStoryboard() {
           priority
           quality={95}
           sizes="100vw"
-          className={`object-cover transition-opacity duration-700 ${isHeroBannerMode ? "opacity-100" : "opacity-0"
+          className={`hidden object-cover transition-opacity duration-700 sm:block ${isHeroBannerMode ? "opacity-100" : "opacity-0"
             }`}
+          style={{ objectPosition: "center" }}
+        />
+
+        <Image
+          src="/media/hero-mobile-1170x2532.webp"
+          alt=""
+          fill
+          priority
+          quality={90}
+          sizes="100vw"
+          className={`object-cover transition-opacity duration-700 sm:hidden ${isHeroBannerMode ? "opacity-100" : "opacity-0"
+            }`}
+          style={{ objectPosition: "center" }}
         />
 
         <div
@@ -205,6 +219,7 @@ export default function HomeStoryboard() {
       </div>
 
       <Logo3D />
+      <HomeHeroCountdown />
       <WhatIsSavara />
       <AboutSection />
       <Sponsors />

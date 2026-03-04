@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -228,7 +229,7 @@ export default function AboutSection() {
             dynamic stage.
           </p>
 
-          {/* Brochure button */}
+          {/* Explore events button */}
           <div
             className={`mt-10 inline-flex items-center gap-4 transition-all duration-700 delay-500 ease-out ${
               isVisible
@@ -236,15 +237,16 @@ export default function AboutSection() {
                 : "opacity-0 translate-y-4"
             }`}
           >
-            <div
+            <Link
+              href="/events"
               className="group relative overflow-hidden rounded-full p-0.5"
               style={{
                 background:
                   "linear-gradient(135deg, #e65100, #c62828, #4a148c)",
               }}
             >
-              <div
-                className="rounded-full px-6 py-3 transition-all duration-300 group-hover:bg-transparent"
+              <span
+                className="block rounded-full px-6 py-3 transition-all duration-300 group-hover:bg-transparent"
                 style={{ background: "var(--savara-warm-black)" }}
               >
                 <span
@@ -257,10 +259,10 @@ export default function AboutSection() {
                     backgroundClip: "text",
                   }}
                 >
-                  Brochure
+                  Explore Events
                 </span>
-              </div>
-            </div>
+              </span>
+            </Link>
           </div>
         </div>
       </div>

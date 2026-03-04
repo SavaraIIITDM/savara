@@ -212,7 +212,7 @@ h6 {
 
 .chrono-digits-row {
   --chrono-shift: 0%;
-  animation: chrono-rift-shift 6.5s linear infinite;
+  animation: none;
 }
 
 .chrono-digit-value {
@@ -223,24 +223,8 @@ h6 {
   font-size: clamp(1.3rem, 2.8vw, 2rem);
   font-weight: 800;
   letter-spacing: 0.08em;
-  background-image: repeating-linear-gradient(
-    90deg,
-    #f5e6d3 0px,
-    #f6e8d6 16px,
-    #f3d7aa 34px,
-    #f1c382 52px,
-    #efb468 66px,
-    #f1c07b 80px,
-    #f4dcbb 98px,
-    #f5e6d3 120px
-  );
-  background-position: var(--chrono-shift) 50%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow:
-    0 0 18px rgba(230, 81, 0, 0.45),
-    0 0 26px rgba(74, 20, 140, 0.28);
+  color: #ffffff;
+  text-shadow: none;
   animation: chrono-digit-enter 0.42s cubic-bezier(0.16, 1, 0.3, 1);
 }
 

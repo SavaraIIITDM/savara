@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import gsap from "gsap";
 
 interface NavbarProps {
@@ -74,7 +75,7 @@ export default function Navbar({ isMenuOpen, onMenuToggle }: NavbarProps) {
   return (
     <div className="flex flex-row">
       {/* IIITDM Logo */}
-      <div className="fixed z-100 left-6 top-6 flex h-16 items-center">
+      <Link href="/" className="fixed z-100 left-6 top-6 flex h-16 items-center">
         <Image
           src="/iiitdm_logo.png"
           alt="IIITDM Logo"
@@ -83,20 +84,22 @@ export default function Navbar({ isMenuOpen, onMenuToggle }: NavbarProps) {
           sizes="160px"
           className="h-[65px] w-[160px] brightness-0 invert opacity-90"
         />
-      </div>
+      </Link>
 
       <div className="fixed right-6 top-6 z-102 flex h-16 items-center gap-3">
-        <Image
-          src="/media/white_logo_small_256.webp"
-          alt="Savara Logo"
-          width={243}
-          height={256}
-          sizes="(max-width: 640px) 40px, 48px"
-          className="h-10 sm:h-12 w-auto"
-          style={{
-            filter: "drop-shadow(0 0 12px rgba(230, 81, 0, 0.22))",
-          }}
-        />
+        <Link href="/" className="inline-flex">
+          <Image
+            src="/media/white_logo_small_256.webp"
+            alt="Savara Logo"
+            width={243}
+            height={256}
+            sizes="(max-width: 640px) 40px, 48px"
+            className="h-10 sm:h-12 w-auto"
+            style={{
+              filter: "drop-shadow(0 0 12px rgba(230, 81, 0, 0.22))",
+            }}
+          />
+        </Link>
 
         {/* Hamburger Button */}
         <button
