@@ -84,7 +84,7 @@ export default function Footer() {
               >
                 <Phone className="w-5 h-5 mt-0.5 shrink-0 transition-transform duration-300 group-hover:scale-110" />
                 <span className="relative text-sm font-medium" style={{ fontFamily: "var(--font-rajdhani), sans-serif" }}>
-                  +91 00000 00000
+                  +91 70753 62164
                   <span
                     className="absolute bottom-0 left-0 w-0 h-px transition-all duration-300 group-hover:w-full"
                     style={{ background: "var(--savara-gold)" }}
