@@ -1,0 +1,248 @@
+[
+  {
+    "name": "Aero Innovation Challenge",
+    "team_min_size": 1,
+    "team_max_size": 3,
+    "slug": "aero-innovation-challenge"
+  },
+  {
+    "name": "Bit-Trix",
+    "team_min_size": 2,
+    "team_max_size": 3,
+    "slug": "bit-trix"
+  },
+  {
+    "name": "Cad Verse 3D Modelling Challenge",
+    "team_min_size": 1,
+    "team_max_size": 2,
+    "slug": "cad-verse-3d-modelling-challenge"
+  },
+  {
+    "name": "Case Mystery",
+    "team_min_size": 2,
+    "team_max_size": 4,
+    "slug": "case-mystery"
+  },
+  {
+    "name": "Drone Racing Competition",
+    "team_min_size": 2,
+    "team_max_size": 5,
+    "slug": "drone-racing-competition"
+  },
+  {
+    "name": "Fragments of Time",
+    "team_min_size": 1,
+    "team_max_size": 2,
+    "slug": "fragments-of-time"
+  },
+  {
+    "name": "IEEE Paper Presentation",
+    "team_min_size": 1,
+    "team_max_size": 3,
+    "slug": "ieee-paper-presentation"
+  },
+  {
+    "name": "Line Follower",
+    "team_min_size": 1,
+    "team_max_size": 5,
+    "slug": "line-follower"
+  },
+  {
+    "name": "Luminary Talks",
+    "team_min_size": 1,
+    "team_max_size": 2,
+    "slug": "luminary-talks"
+  },
+  {
+    "name": "MazeRover",
+    "team_min_size": 1,
+    "team_max_size": 4,
+    "slug": "mazerover"
+  },
+  {
+    "name": "One Line One Rhythm",
+    "team_min_size": 1,
+    "team_max_size": 1,
+    "slug": "one-line-one-rhythm"
+  },
+  {
+    "name": "Pitch on Pitch",
+    "team_min_size": 2,
+    "team_max_size": 4,
+    "slug": "pitch-on-pitch"
+  },
+  {
+    "name": "Raise Your Standards",
+    "team_min_size": 1,
+    "team_max_size": 3,
+    "slug": "raise-your-standards"
+  },
+  {
+    "name": "Robo-Soccer",
+    "team_min_size": 1,
+    "team_max_size": 4,
+    "slug": "robo-soccer"
+  },
+  {
+    "name": "Robowars - 8KG",
+    "team_min_size": 1,
+    "team_max_size": 8,
+    "slug": "robowars-8kg"
+  },
+  {
+    "name": "Savāra Flagship Quiz",
+    "team_min_size": 1,
+    "team_max_size": 3,
+    "slug": "savra-flagship-quiz"
+  },
+  {
+    "name": "Sky Symphony",
+    "team_min_size": 2,
+    "team_max_size": 4,
+    "slug": "sky-symphony"
+  },
+  {
+    "name": "WaveQuest",
+    "team_min_size": 1,
+    "team_max_size": 4,
+    "slug": "wavequest"
+  },
+  {
+    "name": "Battle of Bands",
+    "team_min_size": 3,
+    "team_max_size": 9,
+    "slug": "battle-of-bands"
+  },
+  {
+    "name": "BGMI",
+    "team_min_size": 4,
+    "team_max_size": 4,
+    "slug": "bgmi"
+  },
+  {
+    "name": "Free Fire",
+    "team_min_size": 1,
+    "team_max_size": 4,
+    "slug": "free-fire"
+  },
+  {
+    "name": "Groovy Moovy",
+    "team_min_size": 2,
+    "team_max_size": 15,
+    "slug": "groovy-moovy"
+  },
+  {
+    "name": "Judge The Book By Its Cover",
+    "team_min_size": 1,
+    "team_max_size": 2,
+    "slug": "judge-the-book-by-its-cover"
+  },
+  {
+    "name": "Solos : Vocals and Instrumental",
+    "team_min_size": 1,
+    "team_max_size": 1,
+    "slug": "solos-vocals-and-instrumental"
+  },
+  {
+    "name": "Spotlight",
+    "team_min_size": 1,
+    "team_max_size": 1,
+    "slug": "spotlight"
+  },
+  {
+    "name": "Storycraft",
+    "team_min_size": 1,
+    "team_max_size": 3,
+    "slug": "storycraft"
+  },
+  {
+    "name": "Temporal Whispers",
+    "team_min_size": 1,
+    "team_max_size": 4,
+    "slug": "temporal-whispers"
+  },
+  {
+    "name": "Theatrical Odyssey",
+    "team_min_size": 3,
+    "team_max_size": 12,
+    "slug": "theatrical-odyssey"
+  },
+  {
+    "name": "Valorant",
+    "team_min_size": 5,
+    "team_max_size": 6,
+    "slug": "valorant"
+  },
+  {
+    "name": "Vivaadham - Classic Debate",
+    "team_min_size": 1,
+    "team_max_size": 1,
+    "slug": "vivaadham-classic-debate"
+  },
+  {
+    "name": "AlgoXchange",
+    "team_min_size": 3,
+    "team_max_size": 3,
+    "slug": "algoxchange"
+  },
+  {
+    "name": "Backend Breakdown",
+    "team_min_size": 1,
+    "team_max_size": 2,
+    "slug": "backend-breakdown"
+  },
+  {
+    "name": "Capture The Flag",
+    "team_min_size": 1,
+    "team_max_size": 4,
+    "slug": "capture-the-flag"
+  },
+  {
+    "name": "Game Jam",
+    "team_min_size": 1,
+    "team_max_size": 5,
+    "slug": "game-jam"
+  },
+  {
+    "name": "Hack and Shield",
+    "team_min_size": 1,
+    "team_max_size": 4,
+    "slug": "hack-and-shield"
+  },
+  {
+    "name": "Lens & Logic",
+    "team_min_size": 1,
+    "team_max_size": 2,
+    "slug": "lens-logic"
+  },
+  {
+    "name": "Opcode: Optimal Coding Challenge",
+    "team_min_size": 2,
+    "team_max_size": 2,
+    "slug": "opcode-optimal-coding-challenge"
+  },
+  {
+    "name": "Reverse Engineering Challenge",
+    "team_min_size": 2,
+    "team_max_size": 4,
+    "slug": "reverse-engineering-challenge"
+  },
+  {
+    "name": "Ricing & Scripting",
+    "team_min_size": 1,
+    "team_max_size": 1,
+    "slug": "ricing-scripting"
+  },
+  {
+    "name": "Triathlon",
+    "team_min_size": 2,
+    "team_max_size": 4,
+    "slug": "triathlon"
+  },
+  {
+    "name": "Vashisht Hackathon 3.O",
+    "team_min_size": 2,
+    "team_max_size": 4,
+    "slug": "vashisht-hackathon-3o"
+  }
+]
