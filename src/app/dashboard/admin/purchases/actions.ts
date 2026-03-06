@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth/guards";
 import { createClient } from "@/lib/supabase/server";
-import { sendActivationCodeEmail } from "@/lib/tickets/email";
 
 export async function verifyPurchaseAction(formData: FormData) {
   await requireAdmin();
@@ -37,24 +36,10 @@ export async function verifyPurchaseAction(formData: FormData) {
 
   const activationCode = data[0].code;
 
-  try {
-    await sendActivationCodeEmail({
-      to: purchaserEmail,
-      activationCode,
-      ticketCount,
-    });
-  } catch (emailError) {
-    return {
-      error:
-        emailError instanceof Error
-          ? `Code created (${activationCode}) but email sending failed: ${emailError.message}`
-          : `Code created (${activationCode}) but email sending failed.`,
-    };
-  }
-
   revalidatePath("/dashboard/admin/purchases");
+  revalidatePath("/dashboard/ticket");
 
   return {
-    success: `Purchase verified. Activation code ${activationCode} emailed to ${purchaserEmail}.`,
+    success: `Purchase verified. Activation code ${activationCode} generated for ${purchaserEmail}.`,
   };
 }

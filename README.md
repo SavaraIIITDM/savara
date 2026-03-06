@@ -4,7 +4,7 @@ This project now includes a Supabase-backed ticketing and event participation wo
 
 - Google OAuth sign-in only
 - Protected dashboard routes under `/dashboard/*`
-- Admin purchase verification with activation-code generation and Resend email
+- Admin purchase verification with activation-code generation
 - Participant activation and e-ticket with QR
 - Volunteer/admin event check-in with individual and team modes
 
@@ -21,8 +21,6 @@ Required variables:
 - `NEXT_PUBLIC_SITE_URL` (example: `http://localhost:3000`)
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-- `RESEND_API_KEY`
-- `RESEND_FROM_EMAIL`
 
 ## Supabase Auth Setup
 
@@ -77,3 +75,7 @@ Open `http://localhost:3000`.
 - `/dashboard/ticket`
 - `/dashboard/events/check-in`
 - `/dashboard/admin/purchases`
+
+## Activation Code Visibility
+
+After admin verification, the activation code is shown in the purchaser's `/dashboard/ticket` page under "Assigned Activation Code" (while redemptions remain).
