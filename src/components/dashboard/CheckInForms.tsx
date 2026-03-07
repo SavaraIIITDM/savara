@@ -31,8 +31,6 @@ type ScannedParticipant = {
   alreadyRegistered: boolean;
 };
 
-type ScannerMode = "individual" | "remove" | "create-member" | "join-member";
-
 type EventParticipant = {
   checkin_id: number;
   checked_in_at: string;
@@ -43,6 +41,8 @@ type EventParticipant = {
   team_name: string | null;
   ticket_id: string;
 };
+
+type ScannerMode = "individual" | "remove" | "create-member" | "join-member";
 
 const initialState = { error: "", success: "" };
 
@@ -112,7 +112,7 @@ function ManualEntry({ onSubmit }: { onSubmit: (value: string) => Promise<void> 
   );
 }
 
-export function CheckInForms({ events, teams }: { events: EventOption[]; teams: TeamOption[] }) {
+export function CheckInForms({ events }: { events: EventOption[] }) {
   const [selectedEvent, setSelectedEvent] = useState(events[0]?.id ?? "");
   const [mode, setMode] = useState<"individual" | "create-team" | "join-team">("individual");
   const [scannerMode, setScannerMode] = useState<ScannerMode | null>(null);
@@ -126,8 +126,15 @@ export function CheckInForms({ events, teams }: { events: EventOption[]; teams: 
   const [joinMembers, setJoinMembers] = useState<ScannedParticipant[]>([]);
   const [leaderQr, setLeaderQr] = useState("");
   const [teamName, setTeamName] = useState("");
+
+  const [teams, setTeams] = useState<TeamOption[]>([]);
+  const [teamsLoading, setTeamsLoading] = useState(false);
+  const [showTeams, setShowTeams] = useState(false);
+
   const [eventParticipants, setEventParticipants] = useState<EventParticipant[]>([]);
   const [participantsLoading, setParticipantsLoading] = useState(false);
+  const [showParticipants, setShowParticipants] = useState(false);
+
   const [participantMenuOpenFor, setParticipantMenuOpenFor] = useState<string | null>(null);
   const [participantActionBusy, setParticipantActionBusy] = useState<string | null>(null);
 
@@ -190,17 +197,32 @@ export function CheckInForms({ events, teams }: { events: EventOption[]; teams: 
     initialState,
   );
 
-  useEffect(() => {
-    if (individualState.success || removeState.success || createState.success || joinState.success) {
-      void loadParticipants(selectedEvent);
+  async function loadTeams(eventId: string) {
+    if (!eventId) {
+      setTeams([]);
+      return;
     }
-  }, [
-    selectedEvent,
-    individualState.success,
-    removeState.success,
-    createState.success,
-    joinState.success,
-  ]);
+
+    setTeamsLoading(true);
+    try {
+      const response = await fetch(`/dashboard/events/check-in/teams?eventId=${encodeURIComponent(eventId)}`);
+      const payload = (await response.json()) as {
+        error?: string;
+        teams?: { id: string; event_id: string; name: string }[];
+      };
+
+      if (!response.ok) {
+        throw new Error(payload.error ?? "Unable to load teams.");
+      }
+
+      setTeams((payload.teams ?? []).map((team) => ({ id: team.id, eventId: team.event_id, name: team.name })));
+    } catch (error) {
+      setScanError(error instanceof Error ? error.message : "Unable to load teams.");
+      setTeams([]);
+    } finally {
+      setTeamsLoading(false);
+    }
+  }
 
   async function loadParticipants(eventId: string) {
     if (!eventId) {
@@ -227,42 +249,23 @@ export function CheckInForms({ events, teams }: { events: EventOption[]; teams: 
   }
 
   useEffect(() => {
-    void loadParticipants(selectedEvent);
-  }, [selectedEvent]);
-
-  async function removeParticipantFromList(ticketId: string) {
-    setParticipantActionBusy(ticketId);
-    setScanError("");
-    setScanFeedback("");
-    try {
-      const response = await fetch("/dashboard/events/check-in/remove", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          eventId: selectedEvent,
-          ticketId,
-        }),
-      });
-
-      const payload = (await response.json()) as { error?: string; removed?: boolean };
-      if (!response.ok) {
-        throw new Error(payload.error ?? "Unable to remove participant.");
+    if (individualState.success || removeState.success || createState.success || joinState.success) {
+      if (showParticipants) {
+        void loadParticipants(selectedEvent);
       }
-
-      if (payload.removed) {
-        setScanFeedback("Participant removed from this event.");
-      } else {
-        setScanFeedback("No check-in found to remove.");
+      if (showTeams) {
+        void loadTeams(selectedEvent);
       }
-
-      await loadParticipants(selectedEvent);
-    } catch (error) {
-      setScanError(error instanceof Error ? error.message : "Unable to remove participant.");
-    } finally {
-      setParticipantActionBusy(null);
-      setParticipantMenuOpenFor(null);
     }
-  }
+  }, [
+    selectedEvent,
+    showParticipants,
+    showTeams,
+    individualState.success,
+    removeState.success,
+    createState.success,
+    joinState.success,
+  ]);
 
   async function resolveParticipant(qrValue: string) {
     setScanError("");
@@ -354,6 +357,45 @@ export function CheckInForms({ events, teams }: { events: EventOption[]; teams: 
     }
   }
 
+  async function removeParticipantFromList(ticketId: string) {
+    setParticipantActionBusy(ticketId);
+    setScanError("");
+    setScanFeedback("");
+    try {
+      const response = await fetch("/dashboard/events/check-in/remove", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventId: selectedEvent,
+          ticketId,
+        }),
+      });
+
+      const payload = (await response.json()) as { error?: string; removed?: boolean };
+      if (!response.ok) {
+        throw new Error(payload.error ?? "Unable to remove participant.");
+      }
+
+      if (payload.removed) {
+        setScanFeedback("Participant removed from this event.");
+      } else {
+        setScanFeedback("No check-in found to remove.");
+      }
+
+      if (showParticipants) {
+        await loadParticipants(selectedEvent);
+      }
+      if (showTeams) {
+        await loadTeams(selectedEvent);
+      }
+    } catch (error) {
+      setScanError(error instanceof Error ? error.message : "Unable to remove participant.");
+    } finally {
+      setParticipantActionBusy(null);
+      setParticipantMenuOpenFor(null);
+    }
+  }
+
   return (
     <section className="grid gap-4 lg:grid-cols-2">
       <MobileQrScanner
@@ -377,6 +419,10 @@ export function CheckInForms({ events, teams }: { events: EventOption[]; teams: 
           onChange={(event) => {
             setSelectedEvent(event.target.value);
             clearFlowStates();
+            setShowTeams(false);
+            setShowParticipants(false);
+            setTeams([]);
+            setEventParticipants([]);
           }}
         >
           {events.map((eventOption) => (
@@ -435,11 +481,13 @@ export function CheckInForms({ events, teams }: { events: EventOption[]; teams: 
               Scan Participant QR
             </button>
 
-            <ManualEntry onSubmit={async (value) => {
-              const participant = await resolveParticipant(value);
-              setIndividualToken(participant.qrToken);
-              setScanFeedback(`Ready: ${participant.fullName ?? participant.email}`);
-            }} />
+            <ManualEntry
+              onSubmit={async (value) => {
+                const participant = await resolveParticipant(value);
+                setIndividualToken(participant.qrToken);
+                setScanFeedback(`Ready: ${participant.fullName ?? participant.email}`);
+              }}
+            />
 
             <form action={individualAction} className="space-y-2">
               <input type="hidden" name="eventId" value={selectedEvent} />
@@ -511,20 +559,22 @@ export function CheckInForms({ events, teams }: { events: EventOption[]; teams: 
               Add Member (Scan QR)
             </button>
 
-            <ManualEntry onSubmit={async (value) => {
-              const participant = await resolveParticipant(value);
-              setCreateMembers((current) => {
-                if (current.some((member) => member.qrToken === participant.qrToken)) {
-                  setScanError("Participant already added to this team list.");
-                  return current;
+            <ManualEntry
+              onSubmit={async (value) => {
+                const participant = await resolveParticipant(value);
+                setCreateMembers((current) => {
+                  if (current.some((member) => member.qrToken === participant.qrToken)) {
+                    setScanError("Participant already added to this team list.");
+                    return current;
+                  }
+                  return [...current, participant];
+                });
+                if (!leaderQr) {
+                  setLeaderQr(participant.qrToken);
                 }
-                return [...current, participant];
-              });
-              if (!leaderQr) {
-                setLeaderQr(participant.qrToken);
-              }
-              setScanFeedback(`Added: ${participant.fullName ?? participant.email}`);
-            }} />
+                setScanFeedback(`Added: ${participant.fullName ?? participant.email}`);
+              }}
+            />
 
             <ul className="space-y-2 text-sm">
               {createMembers.length === 0 && <li style={{ color: "rgba(245, 230, 211, 0.7)" }}>No members scanned yet.</li>}
@@ -608,17 +658,19 @@ export function CheckInForms({ events, teams }: { events: EventOption[]; teams: 
               Add Member (Scan QR)
             </button>
 
-            <ManualEntry onSubmit={async (value) => {
-              const participant = await resolveParticipant(value);
-              setJoinMembers((current) => {
-                if (current.some((member) => member.qrToken === participant.qrToken)) {
-                  setScanError("Participant already added to this join list.");
-                  return current;
-                }
-                return [...current, participant];
-              });
-              setScanFeedback(`Added: ${participant.fullName ?? participant.email}`);
-            }} />
+            <ManualEntry
+              onSubmit={async (value) => {
+                const participant = await resolveParticipant(value);
+                setJoinMembers((current) => {
+                  if (current.some((member) => member.qrToken === participant.qrToken)) {
+                    setScanError("Participant already added to this join list.");
+                    return current;
+                  }
+                  return [...current, participant];
+                });
+                setScanFeedback(`Added: ${participant.fullName ?? participant.email}`);
+              }}
+            />
 
             <ul className="space-y-2 text-sm">
               {joinMembers.length === 0 && <li style={{ color: "rgba(245, 230, 211, 0.7)" }}>No members scanned yet.</li>}
@@ -656,91 +708,154 @@ export function CheckInForms({ events, teams }: { events: EventOption[]; teams: 
       </article>
 
       <article className="rounded-xl border p-5" style={{ borderColor: "rgba(212, 165, 116, 0.2)", background: "rgba(42, 31, 26, 0.42)" }}>
-        <h2 className="text-xl font-bold uppercase">Existing Teams</h2>
-        <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.8)" }}>
-          Teams for selected event are shown below.
-        </p>
-        <ul className="mt-4 space-y-2 text-sm">
-          {eventTeams.length === 0 && <li style={{ color: "rgba(245, 230, 211, 0.7)" }}>No teams yet.</li>}
-          {eventTeams.map((team) => (
-            <li key={team.id} className="rounded-md border px-3 py-2" style={{ borderColor: "rgba(212, 165, 116, 0.18)" }}>
-              {team.name}
-            </li>
-          ))}
-        </ul>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            className="rounded-md border px-3 py-2 text-sm"
+            style={{ borderColor: "rgba(212, 165, 116, 0.25)" }}
+            onClick={() => {
+              const next = !showTeams;
+              setShowTeams(next);
+              if (next) {
+                void loadTeams(selectedEvent);
+              }
+            }}
+          >
+            {showTeams ? "Hide Teams" : "View Teams"}
+          </button>
 
-        <h3 className="mt-6 text-xl font-bold uppercase">Existing Participants</h3>
-        <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.8)" }}>
-          Checked-in participants for selected event.
-        </p>
+          <button
+            type="button"
+            className="rounded-md border px-3 py-2 text-sm"
+            style={{ borderColor: "rgba(212, 165, 116, 0.25)" }}
+            onClick={() => {
+              const next = !showParticipants;
+              setShowParticipants(next);
+              if (next) {
+                void loadParticipants(selectedEvent);
+              }
+            }}
+          >
+            {showParticipants ? "Hide Participants" : "View Participants"}
+          </button>
 
-        {participantsLoading ? (
-          <p className="mt-4 text-sm" style={{ color: "rgba(245, 230, 211, 0.72)" }}>
-            Loading participants...
-          </p>
-        ) : eventParticipants.length === 0 ? (
-          <p className="mt-4 text-sm" style={{ color: "rgba(245, 230, 211, 0.72)" }}>
-            No participants checked in yet.
-          </p>
-        ) : (
-          <ul className="mt-4 space-y-2 text-sm">
-            {eventParticipants.map((participant) => (
-              <li
-                key={`${participant.ticket_id}-${participant.checkin_id}`}
-                className="rounded-md border px-3 py-2"
-                style={{ borderColor: "rgba(212, 165, 116, 0.18)" }}
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <p className="font-medium">
-                      {participant.full_name ?? participant.email}
-                      <span className="ml-2 text-xs" style={{ color: "rgba(245, 230, 211, 0.65)" }}>
-                        ({participant.participant_type})
-                      </span>
-                    </p>
-                    <p style={{ color: "rgba(245, 230, 211, 0.76)" }}>{participant.email}</p>
-                    <p className="text-xs" style={{ color: "rgba(245, 230, 211, 0.65)" }}>
-                      {participant.team_name ? `Team: ${participant.team_name}` : "Individual"} · {new Date(participant.checked_in_at).toLocaleString("en-IN")}
-                    </p>
-                  </div>
+          <button
+            type="button"
+            className="rounded-md border px-3 py-2 text-sm"
+            style={{ borderColor: "rgba(212, 165, 116, 0.25)" }}
+            onClick={() => {
+              if (showTeams) {
+                void loadTeams(selectedEvent);
+              }
+              if (showParticipants) {
+                void loadParticipants(selectedEvent);
+              }
+            }}
+            disabled={!showTeams && !showParticipants}
+          >
+            Refresh Data
+          </button>
+        </div>
 
-                  <div className="relative">
-                    <button
-                      type="button"
-                      className="rounded-md border px-2 py-1 text-xs"
-                      style={{ borderColor: "rgba(212, 165, 116, 0.25)" }}
-                      onClick={() =>
-                        setParticipantMenuOpenFor((current) =>
-                          current === participant.ticket_id ? null : participant.ticket_id,
-                        )
-                      }
-                    >
-                      More
-                    </button>
+        {showTeams && (
+          <>
+            <h2 className="mt-6 text-xl font-bold uppercase">Existing Teams</h2>
+            <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.8)" }}>
+              Teams for selected event are shown below.
+            </p>
+            {teamsLoading ? (
+              <p className="mt-4 text-sm" style={{ color: "rgba(245, 230, 211, 0.72)" }}>
+                Loading teams...
+              </p>
+            ) : (
+              <ul className="mt-4 space-y-2 text-sm">
+                {eventTeams.length === 0 && <li style={{ color: "rgba(245, 230, 211, 0.7)" }}>No teams yet.</li>}
+                {eventTeams.map((team) => (
+                  <li key={team.id} className="rounded-md border px-3 py-2" style={{ borderColor: "rgba(212, 165, 116, 0.18)" }}>
+                    {team.name}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
+        )}
 
-                    {participantMenuOpenFor === participant.ticket_id && (
-                      <div
-                        className="absolute right-0 z-20 mt-2 min-w-32 rounded-md border p-1"
-                        style={{
-                          borderColor: "rgba(212, 165, 116, 0.25)",
-                          background: "rgba(10, 4, 8, 0.95)",
-                        }}
-                      >
+        {showParticipants && (
+          <>
+            <h3 className="mt-6 text-xl font-bold uppercase">Existing Participants</h3>
+            <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.8)" }}>
+              Checked-in participants for selected event.
+            </p>
+
+            {participantsLoading ? (
+              <p className="mt-4 text-sm" style={{ color: "rgba(245, 230, 211, 0.72)" }}>
+                Loading participants...
+              </p>
+            ) : eventParticipants.length === 0 ? (
+              <p className="mt-4 text-sm" style={{ color: "rgba(245, 230, 211, 0.72)" }}>
+                No participants checked in yet.
+              </p>
+            ) : (
+              <ul className="mt-4 space-y-2 text-sm">
+                {eventParticipants.map((participant) => (
+                  <li
+                    key={`${participant.ticket_id}-${participant.checkin_id}`}
+                    className="rounded-md border px-3 py-2"
+                    style={{ borderColor: "rgba(212, 165, 116, 0.18)" }}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <p className="font-medium">
+                          {participant.full_name ?? participant.email}
+                          <span className="ml-2 text-xs" style={{ color: "rgba(245, 230, 211, 0.65)" }}>
+                            ({participant.participant_type})
+                          </span>
+                        </p>
+                        <p style={{ color: "rgba(245, 230, 211, 0.76)" }}>{participant.email}</p>
+                        <p className="text-xs" style={{ color: "rgba(245, 230, 211, 0.65)" }}>
+                          {participant.team_name ? `Team: ${participant.team_name}` : "Individual"} · {new Date(participant.checked_in_at).toLocaleString("en-IN")}
+                        </p>
+                      </div>
+
+                      <div className="relative">
                         <button
                           type="button"
-                          disabled={participantActionBusy === participant.ticket_id}
-                          className="w-full rounded px-2 py-1 text-left text-xs hover:bg-white/10"
-                          onClick={() => void removeParticipantFromList(participant.ticket_id)}
+                          className="rounded-md border px-2 py-1 text-xs"
+                          style={{ borderColor: "rgba(212, 165, 116, 0.25)" }}
+                          onClick={() =>
+                            setParticipantMenuOpenFor((current) =>
+                              current === participant.ticket_id ? null : participant.ticket_id,
+                            )
+                          }
                         >
-                          {participantActionBusy === participant.ticket_id ? "Removing..." : "Delete Participant"}
+                          More
                         </button>
+
+                        {participantMenuOpenFor === participant.ticket_id && (
+                          <div
+                            className="absolute right-0 z-20 mt-2 min-w-32 rounded-md border p-1"
+                            style={{
+                              borderColor: "rgba(212, 165, 116, 0.25)",
+                              background: "rgba(10, 4, 8, 0.95)",
+                            }}
+                          >
+                            <button
+                              type="button"
+                              disabled={participantActionBusy === participant.ticket_id}
+                              className="w-full rounded px-2 py-1 text-left text-xs hover:bg-white/10"
+                              onClick={() => void removeParticipantFromList(participant.ticket_id)}
+                            >
+                              {participantActionBusy === participant.ticket_id ? "Removing..." : "Delete Participant"}
+                            </button>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
         )}
       </article>
     </section>

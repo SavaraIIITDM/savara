@@ -6,14 +6,11 @@ export default async function EventCheckInPage() {
   await requireVolunteerOrAdmin();
   const supabase = await createClient();
 
-  const [{ data: events }, { data: teams }] = await Promise.all([
-    supabase
-      .from("events")
-      .select("id, name, team_min_size, team_max_size")
-      .eq("is_active", true)
-      .order("name", { ascending: true }),
-    supabase.from("teams").select("id, event_id, name").order("created_at", { ascending: false }),
-  ]);
+  const { data: events } = await supabase
+    .from("events")
+    .select("id, name, team_min_size, team_max_size")
+    .eq("is_active", true)
+    .order("name", { ascending: true });
 
   return (
     <>
@@ -35,7 +32,6 @@ export default async function EventCheckInPage() {
             teamMinSize: event.team_min_size,
             teamMaxSize: event.team_max_size,
           }))}
-          teams={(teams ?? []).map((team) => ({ id: team.id, eventId: team.event_id, name: team.name }))}
         />
       )}
     </>
