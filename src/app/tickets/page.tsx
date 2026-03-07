@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function TicketsPage() {
   return (
@@ -65,6 +66,41 @@ export default function TicketsPage() {
         >
           Ticket drops, passes, and pricing will be announced shortly.
         </p>
+
+        <section
+          className="mt-10 w-full max-w-xl rounded-xl border px-5 py-6 sm:px-6"
+          style={{
+            borderColor: "rgba(212, 165, 116, 0.25)",
+            background: "rgba(42, 31, 26, 0.5)",
+          }}
+        >
+          <h2
+            className="text-xl font-bold uppercase"
+            style={{ fontFamily: "var(--font-cinzel), serif" }}
+          >
+            Have an activation code?
+          </h2>
+          <p
+            className="mt-2 text-sm sm:text-base"
+            style={{
+              fontFamily: "var(--font-rajdhani), sans-serif",
+              color: "rgba(245, 230, 211, 0.78)",
+            }}
+          >
+            Login to redeem your activation code and get your e-ticket.
+          </p>
+          <Link
+            href="/auth/login?next=/dashboard/ticket"
+            className="mt-4 inline-flex items-center rounded-md px-4 py-2 text-sm font-semibold uppercase tracking-[0.12em]"
+            style={{
+              background: "var(--savara-gold)",
+              color: "#0a0408",
+              fontFamily: "var(--font-rajdhani), sans-serif",
+            }}
+          >
+            Login
+          </Link>
+        </section>
       </div>
     </main>
   );

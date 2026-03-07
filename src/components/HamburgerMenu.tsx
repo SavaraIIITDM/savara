@@ -129,10 +129,11 @@ function MenuItem({ label, index, isOpen, isMobile, onClose }: MenuItemProps) {
 
   const hrefMap: Record<string, string> = {
     Home: "/",
+    Dashboard: "/dashboard",
     About: "/#about",
     Events: "/events",
     Accomodation: "/accomodation",
-    Tickets: "/dashboard/ticket",
+    Tickets: "/tickets",
     Merch: "/merch",
     Sponsors: "/#sponsors",
     Contact: "/#contact",
@@ -186,7 +187,7 @@ export default function HamburgerMenu({ isOpen, onClose }: HamburgerMenuProps) {
   const backdropRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  const menuItems = ["Home", "About", "Events", "Accomodation", "Tickets", "Merch", "Sponsors", "Contact"];
+  const menuItems = ["Home", "Dashboard", "About", "Events", "Accomodation", "Tickets", "Merch", "Sponsors", "Contact"];
   const socialLinks = [
     { href: "https://www.instagram.com/savara.iiitdm/", Icon: Instagram, label: "Instagram" },
     { href: "https://linkedin.com", Icon: Linkedin, label: "LinkedIn" },
