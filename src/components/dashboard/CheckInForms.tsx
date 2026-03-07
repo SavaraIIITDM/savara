@@ -42,9 +42,15 @@ type EventParticipant = {
   ticket_id: string;
 };
 
-type ScannerMode = "individual" | "remove" | "create-member" | "join-member";
+type ScannerMode = "individual" | "create-member" | "join-member";
 
-const initialState = { error: "", success: "" };
+type Toast = {
+  id: number;
+  type: "success" | "error";
+  message: string;
+};
+
+const initialState: { error?: string; success?: string } = { error: "", success: "" };
 
 function extractQrToken(rawValue: string) {
   const value = rawValue.trim();
@@ -62,6 +68,43 @@ function extractQrToken(rawValue: string) {
   }
 
   return value;
+}
+
+function ParticipantCard({ participant }: { participant: ScannedParticipant }) {
+  return (
+    <div className="rounded-md border px-3 py-3 text-sm" style={{ borderColor: "rgba(212, 165, 116, 0.2)" }}>
+      <p className="font-medium">{participant.fullName ?? participant.email}</p>
+      <p style={{ color: "rgba(245, 230, 211, 0.76)" }}>{participant.email}</p>
+      <p className="text-xs" style={{ color: "rgba(245, 230, 211, 0.65)" }}>
+        {participant.participantType}
+        {participant.alreadyRegistered ? " · already participating" : ""}
+      </p>
+    </div>
+  );
+}
+
+function ToastStack({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id: number) => void }) {
+  return (
+    <div className="pointer-events-none fixed right-4 top-24 z-[250] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2">
+      {toasts.map((toast) => (
+        <div
+          key={toast.id}
+          className="pointer-events-auto rounded-md border px-3 py-3 text-sm"
+          style={{
+            borderColor: toast.type === "success" ? "rgba(166, 231, 178, 0.45)" : "rgba(255, 140, 122, 0.45)",
+            background: "rgba(10, 4, 8, 0.95)",
+          }}
+        >
+          <div className="flex items-start justify-between gap-3">
+            <p style={{ color: toast.type === "success" ? "#a6e7b2" : "#ff8c7a" }}>{toast.message}</p>
+            <button type="button" className="text-xs underline" onClick={() => onDismiss(toast.id)}>
+              Dismiss
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function ManualEntry({ onSubmit }: { onSubmit: (value: string) => Promise<void> }) {
@@ -116,11 +159,9 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
   const [selectedEvent, setSelectedEvent] = useState(events[0]?.id ?? "");
   const [mode, setMode] = useState<"individual" | "create-team" | "join-team">("individual");
   const [scannerMode, setScannerMode] = useState<ScannerMode | null>(null);
-  const [scanFeedback, setScanFeedback] = useState("");
-  const [scanError, setScanError] = useState("");
+  const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const [individualToken, setIndividualToken] = useState("");
-  const [removeToken, setRemoveToken] = useState("");
+  const [individualParticipant, setIndividualParticipant] = useState<ScannedParticipant | null>(null);
 
   const [createMembers, setCreateMembers] = useState<ScannedParticipant[]>([]);
   const [joinMembers, setJoinMembers] = useState<ScannedParticipant[]>([]);
@@ -138,14 +179,43 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
   const [participantMenuOpenFor, setParticipantMenuOpenFor] = useState<string | null>(null);
   const [participantActionBusy, setParticipantActionBusy] = useState<string | null>(null);
 
-  function clearFlowStates() {
-    setIndividualToken("");
-    setRemoveToken("");
+  const [individualActionState, individualFormAction, individualPending] = useActionState(
+    async (_state: { error?: string; success?: string }, formData: FormData) => checkInIndividualAction(formData),
+    initialState,
+  );
+  const [removeActionState, removeFormAction, removePending] = useActionState(
+    async (_state: { error?: string; success?: string }, formData: FormData) => removeCheckInAction(formData),
+    initialState,
+  );
+  const [createActionState, createFormAction, createPending] = useActionState(
+    async (_state: { error?: string; success?: string }, formData: FormData) => createTeamAction(formData),
+    initialState,
+  );
+  const [joinActionState, joinFormAction, joinPending] = useActionState(
+    async (_state: { error?: string; success?: string }, formData: FormData) => joinTeamAction(formData),
+    initialState,
+  );
+
+  const eventTeams = useMemo(() => teams.filter((team) => team.eventId === selectedEvent), [teams, selectedEvent]);
+  const selectedEventDetails = useMemo(() => events.find((event) => event.id === selectedEvent), [events, selectedEvent]);
+
+  function dismissToast(id: number) {
+    setToasts((current) => current.filter((toast) => toast.id !== id));
+  }
+
+  function pushToast(type: "success" | "error", message: string) {
+    const id = Date.now() + Math.floor(Math.random() * 1000);
+    setToasts((current) => [...current, { id, type, message }]);
+    window.setTimeout(() => {
+      setToasts((current) => current.filter((toast) => toast.id !== id));
+    }, 4000);
+  }
+
+  function clearScanState() {
+    setIndividualParticipant(null);
     setCreateMembers([]);
     setJoinMembers([]);
     setLeaderQr("");
-    setScanError("");
-    setScanFeedback("");
     setParticipantMenuOpenFor(null);
   }
 
@@ -162,40 +232,71 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
     }
   }, [selectedEvent]);
 
-  const eventTeams = useMemo(() => teams.filter((team) => team.eventId === selectedEvent), [teams, selectedEvent]);
-  const selectedEventDetails = useMemo(() => events.find((event) => event.id === selectedEvent), [events, selectedEvent]);
+  useEffect(() => {
+    if (individualActionState.error) {
+      pushToast("error", individualActionState.error);
+    }
+    if (individualActionState.success) {
+      pushToast("success", individualActionState.success);
+      setIndividualParticipant(null);
+      if (showParticipants) {
+        void loadParticipants(selectedEvent);
+      }
+      if (showTeams) {
+        void loadTeams(selectedEvent);
+      }
+    }
+  }, [individualActionState.error, individualActionState.success]);
 
-  const [individualState, individualAction, individualPending] = useActionState(
-    async (_state: typeof initialState, formData: FormData) => {
-      const result = await checkInIndividualAction(formData);
-      return { error: result.error ?? "", success: result.success ?? "" };
-    },
-    initialState,
-  );
+  useEffect(() => {
+    if (removeActionState.error) {
+      pushToast("error", removeActionState.error);
+    }
+    if (removeActionState.success) {
+      pushToast("success", removeActionState.success);
+      setIndividualParticipant(null);
+      if (showParticipants) {
+        void loadParticipants(selectedEvent);
+      }
+      if (showTeams) {
+        void loadTeams(selectedEvent);
+      }
+    }
+  }, [removeActionState.error, removeActionState.success]);
 
-  const [removeState, removeAction, removePending] = useActionState(
-    async (_state: typeof initialState, formData: FormData) => {
-      const result = await removeCheckInAction(formData);
-      return { error: result.error ?? "", success: result.success ?? "" };
-    },
-    initialState,
-  );
+  useEffect(() => {
+    if (createActionState.error) {
+      pushToast("error", createActionState.error);
+    }
+    if (createActionState.success) {
+      pushToast("success", createActionState.success);
+      setTeamName("");
+      setCreateMembers([]);
+      setLeaderQr("");
+      if (showParticipants) {
+        void loadParticipants(selectedEvent);
+      }
+      if (showTeams) {
+        void loadTeams(selectedEvent);
+      }
+    }
+  }, [createActionState.error, createActionState.success]);
 
-  const [createState, createAction, createPending] = useActionState(
-    async (_state: typeof initialState, formData: FormData) => {
-      const result = await createTeamAction(formData);
-      return { error: result.error ?? "", success: result.success ?? "" };
-    },
-    initialState,
-  );
-
-  const [joinState, joinAction, joinPending] = useActionState(
-    async (_state: typeof initialState, formData: FormData) => {
-      const result = await joinTeamAction(formData);
-      return { error: result.error ?? "", success: result.success ?? "" };
-    },
-    initialState,
-  );
+  useEffect(() => {
+    if (joinActionState.error) {
+      pushToast("error", joinActionState.error);
+    }
+    if (joinActionState.success) {
+      pushToast("success", joinActionState.success);
+      setJoinMembers([]);
+      if (showParticipants) {
+        void loadParticipants(selectedEvent);
+      }
+      if (showTeams) {
+        void loadTeams(selectedEvent);
+      }
+    }
+  }, [joinActionState.error, joinActionState.success]);
 
   async function loadTeams(eventId: string) {
     if (!eventId) {
@@ -210,14 +311,12 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
         error?: string;
         teams?: { id: string; event_id: string; name: string }[];
       };
-
       if (!response.ok) {
         throw new Error(payload.error ?? "Unable to load teams.");
       }
-
       setTeams((payload.teams ?? []).map((team) => ({ id: team.id, eventId: team.event_id, name: team.name })));
     } catch (error) {
-      setScanError(error instanceof Error ? error.message : "Unable to load teams.");
+      pushToast("error", error instanceof Error ? error.message : "Unable to load teams.");
       setTeams([]);
     } finally {
       setTeamsLoading(false);
@@ -234,50 +333,23 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
     try {
       const response = await fetch(`/dashboard/events/check-in/participants?eventId=${encodeURIComponent(eventId)}`);
       const payload = (await response.json()) as { error?: string; participants?: EventParticipant[] };
-
       if (!response.ok) {
         throw new Error(payload.error ?? "Unable to load participants.");
       }
-
       setEventParticipants(payload.participants ?? []);
     } catch (error) {
-      setScanError(error instanceof Error ? error.message : "Unable to load participants.");
+      pushToast("error", error instanceof Error ? error.message : "Unable to load participants.");
       setEventParticipants([]);
     } finally {
       setParticipantsLoading(false);
     }
   }
 
-  useEffect(() => {
-    if (individualState.success || removeState.success || createState.success || joinState.success) {
-      if (showParticipants) {
-        void loadParticipants(selectedEvent);
-      }
-      if (showTeams) {
-        void loadTeams(selectedEvent);
-      }
-    }
-  }, [
-    selectedEvent,
-    showParticipants,
-    showTeams,
-    individualState.success,
-    removeState.success,
-    createState.success,
-    joinState.success,
-  ]);
-
   async function resolveParticipant(qrValue: string) {
-    setScanError("");
-    setScanFeedback("");
-
     const response = await fetch("/dashboard/events/check-in/resolve", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        eventId: selectedEvent,
-        qrValue,
-      }),
+      body: JSON.stringify({ eventId: selectedEvent, qrValue }),
     });
 
     const payload = (await response.json()) as {
@@ -316,21 +388,14 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
       setScannerMode(null);
 
       if (scannerMode === "individual") {
-        setIndividualToken(participant.qrToken);
-        setScanFeedback(`Ready: ${participant.fullName ?? participant.email}`);
-        return;
-      }
-
-      if (scannerMode === "remove") {
-        setRemoveToken(participant.qrToken);
-        setScanFeedback(`Ready to remove: ${participant.fullName ?? participant.email}`);
+        setIndividualParticipant(participant);
         return;
       }
 
       if (scannerMode === "create-member") {
         setCreateMembers((current) => {
           if (current.some((member) => member.qrToken === participant.qrToken)) {
-            setScanError("Participant already added to this team list.");
+            pushToast("error", "Participant already added to this team list.");
             return current;
           }
           return [...current, participant];
@@ -338,49 +403,37 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
         if (!leaderQr) {
           setLeaderQr(participant.qrToken);
         }
-        setScanFeedback(`Added: ${participant.fullName ?? participant.email}`);
         return;
       }
 
       if (scannerMode === "join-member") {
         setJoinMembers((current) => {
           if (current.some((member) => member.qrToken === participant.qrToken)) {
-            setScanError("Participant already added to this join list.");
+            pushToast("error", "Participant already added to this join list.");
             return current;
           }
           return [...current, participant];
         });
-        setScanFeedback(`Added: ${participant.fullName ?? participant.email}`);
       }
     } catch (error) {
-      setScanError(error instanceof Error ? error.message : "Unable to resolve participant.");
+      pushToast("error", error instanceof Error ? error.message : "Unable to resolve participant.");
     }
   }
 
   async function removeParticipantFromList(ticketId: string) {
     setParticipantActionBusy(ticketId);
-    setScanError("");
-    setScanFeedback("");
     try {
       const response = await fetch("/dashboard/events/check-in/remove", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          eventId: selectedEvent,
-          ticketId,
-        }),
+        body: JSON.stringify({ eventId: selectedEvent, ticketId }),
       });
-
       const payload = (await response.json()) as { error?: string; removed?: boolean };
       if (!response.ok) {
         throw new Error(payload.error ?? "Unable to remove participant.");
       }
 
-      if (payload.removed) {
-        setScanFeedback("Participant removed from this event.");
-      } else {
-        setScanFeedback("No check-in found to remove.");
-      }
+      pushToast("success", payload.removed ? "Participant removed from this event." : "No check-in found to remove.");
 
       if (showParticipants) {
         await loadParticipants(selectedEvent);
@@ -389,7 +442,7 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
         await loadTeams(selectedEvent);
       }
     } catch (error) {
-      setScanError(error instanceof Error ? error.message : "Unable to remove participant.");
+      pushToast("error", error instanceof Error ? error.message : "Unable to remove participant.");
     } finally {
       setParticipantActionBusy(null);
       setParticipantMenuOpenFor(null);
@@ -398,6 +451,8 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
 
   return (
     <section className="grid gap-4 lg:grid-cols-2">
+      <ToastStack toasts={toasts} onDismiss={dismissToast} />
+
       <MobileQrScanner
         open={scannerMode !== null}
         title="Scan Participant QR"
@@ -418,7 +473,8 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
           value={selectedEvent}
           onChange={(event) => {
             setSelectedEvent(event.target.value);
-            clearFlowStates();
+            clearScanState();
+            setTeamName("");
             setShowTeams(false);
             setShowParticipants(false);
             setTeams([]);
@@ -435,7 +491,10 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
         <div className="mt-4 flex flex-wrap gap-2">
           <button
             type="button"
-            onClick={() => setMode("individual")}
+            onClick={() => {
+              setMode("individual");
+              setIndividualParticipant(null);
+            }}
             className="rounded-md border px-3 py-2 text-sm"
             style={{ borderColor: mode === "individual" ? "var(--savara-gold)" : "rgba(212, 165, 116, 0.2)" }}
           >
@@ -459,17 +518,6 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
           </button>
         </div>
 
-        {scanError && (
-          <p className="mt-3 text-sm" style={{ color: "#ff8c7a" }}>
-            {scanError}
-          </p>
-        )}
-        {scanFeedback && (
-          <p className="mt-3 text-sm" style={{ color: "#a6e7b2" }}>
-            {scanFeedback}
-          </p>
-        )}
-
         {mode === "individual" && (
           <div className="mt-5 space-y-4">
             <button
@@ -484,54 +532,48 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
             <ManualEntry
               onSubmit={async (value) => {
                 const participant = await resolveParticipant(value);
-                setIndividualToken(participant.qrToken);
-                setScanFeedback(`Ready: ${participant.fullName ?? participant.email}`);
+                setIndividualParticipant(participant);
               }}
             />
 
-            <form action={individualAction} className="space-y-2">
-              <input type="hidden" name="eventId" value={selectedEvent} />
-              <input type="hidden" name="qrToken" value={individualToken} />
-              <button
-                type="submit"
-                disabled={individualPending || !individualToken}
-                className="rounded-md border px-4 py-2 text-sm"
-                style={{ borderColor: "rgba(212, 165, 116, 0.25)" }}
-              >
-                {individualPending ? "Checking..." : "Confirm Check-In"}
-              </button>
-              {individualState.error && <p className="text-sm" style={{ color: "#ff8c7a" }}>{individualState.error}</p>}
-              {individualState.success && <p className="text-sm" style={{ color: "#a6e7b2" }}>{individualState.success}</p>}
-            </form>
+            {individualParticipant && (
+              <>
+                <ParticipantCard participant={individualParticipant} />
 
-            <button
-              type="button"
-              onClick={() => setScannerMode("remove")}
-              className="rounded-md border px-4 py-2 text-sm"
-              style={{ borderColor: "rgba(212, 165, 116, 0.25)" }}
-            >
-              Scan to Remove Check-In
-            </button>
-
-            <form action={removeAction} className="space-y-2">
-              <input type="hidden" name="eventId" value={selectedEvent} />
-              <input type="hidden" name="qrToken" value={removeToken} />
-              <button
-                type="submit"
-                disabled={removePending || !removeToken}
-                className="rounded-md border px-4 py-2 text-sm"
-                style={{ borderColor: "rgba(212, 165, 116, 0.25)" }}
-              >
-                {removePending ? "Removing..." : "Confirm Remove"}
-              </button>
-              {removeState.error && <p className="text-sm" style={{ color: "#ff8c7a" }}>{removeState.error}</p>}
-              {removeState.success && <p className="text-sm" style={{ color: "#a6e7b2" }}>{removeState.success}</p>}
-            </form>
+                {individualParticipant.alreadyRegistered ? (
+                  <form action={removeFormAction}>
+                    <input type="hidden" name="eventId" value={selectedEvent} />
+                    <input type="hidden" name="qrToken" value={individualParticipant.qrToken} />
+                    <button
+                      type="submit"
+                      disabled={removePending}
+                      className="rounded-md border px-4 py-2 text-sm"
+                      style={{ borderColor: "rgba(212, 165, 116, 0.25)" }}
+                    >
+                      {removePending ? "Removing..." : "Remove Participant"}
+                    </button>
+                  </form>
+                ) : (
+                  <form action={individualFormAction}>
+                    <input type="hidden" name="eventId" value={selectedEvent} />
+                    <input type="hidden" name="qrToken" value={individualParticipant.qrToken} />
+                    <button
+                      type="submit"
+                      disabled={individualPending}
+                      className="rounded-md px-4 py-2 text-sm font-semibold uppercase tracking-[0.14em]"
+                      style={{ background: "var(--savara-gold)", color: "#0a0408" }}
+                    >
+                      {individualPending ? "Checking..." : "Confirm Check-In"}
+                    </button>
+                  </form>
+                )}
+              </>
+            )}
           </div>
         )}
 
         {mode === "create-team" && (
-          <form action={createAction} className="mt-5 space-y-3">
+          <form action={createFormAction} className="mt-5 space-y-3">
             <input type="hidden" name="eventId" value={selectedEvent} />
             <input type="hidden" name="leaderQr" value={leaderQr} />
             <input type="hidden" name="memberQrsJson" value={JSON.stringify(createMembers.map((member) => member.qrToken))} />
@@ -564,7 +606,7 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
                 const participant = await resolveParticipant(value);
                 setCreateMembers((current) => {
                   if (current.some((member) => member.qrToken === participant.qrToken)) {
-                    setScanError("Participant already added to this team list.");
+                    pushToast("error", "Participant already added to this team list.");
                     return current;
                   }
                   return [...current, participant];
@@ -572,7 +614,6 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
                 if (!leaderQr) {
                   setLeaderQr(participant.qrToken);
                 }
-                setScanFeedback(`Added: ${participant.fullName ?? participant.email}`);
               }}
             />
 
@@ -590,7 +631,7 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
                       />
                       <span>
                         {member.fullName ?? member.email} ({member.email})
-                        {member.alreadyRegistered ? " - already registered" : ""}
+                        {member.alreadyRegistered ? " - already participating" : ""}
                       </span>
                     </label>
                     <button
@@ -610,27 +651,24 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
               ))}
             </ul>
 
-            <button
-              type="submit"
-              disabled={
-                createPending ||
-                !teamName.trim() ||
-                !leaderQr ||
-                createMembers.length < (selectedEventDetails?.teamMinSize ?? 1) ||
-                createMembers.length > (selectedEventDetails?.teamMaxSize ?? 1)
-              }
-              className="rounded-md px-4 py-2 text-sm font-semibold uppercase tracking-[0.14em]"
-              style={{ background: "var(--savara-gold)", color: "#0a0408" }}
-            >
-              {createPending ? "Creating..." : "Check In Team"}
-            </button>
-            {createState.error && <p className="text-sm" style={{ color: "#ff8c7a" }}>{createState.error}</p>}
-            {createState.success && <p className="text-sm" style={{ color: "#a6e7b2" }}>{createState.success}</p>}
+            {teamName.trim() &&
+              leaderQr &&
+              createMembers.length >= (selectedEventDetails?.teamMinSize ?? 1) &&
+              createMembers.length <= (selectedEventDetails?.teamMaxSize ?? 1) && (
+                <button
+                  type="submit"
+                  disabled={createPending}
+                  className="rounded-md px-4 py-2 text-sm font-semibold uppercase tracking-[0.14em]"
+                  style={{ background: "var(--savara-gold)", color: "#0a0408" }}
+                >
+                  {createPending ? "Creating..." : "Check In Team"}
+                </button>
+              )}
           </form>
         )}
 
         {mode === "join-team" && (
-          <form action={joinAction} className="mt-5 space-y-3">
+          <form action={joinFormAction} className="mt-5 space-y-3">
             <input type="hidden" name="memberQrsJson" value={JSON.stringify(joinMembers.map((member) => member.qrToken))} />
             <label className="block text-sm font-medium" htmlFor="teamId">
               Existing Team
@@ -663,12 +701,11 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
                 const participant = await resolveParticipant(value);
                 setJoinMembers((current) => {
                   if (current.some((member) => member.qrToken === participant.qrToken)) {
-                    setScanError("Participant already added to this join list.");
+                    pushToast("error", "Participant already added to this join list.");
                     return current;
                   }
                   return [...current, participant];
                 });
-                setScanFeedback(`Added: ${participant.fullName ?? participant.email}`);
               }}
             />
 
@@ -679,7 +716,7 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
                   <div className="flex items-start justify-between gap-3">
                     <span>
                       {member.fullName ?? member.email} ({member.email})
-                      {member.alreadyRegistered ? " - already registered" : ""}
+                      {member.alreadyRegistered ? " - already participating" : ""}
                     </span>
                     <button
                       type="button"
@@ -693,16 +730,16 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
               ))}
             </ul>
 
-            <button
-              type="submit"
-              disabled={joinPending || joinMembers.length === 0}
-              className="rounded-md px-4 py-2 text-sm font-semibold uppercase tracking-[0.14em]"
-              style={{ background: "var(--savara-gold)", color: "#0a0408" }}
-            >
-              {joinPending ? "Adding..." : "Add Members"}
-            </button>
-            {joinState.error && <p className="text-sm" style={{ color: "#ff8c7a" }}>{joinState.error}</p>}
-            {joinState.success && <p className="text-sm" style={{ color: "#a6e7b2" }}>{joinState.success}</p>}
+            {joinMembers.length > 0 && (
+              <button
+                type="submit"
+                disabled={joinPending}
+                className="rounded-md px-4 py-2 text-sm font-semibold uppercase tracking-[0.14em]"
+                style={{ background: "var(--savara-gold)", color: "#0a0408" }}
+              >
+                {joinPending ? "Adding..." : "Add Members"}
+              </button>
+            )}
           </form>
         )}
       </article>
@@ -760,9 +797,6 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
         {showTeams && (
           <>
             <h2 className="mt-6 text-xl font-bold uppercase">Existing Teams</h2>
-            <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.8)" }}>
-              Teams for selected event are shown below.
-            </p>
             {teamsLoading ? (
               <p className="mt-4 text-sm" style={{ color: "rgba(245, 230, 211, 0.72)" }}>
                 Loading teams...
@@ -783,9 +817,6 @@ export function CheckInForms({ events }: { events: EventOption[] }) {
         {showParticipants && (
           <>
             <h3 className="mt-6 text-xl font-bold uppercase">Existing Participants</h3>
-            <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.8)" }}>
-              Checked-in participants for selected event.
-            </p>
 
             {participantsLoading ? (
               <p className="mt-4 text-sm" style={{ color: "rgba(245, 230, 211, 0.72)" }}>
