@@ -341,6 +341,17 @@ export type Database = {
           ticket_id: string;
         }[];
       };
+      resolve_participant_by_qr: {
+        Args: { p_event_id: string; p_qr_token: string };
+        Returns: {
+          already_registered: boolean;
+          email: string;
+          full_name: string | null;
+          participant_type: string;
+          qr_token: string;
+          ticket_id: string;
+        }[];
+      };
       remove_event_checkin: {
         Args: { p_event_id: string; p_qr_token: string };
         Returns: boolean;

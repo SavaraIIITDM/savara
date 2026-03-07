@@ -89,15 +89,22 @@ export async function createTeamAction(formData: FormData) {
   const eventId = String(formData.get("eventId") ?? "").trim();
   const teamName = String(formData.get("teamName") ?? "").trim();
   const leaderQr = extractQrToken(String(formData.get("leaderQr") ?? ""));
-  const memberQrsRaw = String(formData.get("memberQrs") ?? "").trim();
+  const memberQrsJson = String(formData.get("memberQrsJson") ?? "[]");
 
-  const memberQrs = memberQrsRaw
-    .split("\n")
-    .map((line) => extractQrToken(line))
-    .filter(Boolean);
+  let memberQrs: string[] = [];
+  try {
+    const parsed = JSON.parse(memberQrsJson) as string[];
+    memberQrs = parsed.map((token) => extractQrToken(String(token))).filter(Boolean);
+  } catch {
+    return { error: "Invalid member list." };
+  }
 
   if (!eventId || !teamName || !leaderQr) {
     return { error: "Event, team name, and leader QR are required." };
+  }
+
+  if (memberQrs.length === 0) {
+    return { error: "Scan at least one team member." };
   }
 
   const { error } = await supabase.rpc("create_team_with_members", {
@@ -120,11 +127,15 @@ export async function joinTeamAction(formData: FormData) {
   const supabase = await createClient();
 
   const teamId = String(formData.get("teamId") ?? "").trim();
-  const memberQrsRaw = String(formData.get("memberQrs") ?? "").trim();
-  const memberQrs = memberQrsRaw
-    .split("\n")
-    .map((line) => extractQrToken(line))
-    .filter(Boolean);
+  const memberQrsJson = String(formData.get("memberQrsJson") ?? "[]");
+
+  let memberQrs: string[] = [];
+  try {
+    const parsed = JSON.parse(memberQrsJson) as string[];
+    memberQrs = parsed.map((token) => extractQrToken(String(token))).filter(Boolean);
+  } catch {
+    return { error: "Invalid member list." };
+  }
 
   if (!teamId || memberQrs.length === 0) {
     return { error: "Team and at least one member QR are required." };
