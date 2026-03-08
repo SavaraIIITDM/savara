@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { TicketActivationForm } from "@/components/dashboard/TicketActivationForm";
 import { TicketDrawerCard } from "@/components/dashboard/TicketDrawerCard";
 
@@ -48,20 +49,35 @@ export function DashboardTicketPanel({
           </p>
         )}
 
-        <button
-          type="button"
-          className="mt-4 inline-block rounded-md border px-3 py-2 text-sm"
-          style={{ borderColor: "rgba(212, 165, 116, 0.25)" }}
-          onClick={() => setVisible((current) => !current)}
-        >
-          {visible ? "Hide Ticket" : hasTicket ? "Show Ticket" : "Show Activation"}
-        </button>
+        {hasTicket && (
+          <button
+            type="button"
+            className="mt-4 inline-block rounded-md border px-3 py-2 text-sm"
+            style={{ borderColor: "rgba(212, 165, 116, 0.25)" }}
+            onClick={() => setVisible((current) => !current)}
+          >
+            {visible ? "Hide Ticket" : "Show Ticket"}
+          </button>
+        )}
 
-        {!hasTicket && visible && (
+        {!hasTicket && (
           <div className="mt-4">
+            <div className="rounded-md border px-3 py-3" style={{ borderColor: "rgba(212, 165, 116, 0.25)", background: "rgba(10, 4, 8, 0.25)" }}>
+              <p className="text-sm" style={{ color: "rgba(245, 230, 211, 0.82)" }}>
+                Don&apos;t have an activation code? Purchase tickets here.
+              </p>
+              <Link
+                href="/tickets"
+                className="mt-3 inline-block rounded-md px-3 py-2 text-sm font-semibold uppercase tracking-[0.12em]"
+                style={{ background: "var(--savara-gold)", color: "#0a0408" }}
+              >
+                Purchase Tickets
+              </Link>
+            </div>
+
             {pendingCode && (
               <div
-                className="rounded-md border px-3 py-3"
+                className="mt-3 rounded-md border px-3 py-3"
                 style={{ borderColor: "rgba(212, 165, 116, 0.3)", background: "rgba(10, 4, 8, 0.25)" }}
               >
                 <p className="text-xs uppercase tracking-[0.18em]" style={{ color: "rgba(245, 230, 211, 0.6)" }}>
@@ -73,6 +89,7 @@ export function DashboardTicketPanel({
                 </p>
               </div>
             )}
+
             <TicketActivationForm />
           </div>
         )}
