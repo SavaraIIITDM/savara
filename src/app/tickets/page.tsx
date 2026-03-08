@@ -93,7 +93,7 @@ export default function TicketsPage() {
             Login to redeem your activation code and get your e-ticket.
           </p>
           <Link
-            href="/auth/login?next=/dashboard/ticket"
+            href="/dashboard"
             className="mt-4 inline-flex items-center rounded-md px-4 py-2 text-sm font-semibold uppercase tracking-[0.12em]"
             style={{
               background: "var(--savara-gold)",
@@ -101,7 +101,7 @@ export default function TicketsPage() {
               fontFamily: "var(--font-rajdhani), sans-serif",
             }}
           >
-            Login
+            Dashboard
           </Link>
         </section>
 
