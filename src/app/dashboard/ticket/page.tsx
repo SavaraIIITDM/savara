@@ -1,8 +1,8 @@
-import Image from "next/image";
 import QRCode from "qrcode";
 import { requireDashboardRole, requireDashboardUser } from "@/lib/auth/guards";
 import { createClient } from "@/lib/supabase/server";
 import { TicketActivationForm } from "@/components/dashboard/TicketActivationForm";
+import { TicketDrawerCard } from "@/components/dashboard/TicketDrawerCard";
 import { getPendingActivationCodeForEmail } from "@/lib/tickets/pending-code";
 
 export default async function DashboardTicketPage() {
@@ -68,61 +68,18 @@ export default async function DashboardTicketPage() {
 
   return (
     <section>
-      <article
-        className="rounded-xl border p-5"
-        style={{ borderColor: "rgba(212, 165, 116, 0.2)", background: "rgba(42, 31, 26, 0.42)" }}
-      >
-        <h2 className="text-2xl font-bold uppercase">E-Ticket</h2>
-        <div className="mt-4 space-y-3">
-          <p className="text-sm" style={{ color: "rgba(245, 230, 211, 0.85)" }}>
-            <span className="font-semibold">Name:</span> {displayName}
-          </p>
-          <p className="text-sm" style={{ color: "rgba(245, 230, 211, 0.85)" }}>
-            <span className="font-semibold">Email:</span> {profile?.email ?? user.email}
-          </p>
-          <p className="text-sm" style={{ color: "rgba(245, 230, 211, 0.85)" }}>
-            <span className="font-semibold">Participant Type:</span> {ticket.participant_type}
-          </p>
-          {qrDataUrl && (
-            <Image
-              src={qrDataUrl}
-              alt="Ticket QR code"
-              width={240}
-              height={240}
-              className="rounded-md bg-white p-2"
-            />
-          )}
-          <p className="text-xs" style={{ color: "rgba(245, 230, 211, 0.65)" }}>
-            Show this QR code during event check-in.
-          </p>
-
-          {ticket.participant_type === "internal" && (
-            <div className="pt-2">
-              <h3 className="text-lg font-bold uppercase">Perks</h3>
-              {(perks ?? []).length === 0 ? (
-                <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.72)" }}>
-                  No perks available.
-                </p>
-              ) : (
-                <ul className="mt-2 space-y-1 text-sm">
-                  {(perks ?? []).map((perk) => (
-                    <li
-                      key={perk.perk_id}
-                      style={{
-                        color: "rgba(245, 230, 211, 0.82)",
-                        textDecoration: perk.attended ? "line-through" : "none",
-                        opacity: perk.attended ? 0.7 : 1,
-                      }}
-                    >
-                      {perk.perk_name}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
-        </div>
-      </article>
+      {qrDataUrl && (
+        <TicketDrawerCard
+          displayName={displayName}
+          participantType={ticket.participant_type === "internal" ? "internal" : "external"}
+          qrDataUrl={qrDataUrl}
+          perks={(perks ?? []).map((perk) => ({
+            perk_id: perk.perk_id,
+            perk_name: perk.perk_name,
+            attended: perk.attended,
+          }))}
+        />
+      )}
     </section>
   );
 }
