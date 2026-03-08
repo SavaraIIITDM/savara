@@ -100,6 +100,66 @@ export type Database = {
           },
         ];
       };
+      perk_checkins: {
+        Row: {
+          checked_in_at: string;
+          checked_in_by: string | null;
+          id: number;
+          perk_id: string;
+          ticket_id: string;
+        };
+        Insert: {
+          checked_in_at?: string;
+          checked_in_by?: string | null;
+          id?: number;
+          perk_id: string;
+          ticket_id: string;
+        };
+        Update: {
+          checked_in_at?: string;
+          checked_in_by?: string | null;
+          id?: number;
+          perk_id?: string;
+          ticket_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "perk_checkins_perk_id_fkey";
+            columns: ["perk_id"];
+            isOneToOne: false;
+            referencedRelation: "perks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "perk_checkins_ticket_id_fkey";
+            columns: ["ticket_id"];
+            isOneToOne: false;
+            referencedRelation: "tickets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      perks: {
+        Row: {
+          created_at: string;
+          id: string;
+          is_active: boolean;
+          name: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          is_active?: boolean;
+          name: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          is_active?: boolean;
+          name?: string;
+        };
+        Relationships: [];
+      };
       events: {
         Row: {
           created_at: string;
@@ -308,6 +368,7 @@ export type Database = {
         Returns: {
           activation_code_id: string;
           code: string;
+          ticket_assigned: boolean;
         }[];
       };
       check_in_individual: {
@@ -347,8 +408,20 @@ export type Database = {
           team_name: string | null;
         }[];
       };
+      get_my_perk_status: {
+        Args: never;
+        Returns: {
+          attended: boolean;
+          perk_id: string;
+          perk_name: string;
+        }[];
+      };
       is_admin: { Args: never; Returns: boolean };
       is_volunteer_or_admin: { Args: never; Returns: boolean };
+      check_in_perk_individual: {
+        Args: { p_perk_id: string; p_qr_token: string };
+        Returns: string;
+      };
       join_team_with_members: {
         Args: { p_member_qrs: string[]; p_team_id: string };
         Returns: number;
@@ -382,6 +455,22 @@ export type Database = {
       remove_event_checkin_by_ticket: {
         Args: { p_event_id: string; p_ticket_id: string };
         Returns: boolean;
+      };
+      remove_perk_checkin: {
+        Args: { p_perk_id: string; p_qr_token: string };
+        Returns: boolean;
+      };
+      resolve_internal_participant_by_qr_for_perk: {
+        Args: { p_perk_id: string; p_qr_token: string };
+        Returns: {
+          already_attended: boolean;
+          email: string;
+          full_name: string | null;
+          is_eligible: boolean;
+          participant_type: string;
+          qr_token: string;
+          ticket_id: string;
+        }[];
       };
     };
     Enums: {

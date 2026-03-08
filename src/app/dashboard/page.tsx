@@ -31,6 +31,18 @@ export default async function DashboardHomePage() {
         </article>
       )}
 
+      {(role.isVolunteer || role.isAdmin) && (
+        <article className="rounded-xl border p-5" style={{ borderColor: "rgba(212, 165, 116, 0.2)", background: "rgba(42, 31, 26, 0.42)" }}>
+          <h2 className="text-xl font-bold uppercase">Perk Check-In</h2>
+          <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.8)" }}>
+            Check in internal participants for perks.
+          </p>
+          <Link className="mt-4 inline-block rounded-md border px-3 py-2 text-sm" style={{ borderColor: "rgba(212, 165, 116, 0.25)" }} href="/dashboard/perks/check-in">
+            Open Perk Check-In
+          </Link>
+        </article>
+      )}
+
       {role.isAdmin && (
         <article className="rounded-xl border p-5" style={{ borderColor: "rgba(212, 165, 116, 0.2)", background: "rgba(42, 31, 26, 0.42)" }}>
           <h2 className="text-xl font-bold uppercase">Admin Verification</h2>

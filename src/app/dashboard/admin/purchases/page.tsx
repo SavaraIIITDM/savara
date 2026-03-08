@@ -20,7 +20,7 @@ export default async function AdminPurchasesPage() {
       >
         <h1 className="text-2xl font-bold uppercase">Verify Purchase</h1>
         <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.8)" }}>
-          Enter purchaser email and ticket count. Verification generates an activation code visible in purchaser dashboard.
+          Enter purchaser email and ticket count. Verification generates code, auto-assigns ticket if purchaser account exists, and can optionally send email.
         </p>
         <AdminVerifyPurchaseForm />
       </article>

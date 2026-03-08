@@ -22,6 +22,8 @@ export default async function DashboardTicketPage() {
     .eq("id", user.id)
     .maybeSingle();
 
+  const { data: perks } = await supabase.rpc("get_my_perk_status");
+
   const displayName = profile?.full_name || user.user_metadata?.full_name || user.email || "Participant";
   const pendingCode = user.email ? await getPendingActivationCodeForEmail(user.email) : null;
 
@@ -93,6 +95,32 @@ export default async function DashboardTicketPage() {
           <p className="text-xs" style={{ color: "rgba(245, 230, 211, 0.65)" }}>
             Show this QR code during event check-in.
           </p>
+
+          {ticket.participant_type === "internal" && (
+            <div className="pt-2">
+              <h3 className="text-lg font-bold uppercase">Perks</h3>
+              {(perks ?? []).length === 0 ? (
+                <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.72)" }}>
+                  No perks available.
+                </p>
+              ) : (
+                <ul className="mt-2 space-y-1 text-sm">
+                  {(perks ?? []).map((perk) => (
+                    <li
+                      key={perk.perk_id}
+                      style={{
+                        color: "rgba(245, 230, 211, 0.82)",
+                        textDecoration: perk.attended ? "line-through" : "none",
+                        opacity: perk.attended ? 0.7 : 1,
+                      }}
+                    >
+                      {perk.perk_name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
         </div>
       </article>
     </section>

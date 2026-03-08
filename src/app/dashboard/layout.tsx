@@ -45,9 +45,14 @@ export default async function DashboardLayout({
               Ticket
             </Link>
             {(role.isVolunteer || role.isAdmin) && (
-              <Link className="rounded-md border px-3 py-2 text-sm" style={{ borderColor: "rgba(212, 165, 116, 0.24)" }} href="/dashboard/events/check-in">
-                Check-In
-              </Link>
+              <>
+                <Link className="rounded-md border px-3 py-2 text-sm" style={{ borderColor: "rgba(212, 165, 116, 0.24)" }} href="/dashboard/events/check-in">
+                  Event Check-In
+                </Link>
+                <Link className="rounded-md border px-3 py-2 text-sm" style={{ borderColor: "rgba(212, 165, 116, 0.24)" }} href="/dashboard/perks/check-in">
+                  Perk Check-In
+                </Link>
+              </>
             )}
             {role.isAdmin && (
               <Link className="rounded-md border px-3 py-2 text-sm" style={{ borderColor: "rgba(212, 165, 116, 0.24)" }} href="/dashboard/admin/purchases">

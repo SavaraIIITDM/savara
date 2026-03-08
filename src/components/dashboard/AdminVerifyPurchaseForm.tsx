@@ -72,13 +72,23 @@ export function AdminVerifyPurchaseForm() {
         </select>
       </div>
 
+      <label className="mt-1 inline-flex items-center gap-2 text-sm">
+        <input
+          type="checkbox"
+          name="notifyByEmail"
+          className="h-4 w-4 rounded border"
+          style={{ borderColor: "rgba(212, 165, 116, 0.4)" }}
+        />
+        Notify via email
+      </label>
+
       <button
         type="submit"
         disabled={isPending}
         className="mt-1 rounded-md px-4 py-2 text-sm font-semibold uppercase tracking-[0.14em]"
         style={{ background: "var(--savara-gold)", color: "#0a0408" }}
       >
-        {isPending ? "Verifying..." : "Verify & Send Code"}
+        {isPending ? "Verifying..." : "Verify Purchase"}
       </button>
 
       {state.error && (
