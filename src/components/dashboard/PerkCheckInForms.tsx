@@ -138,6 +138,19 @@ export function PerkCheckInForms({ perks }: { perks: PerkOption[] }) {
     initialState,
   );
 
+  useEffect(() => {
+    const saved = window.localStorage.getItem("perk-checkin:selectedPerk");
+    if (saved && perks.some((perk) => perk.id === saved)) {
+      setSelectedPerk(saved);
+    }
+  }, [perks]);
+
+  useEffect(() => {
+    if (selectedPerk) {
+      window.localStorage.setItem("perk-checkin:selectedPerk", selectedPerk);
+    }
+  }, [selectedPerk]);
+
   function dismissToast(id: number) {
     setToasts((current) => current.filter((toast) => toast.id !== id));
   }
