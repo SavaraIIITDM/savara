@@ -121,7 +121,18 @@ function ManualEntry({ onSubmit }: { onSubmit: (value: string) => Promise<void> 
 }
 
 export function PerkCheckInForms({ perks }: { perks: PerkOption[] }) {
-  const [selectedPerk, setSelectedPerk] = useState(perks[0]?.id ?? "");
+  const [selectedPerk, setSelectedPerk] = useState(() => {
+    if (typeof window === "undefined") {
+      return perks[0]?.id ?? "";
+    }
+
+    const saved = window.localStorage.getItem("perk-checkin:selectedPerk");
+    if (saved && perks.some((perk) => perk.id === saved)) {
+      return saved;
+    }
+
+    return perks[0]?.id ?? "";
+  });
   const [scannerOpen, setScannerOpen] = useState(false);
   const [participant, setParticipant] = useState<PerkParticipant | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -139,17 +150,16 @@ export function PerkCheckInForms({ perks }: { perks: PerkOption[] }) {
   );
 
   useEffect(() => {
-    const saved = window.localStorage.getItem("perk-checkin:selectedPerk");
-    if (saved && perks.some((perk) => perk.id === saved)) {
-      setSelectedPerk(saved);
+    if (!selectedPerk || perks.some((perk) => perk.id === selectedPerk)) {
+      return;
     }
-  }, [perks]);
 
-  useEffect(() => {
-    if (selectedPerk) {
-      window.localStorage.setItem("perk-checkin:selectedPerk", selectedPerk);
+    const fallback = perks[0]?.id ?? "";
+    setSelectedPerk(fallback);
+    if (fallback) {
+      window.localStorage.setItem("perk-checkin:selectedPerk", fallback);
     }
-  }, [selectedPerk]);
+  }, [perks, selectedPerk]);
 
   function dismissToast(id: number) {
     setToasts((current) => current.filter((toast) => toast.id !== id));
@@ -256,7 +266,9 @@ export function PerkCheckInForms({ perks }: { perks: PerkOption[] }) {
         style={{ borderColor: "rgba(212, 165, 116, 0.28)" }}
         value={selectedPerk}
         onChange={(event) => {
-          setSelectedPerk(event.target.value);
+          const nextPerk = event.target.value;
+          setSelectedPerk(nextPerk);
+          window.localStorage.setItem("perk-checkin:selectedPerk", nextPerk);
           setParticipant(null);
         }}
       >
