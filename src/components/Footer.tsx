@@ -1,6 +1,13 @@
 "use client";
 
-import { Mail, Phone, MapPin, Instagram, Linkedin, Youtube } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Instagram,
+  Linkedin,
+  Youtube,
+} from "lucide-react";
 import Image from "next/image";
 
 export default function Footer() {
@@ -10,7 +17,10 @@ export default function Footer() {
   const footerLinkHoverColor = "rgba(245, 230, 211, 0.98)";
 
   return (
-    <footer id="contact" className="defer-render w-full py-16 px-6 sm:px-12 lg:px-20">
+    <footer
+      id="contact"
+      className="defer-render w-full py-16 px-6 sm:px-12 lg:px-20"
+    >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
           {/* Logo Section */}
@@ -61,11 +71,18 @@ export default function Footer() {
                 href="mailto:fest@iiitdm.ac.in"
                 className="group flex items-start gap-3 transition-colors duration-300"
                 style={{ color: footerLinkColor }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = footerLinkHoverColor)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = footerLinkColor)}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = footerLinkHoverColor)
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = footerLinkColor)
+                }
               >
                 <Mail className="w-5 h-5 mt-0.5 shrink-0 transition-transform duration-300 group-hover:scale-110" />
-                <span className="relative text-sm font-medium" style={{ fontFamily: "var(--font-rajdhani), sans-serif" }}>
+                <span
+                  className="relative text-sm font-medium"
+                  style={{ fontFamily: "var(--font-rajdhani), sans-serif" }}
+                >
                   fest@iiitdm.ac.in
                   <span
                     className="absolute bottom-0 left-0 w-0 h-px transition-all duration-300 group-hover:w-full"
@@ -76,14 +93,21 @@ export default function Footer() {
 
               {/* Phone */}
               <a
-                href="tel:+910000000000"
+                href="tel:+919391131165"
                 className="group flex items-start gap-3 transition-colors duration-300"
                 style={{ color: footerLinkColor }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = footerLinkHoverColor)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = footerLinkColor)}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = footerLinkHoverColor)
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = footerLinkColor)
+                }
               >
                 <Phone className="w-5 h-5 mt-0.5 shrink-0 transition-transform duration-300 group-hover:scale-110" />
-                <span className="relative text-sm font-medium" style={{ fontFamily: "var(--font-rajdhani), sans-serif" }}>
+                <span
+                  className="relative text-sm font-medium"
+                  style={{ fontFamily: "var(--font-rajdhani), sans-serif" }}
+                >
                   +91 70753 62164
                   <span
                     className="absolute bottom-0 left-0 w-0 h-px transition-all duration-300 group-hover:w-full"
@@ -93,17 +117,25 @@ export default function Footer() {
               </a>
 
               {/* Address */}
-              <div className="group flex items-start gap-3" style={{ color: footerBodyColor }}>
+              <div
+                className="group flex items-start gap-3"
+                style={{ color: footerBodyColor }}
+              >
                 <MapPin className="w-5 h-5 mt-0.5 shrink-0" />
                 <address
                   className="text-sm font-medium not-italic leading-relaxed"
                   style={{ fontFamily: "var(--font-rajdhani), sans-serif" }}
                 >
-                  IIITDM Kancheepuram,<br />
-                  Melakottaiyur, Nellikuppam Road,<br />
-                  Near Kandigai,<br />
-                  Off Vandalur-Kelambakkam Road,<br />
-                  Chennai, Tamil Nadu,<br />
+                  IIITDM Kancheepuram,
+                  <br />
+                  Melakottaiyur, Nellikuppam Road,
+                  <br />
+                  Near Kandigai,
+                  <br />
+                  Off Vandalur-Kelambakkam Road,
+                  <br />
+                  Chennai, Tamil Nadu,
+                  <br />
                   India - 600127
                 </address>
               </div>
@@ -124,8 +156,11 @@ export default function Footer() {
 
             <div className="flex flex-col space-y-4">
               {[
-                { href: "https://www.instagram.com/savara.iiitdm/", Icon: Instagram, label: "Instagram" },
-                
+                {
+                  href: "https://www.instagram.com/savara.iiitdm/",
+                  Icon: Instagram,
+                  label: "Instagram",
+                },
               ].map(({ href, Icon, label }) => (
                 <a
                   key={label}
@@ -134,8 +169,12 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="group flex items-center gap-3 transition-colors duration-300"
                   style={{ color: footerLinkColor }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = footerLinkHoverColor)}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = footerLinkColor)}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = footerLinkHoverColor)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = footerLinkColor)
+                  }
                 >
                   <div
                     className="p-2 rounded-lg transition-all duration-300 group-hover:scale-110"
@@ -144,12 +183,16 @@ export default function Footer() {
                       border: "1px solid rgba(212, 165, 116, 0.1)",
                     }}
                     onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "rgba(230, 81, 0, 0.15)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(230, 81, 0, 0.3)";
+                      (e.currentTarget as HTMLElement).style.background =
+                        "rgba(230, 81, 0, 0.15)";
+                      (e.currentTarget as HTMLElement).style.borderColor =
+                        "rgba(230, 81, 0, 0.3)";
                     }}
                     onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "rgba(42, 31, 26, 0.5)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(212, 165, 116, 0.1)";
+                      (e.currentTarget as HTMLElement).style.background =
+                        "rgba(42, 31, 26, 0.5)";
+                      (e.currentTarget as HTMLElement).style.borderColor =
+                        "rgba(212, 165, 116, 0.1)";
                     }}
                   >
                     <Icon className="w-5 h-5" />
@@ -182,7 +225,8 @@ export default function Footer() {
               color: "rgba(245, 230, 211, 0.62)",
             }}
           >
-            &copy; 2026 SAVĀRA Chronosync — IIITDM Kancheepuram. All rights reserved.
+            &copy; 2026 SAVĀRA Chronosync — IIITDM Kancheepuram. All rights
+            reserved.
           </p>
         </div>
       </div>
