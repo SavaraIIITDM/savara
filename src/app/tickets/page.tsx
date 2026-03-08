@@ -53,10 +53,10 @@ export default function TicketsPage() {
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
             }}
-          >
-            Coming Soon
-          </span>
-        </h1>
+            >
+              Tickets
+            </span>
+          </h1>
         <p
           className="mt-4 text-base leading-relaxed sm:text-lg"
           style={{
@@ -66,33 +66,6 @@ export default function TicketsPage() {
         >
           Fill the form below to complete your ticket purchase.
         </p>
-
-        <div
-          className="mt-6 w-full max-w-2xl rounded-lg border px-4 py-3 text-left"
-          style={{
-            borderColor: "rgba(212, 165, 116, 0.3)",
-            background: "rgba(42, 31, 26, 0.55)",
-          }}
-        >
-          <p
-            className="text-sm font-semibold uppercase tracking-[0.06em] sm:text-base"
-            style={{
-              fontFamily: "var(--font-rajdhani), sans-serif",
-              color: "rgba(245, 230, 211, 0.9)",
-            }}
-          >
-            This form is only for external participants.
-          </p>
-          <p
-            className="mt-1 text-sm sm:text-base"
-            style={{
-              fontFamily: "var(--font-rajdhani), sans-serif",
-              color: "rgba(245, 230, 211, 0.82)",
-            }}
-          >
-            If you are from IIITDM Kancheepuram, please don&apos;t buy tickets yet!
-          </p>
-        </div>
 
         <section
           className="mt-8 w-full max-w-xl rounded-xl border px-5 py-6 sm:px-6"
@@ -130,24 +103,37 @@ export default function TicketsPage() {
         </section>
 
         <section
-          className="mt-8 w-full overflow-hidden rounded-xl border"
+          className="mt-8 w-full max-w-xl rounded-xl border px-5 py-6 sm:px-6"
           style={{
             borderColor: "rgba(212, 165, 116, 0.25)",
             background: "rgba(42, 31, 26, 0.5)",
           }}
         >
-          <div className="p-3 sm:p-4">
-            <iframe
-              title="Savara Ticket Purchase Form"
-              src="https://docs.google.com/forms/d/1bcCLKk82SMcdXjoOlLYLcMu89j1Hn-8jkSNGcJXgzHM/viewform?embedded=true"
-              className="h-[900px] w-full rounded-md"
-              frameBorder="0"
-              marginHeight={0}
-              marginWidth={0}
-            >
-              Loading...
-            </iframe>
-          </div>
+          <h2 className="text-xl font-bold uppercase" style={{ fontFamily: "var(--font-cinzel), serif" }}>
+            Buy Tickets
+          </h2>
+          <p
+            className="mt-2 text-sm sm:text-base"
+            style={{
+              fontFamily: "var(--font-rajdhani), sans-serif",
+              color: "rgba(245, 230, 211, 0.78)",
+            }}
+          >
+            Open the purchase form to complete your ticket booking.
+          </p>
+          <a
+            href="https://docs.google.com/forms/d/1bcCLKk82SMcdXjoOlLYLcMu89j1Hn-8jkSNGcJXgzHM/viewform"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-4 inline-flex items-center rounded-md px-4 py-2 text-sm font-semibold uppercase tracking-[0.12em]"
+            style={{
+              background: "var(--savara-gold)",
+              color: "#0a0408",
+              fontFamily: "var(--font-rajdhani), sans-serif",
+            }}
+          >
+            Open Form
+          </a>
         </section>
       </div>
     </main>
