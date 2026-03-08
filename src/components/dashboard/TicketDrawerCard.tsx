@@ -223,10 +223,9 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
 
     const axis = dragAxisRef.current;
     if (axis === "vertical") {
-      const draggedDistance = Math.abs(pointerDeltaRef.current.y);
-      const dragRatio = hiddenHeight === 0 ? 0 : draggedDistance / hiddenHeight;
+      const downwardRatio = hiddenHeight === 0 ? 0 : Math.max(0, drawerY) / hiddenHeight;
       const startedOpen = drawerStartRef.current <= 1;
-      const shouldOpen = startedOpen ? dragRatio < 0.14 : openRatio > VERTICAL_THRESHOLD;
+      const shouldOpen = startedOpen ? downwardRatio < 0.06 : openRatio > VERTICAL_THRESHOLD;
       snapDrawer(shouldOpen);
     }
 
@@ -288,9 +287,9 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
         onPointerCancel={onPointerEnd}
         onDragStart={(event) => event.preventDefault()}
       >
-        <div className="absolute inset-0 rounded-[30px] border border-[rgba(212,165,116,0.45)] bg-[rgba(12,6,11,0.8)] shadow-[0_24px_56px_rgba(0,0,0,0.55)]" />
+        <div className="absolute inset-0 border border-[rgba(212,165,116,0.45)] bg-[rgba(12,6,11,0.8)] shadow-[0_24px_56px_rgba(0,0,0,0.55)]" />
         <div
-          className="relative h-full w-full overflow-hidden rounded-[30px]"
+          className="relative h-full w-full overflow-hidden"
           style={{
             perspective: "1600px",
           }}
@@ -303,7 +302,7 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
               transition: isInteracting || isAnimatingFlip ? "none" : "transform 300ms cubic-bezier(0.22, 1, 0.36, 1)",
             }}
           >
-            <article className="absolute inset-0 overflow-hidden rounded-[30px]" style={{ backfaceVisibility: "hidden" }}>
+            <article className="absolute inset-0 overflow-hidden" style={{ backfaceVisibility: "hidden" }}>
               <div className="absolute inset-0 bg-[#1a0f15]">
                 <div className="absolute inset-0">
                   <Image
@@ -330,7 +329,7 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
             </article>
 
             <article
-              className="absolute inset-0 overflow-hidden rounded-[30px]"
+              className="absolute inset-0 overflow-hidden"
               style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
             >
               <div className="absolute inset-0 bg-[linear-gradient(180deg,#f2a043_0%,#ea8b2a_44%,#df7a1c_100%)]" />
