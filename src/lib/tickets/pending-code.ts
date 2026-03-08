@@ -3,6 +3,24 @@ import { createClient } from "@/lib/supabase/server";
 export async function getPendingActivationCodeForEmail(email: string) {
   const supabase = await createClient();
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("email", email.toLowerCase())
+    .maybeSingle();
+
+  if (profile?.id) {
+    const { data: existingTicket } = await supabase
+      .from("tickets")
+      .select("id")
+      .eq("user_id", profile.id)
+      .maybeSingle();
+
+    if (existingTicket?.id) {
+      return null;
+    }
+  }
+
   const { data } = await supabase
     .from("activation_codes")
     .select("code, ticket_quota, redeemed_count, purchase_type, verified_at")

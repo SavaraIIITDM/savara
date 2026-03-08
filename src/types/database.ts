@@ -308,6 +308,7 @@ export type Database = {
         Returns: {
           activation_code_id: string;
           code: string;
+          ticket_assigned: boolean;
         }[];
       };
       check_in_individual: {

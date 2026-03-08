@@ -21,6 +21,8 @@ Required variables:
 - `NEXT_PUBLIC_SITE_URL` (example: `http://localhost:3000`)
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- `GMAIL_USER`
+- `GMAIL_APP_PASSWORD`
 
 ## Supabase Auth Setup
 
@@ -78,4 +80,9 @@ Open `http://localhost:3000`.
 
 ## Activation Code Visibility
 
-After admin verification, the activation code is shown in the purchaser's `/dashboard/ticket` page under "Assigned Activation Code" (while redemptions remain).
+After admin verification:
+
+- Activation code is generated.
+- If purchaser account already exists and matches purchase type, one ticket is auto-assigned immediately.
+- Remaining activation capacity (if any) is shown in purchaser `/dashboard/ticket` under "Assigned Activation Code".
+- Admin can optionally notify purchaser via email using Gmail SMTP by checking "Notify via email".

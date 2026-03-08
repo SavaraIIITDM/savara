@@ -27,9 +27,24 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         <p className="mt-3 text-base" style={{ color: "rgba(245, 230, 211, 0.8)" }}>
           Continue with Google to access your ticket, event participation, and check-in tools.
         </p>
-        <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.65)" }}>
-          If you are from IIITDM Kancheepuram, please use your institute email.
-        </p>
+
+        <div
+          className="mt-4 rounded-md border px-4 py-3"
+          style={{
+            borderColor: "rgba(212, 165, 116, 0.4)",
+            background: "rgba(10, 4, 8, 0.4)",
+          }}
+        >
+          <p
+            className="text-xs font-semibold uppercase tracking-[0.12em]"
+            style={{ color: "rgba(245, 230, 211, 0.78)" }}
+          >
+            Important for IIITDM Students
+          </p>
+          <p className="mt-1 text-sm font-semibold" style={{ color: "rgba(245, 230, 211, 0.95)" }}>
+            If you are from IIITDM Kancheepuram, please use your institute email.
+          </p>
+        </div>
 
         <form
           className="mt-6"
