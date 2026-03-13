@@ -193,45 +193,49 @@ function FeaturedSponsorCard({
 }) {
   return (
     <div
-      className={`group relative overflow-hidden rounded-2xl backdrop-blur-sm transition-all duration-700 ease-out hover:scale-[1.01] ${
+      className={`transition-all duration-700 ease-out ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
-      style={{
-        border: "1px solid rgba(230, 81, 0, 0.35)",
-        background:
-          "linear-gradient(160deg, rgba(230, 81, 0, 0.15), rgba(74, 20, 140, 0.12), rgba(42, 31, 26, 0.45))",
-        boxShadow: "0 0 40px rgba(230, 81, 0, 0.18)",
-      }}
     >
-      <div
-        className="absolute left-1/2 top-4 -translate-x-1/2 text-center text-xs uppercase tracking-[0.2em]"
+      <p
+        className="mb-3 text-center text-xs uppercase tracking-[0.2em] sm:text-sm"
         style={{
           fontFamily: "var(--font-rajdhani), sans-serif",
           color: "rgba(245, 230, 211, 0.88)",
         }}
       >
         {sponsor.role}
-      </div>
-
-      <div className="flex h-full w-full items-center justify-center px-6 pb-8 pt-12 sm:px-10 sm:pb-10 sm:pt-14">
-        <div className="relative h-24 w-full sm:h-28 md:h-32">
-          <Image
-            src={sponsor.logo}
-            alt={`${sponsor.name} logo`}
-            fill
-            className="object-contain transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 80vw, 60vw"
-          />
-        </div>
-      </div>
+      </p>
 
       <div
-        className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="group relative overflow-hidden rounded-2xl backdrop-blur-sm transition-transform duration-700 ease-out hover:scale-[1.01]"
         style={{
+          border: "1px solid rgba(230, 81, 0, 0.35)",
           background:
-            "radial-gradient(circle at center, rgba(245, 230, 211, 0.08), transparent 65%)",
+            "linear-gradient(160deg, rgba(230, 81, 0, 0.15), rgba(74, 20, 140, 0.12), rgba(42, 31, 26, 0.45))",
+          boxShadow: "0 0 40px rgba(230, 81, 0, 0.18)",
         }}
-      />
+      >
+        <div className="flex h-full w-full items-center justify-center px-6 py-8 sm:px-10 sm:py-10">
+          <div className="relative h-24 w-full sm:h-28 md:h-32">
+            <Image
+              src={sponsor.logo}
+              alt={`${sponsor.name} logo`}
+              fill
+              className="object-contain transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 80vw, 60vw"
+            />
+          </div>
+        </div>
+
+        <div
+          className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(circle at center, rgba(245, 230, 211, 0.08), transparent 65%)",
+          }}
+        />
+      </div>
     </div>
   );
 }
@@ -249,42 +253,48 @@ function FeaturedPartnerCard({
 
   return (
     <div
-      className={`group relative aspect-[16/10] overflow-hidden rounded-xl transition-all duration-700 ease-out hover:scale-[1.02] ${
+      className={`transition-all duration-700 ease-out ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
       style={{
         transitionDelay: `${delay}ms`,
-        border: "1px solid rgba(212, 165, 116, 0.2)",
-        background: "rgba(42, 31, 26, 0.55)",
       }}
     >
-      <div
-        className="absolute left-1/2 top-2 z-10 -translate-x-1/2 text-center text-[10px] uppercase tracking-[0.17em] sm:text-[11px]"
+      <p
+        className="mb-2 text-center text-[10px] uppercase tracking-[0.17em] sm:text-[11px]"
         style={{
           fontFamily: "var(--font-rajdhani), sans-serif",
           color: "rgba(245, 230, 211, 0.85)",
         }}
       >
         {sponsor.role}
-      </div>
-
-      <div className="relative h-full w-full p-4 pt-8 sm:p-5 sm:pt-9">
-        <Image
-          src={sponsor.logo}
-          alt={`${sponsor.name} logo`}
-          fill
-          className="object-contain p-3 transition-transform duration-500 group-hover:scale-105"
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
-        />
-      </div>
+      </p>
 
       <div
-        className="absolute inset-0 -translate-x-full skew-x-12 transition-transform duration-700 group-hover:translate-x-full"
+        className="group relative aspect-[16/10] overflow-hidden rounded-xl transition-transform duration-700 ease-out hover:scale-[1.02]"
         style={{
-          background:
-            "linear-gradient(to right, transparent, rgba(212, 165, 116, 0.06), transparent)",
+          border: "1px solid rgba(212, 165, 116, 0.2)",
+          background: "rgba(42, 31, 26, 0.55)",
         }}
-      />
+      >
+        <div className="relative h-full w-full p-4 sm:p-5">
+          <Image
+            src={sponsor.logo}
+            alt={`${sponsor.name} logo`}
+            fill
+            className="object-contain p-3 transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+          />
+        </div>
+
+        <div
+          className="absolute inset-0 -translate-x-full skew-x-12 transition-transform duration-700 group-hover:translate-x-full"
+          style={{
+            background:
+              "linear-gradient(to right, transparent, rgba(212, 165, 116, 0.06), transparent)",
+          }}
+        />
+      </div>
     </div>
   );
 }
