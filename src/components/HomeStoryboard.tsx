@@ -8,7 +8,6 @@ import Logo3D from "@/components/Logo3D";
 import HomeHeroCountdown from "@/components/HomeHeroCountdown";
 import WhatIsSavara from "@/components/WhatIsSavara";
 import AboutSection from "@/components/AboutSection";
-import ReachCampusSection from "@/components/ReachCampusSection";
 import Sponsors from "@/components/Sponsors";
 import Footer from "@/components/Footer";
 
@@ -232,7 +231,6 @@ export default function HomeStoryboard() {
       <HomeHeroCountdown />
       <WhatIsSavara />
       <AboutSection />
-      <ReachCampusSection />
       <Sponsors />
       <div id="footer-trigger">
         <Footer />

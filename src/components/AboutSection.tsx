@@ -53,6 +53,8 @@ const galleryImages = [
   },
 ];
 
+const eventsBrochurePath = "/SAVARA_FEST_26_BROCHURE__compressed.pdf";
+
 export default function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -63,7 +65,9 @@ export default function AboutSection() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 768px), (pointer: coarse)");
+    const mediaQuery = window.matchMedia(
+      "(max-width: 768px), (pointer: coarse)",
+    );
     const updateDeviceMode = () => setIsMobile(mediaQuery.matches);
 
     updateDeviceMode();
@@ -149,7 +153,10 @@ export default function AboutSection() {
       });
 
       // Refresh after a beat to ensure pinning measurements are accurate
-      const timer = setTimeout(() => ScrollTrigger.refresh(), isMobile ? 180 : 300);
+      const timer = setTimeout(
+        () => ScrollTrigger.refresh(),
+        isMobile ? 180 : 300,
+      );
 
       // Store cleanup references on the container for the effect cleanup
       (
@@ -177,11 +184,7 @@ export default function AboutSection() {
   }, [isMobile]);
 
   return (
-    <section
-      ref={sectionRef}
-      id="about"
-      className="relative"
-    >
+    <section ref={sectionRef} id="about" className="relative">
       {/* ── Text content area ── */}
       <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 py-20 sm:py-32">
         {/* Section Header */}
@@ -219,9 +222,9 @@ export default function AboutSection() {
               color: "rgba(245, 230, 211, 0.75)",
             }}
           >
-            Join us for Savāra 2026, the flagship techno-cultural
-            fest of IIITDM Kancheepuram, a five-day celebration of innovation,
-            creativity, and culture.
+            Join us for Savāra 2026, the flagship techno-cultural fest of IIITDM
+            Kancheepuram, a five-day celebration of innovation, creativity, and
+            culture.
             <br />
             <br />
             The fest brings together 5,000+ bright minds from top institutions
@@ -229,9 +232,9 @@ export default function AboutSection() {
             dynamic stage.
           </p>
 
-          {/* Explore events button */}
+          {/* About fest actions */}
           <div
-            className={`mt-10 inline-flex items-center gap-4 transition-all duration-700 delay-500 ease-out ${
+            className={`mt-10 flex flex-wrap items-center gap-4 transition-all duration-700 delay-500 ease-out ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-4"
@@ -263,6 +266,26 @@ export default function AboutSection() {
                 </span>
               </span>
             </Link>
+
+            <a
+              href={eventsBrochurePath}
+              download
+              className="group rounded-full px-6 py-3 transition-all duration-300 hover:scale-[1.02]"
+              style={{
+                border: "1px solid rgba(212, 165, 116, 0.28)",
+                background: "rgba(245, 230, 211, 0.06)",
+              }}
+            >
+              <span
+                className="text-sm font-bold uppercase tracking-widest"
+                style={{
+                  fontFamily: "var(--font-rajdhani), sans-serif",
+                  color: "rgba(245, 230, 211, 0.94)",
+                }}
+              >
+                Download Events Brochure
+              </span>
+            </a>
           </div>
         </div>
       </div>
@@ -288,7 +311,9 @@ export default function AboutSection() {
         </div>
 
         {/* Subtle decorative glow inside the carousel area */}
-        <div className={`absolute inset-0 overflow-hidden pointer-events-none ${isMobile ? "hidden" : ""}`}>
+        <div
+          className={`absolute inset-0 overflow-hidden pointer-events-none ${isMobile ? "hidden" : ""}`}
+        >
           <div
             className="absolute left-1/4 top-1/2 h-[400px] w-[400px] -translate-y-1/2 rounded-full blur-[150px]"
             style={{ background: "rgba(230, 81, 0, 0.06)" }}

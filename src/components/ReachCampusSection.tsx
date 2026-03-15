@@ -44,7 +44,7 @@ const routeSteps = [
 const travelFacts = [
   {
     label: "tambaram to kandigai bus options",
-    value: "55 515",
+    value: "55D, 515, 517, 555, 115, 55K, 55C, 55M, 566",
   },
   {
     label: "Nearest stop",
