@@ -1,0 +1,508 @@
+{
+  "1": [
+    {
+      "name": "Vashisht Juniors",
+      "slug": null,
+      "start_time": "0900",
+      "end_time": "1500",
+      "event_type": "important",
+      "location": "H05, H15, H25, Old Library"
+    },
+    {
+      "name": "Aqua Race",
+      "slug": null,
+      "start_time": "1400",
+      "end_time": "1800",
+      "event_type": "tech_formal",
+      "location": "H15"
+    },
+    {
+      "name": "Judge The Book By Its Cover",
+      "slug": "judge-the-book-by-its-cover",
+      "start_time": "1100",
+      "end_time": "1300",
+      "event_type": "formal",
+      "location": "H04"
+    },
+    {
+      "name": "Fragments of Time",
+      "slug": "fragments-of-time",
+      "start_time": "1400",
+      "end_time": "1800",
+      "event_type": "cult_formal",
+      "location": "H05"
+    },
+    {
+      "name": "Tambola",
+      "slug": null,
+      "start_time": "1900",
+      "end_time": "2200",
+      "event_type": "cult_informal",
+      "location": "H05"
+    },
+    {
+      "name": "Paper Plane Aerodynamics Challenge",
+      "slug": null,
+      "start_time": "1400",
+      "end_time": "1800",
+      "event_type": "tech_informal",
+      "location": "H04"
+    },
+    {
+      "name": "Discover Trill Of RAcing Engineering",
+      "slug": null,
+      "start_time": "1300",
+      "end_time": "1700",
+      "event_type": "tech_informal",
+      "location": "H02"
+    },
+    {
+      "name": "Chrono Quest",
+      "slug": null,
+      "start_time": "1700",
+      "end_time": "2000",
+      "event_type": "tech_informal",
+      "location": "H02"
+    },
+    {
+      "name": "BGMI",
+      "slug": "bgmi",
+      "start_time": "1400",
+      "end_time": "2200",
+      "event_type": "cult_formal",
+      "location": "Old Library"
+    },
+    {
+      "name": "ElectroCraft",
+      "slug": null,
+      "start_time": "1300",
+      "end_time": "1700",
+      "event_type": "tech_informal",
+      "location": "H45"
+    },
+    {
+      "name": "Raise Your Standards",
+      "slug": "raise-your-standards",
+      "start_time": "1400",
+      "end_time": "1800",
+      "event_type": "tech_formal",
+      "location": "H13"
+    }
+  ],
+  "2": [
+    {
+      "name": "Capture The Flag",
+      "slug": "capture-the-flag",
+      "start_time": "0900",
+      "end_time": "1300",
+      "event_type": "flagship",
+      "location": "H15"
+    },
+    {
+      "name": "Pitch on Pitch",
+      "slug": "pitch-on-pitch",
+      "start_time": "1300",
+      "end_time": "1700",
+      "event_type": "flagship",
+      "location": "H15"
+    },
+    {
+      "name": "Game Jam",
+      "slug": "game-jam",
+      "start_time": "1000",
+      "end_time": "1700",
+      "event_type": "flagship",
+      "location": "H25"
+    },
+    {
+      "name": "MazeRover",
+      "slug": "mazerover",
+      "start_time": "0900",
+      "end_time": "1600",
+      "event_type": "flagship",
+      "location": "Cricket Ground"
+    },
+    {
+      "name": "Triathlon",
+      "slug": "triathlon",
+      "start_time": "0900",
+      "end_time": "1600",
+      "event_type": "flagship",
+      "location": "H41, H43"
+    },
+    {
+      "name": "Line Follower",
+      "slug": "line-follower",
+      "start_time": "1000",
+      "end_time": "1500",
+      "event_type": "tech_formal",
+      "location": "H14"
+    },
+    {
+      "name": "Vashisht Hackathon 3.O",
+      "slug": "vashisht-hackathon-3o",
+      "start_time": "0900",
+      "end_time": "1700",
+      "event_type": "flagship",
+      "location": "H44"
+    },
+    {
+      "name": "Valorant",
+      "slug": "valorant",
+      "start_time": "0900",
+      "end_time": "1700",
+      "event_type": "cult_formal",
+      "location": "Old Library"
+    },
+    {
+      "name": "Drone Racing Competition",
+      "slug": "drone-racing-competition",
+      "start_time": "0900",
+      "end_time": "1600",
+      "event_type": "flagship",
+      "location": "OAT"
+    },
+    {
+      "name": "Talk and Workshop - Cyber Sec",
+      "slug": null,
+      "start_time": "1400",
+      "end_time": "1600",
+      "event_type": "stage",
+      "location": "H05"
+    },
+    {
+      "name": "Spectrum",
+      "slug": null,
+      "start_time": "1800",
+      "end_time": "2200",
+      "event_type": "cult_flagship",
+      "location": "OAT"
+    },
+    {
+      "name": "Dance Dumb Charades",
+      "slug": null,
+      "start_time": "1000",
+      "end_time": "1300",
+      "event_type": "cult_informal",
+      "location": "H05"
+    },
+    {
+      "name": "Konjam Nadinga Boss",
+      "slug": null,
+      "start_time": "1300",
+      "end_time": "1700",
+      "event_type": "cult_formal",
+      "location": "H13"
+    },
+    {
+      "name": "Bit-Trix",
+      "slug": "bit-trix",
+      "start_time": "0900",
+      "end_time": "1400",
+      "event_type": "tech_formal",
+      "location": "H45"
+    }
+  ],
+  "3": [
+    {
+      "name": "Robowars - 8KG",
+      "slug": "robowars-8kg",
+      "start_time": "0900",
+      "end_time": "1600",
+      "event_type": "flagship",
+      "location": "Skybridge"
+    },
+    {
+      "name": "Game Jam",
+      "slug": "game-jam",
+      "start_time": "0900",
+      "end_time": "1700",
+      "event_type": "flagship",
+      "location": "H25"
+    },
+    {
+      "name": "Sky Symphony",
+      "slug": "sky-symphony",
+      "start_time": "1000",
+      "end_time": "1700",
+      "event_type": "flagship",
+      "location": "Cricket Ground"
+    },
+    {
+      "name": "Open Floor",
+      "slug": null,
+      "start_time": "1000",
+      "end_time": "1300",
+      "event_type": "cult_informal",
+      "location": "H05"
+    },
+    {
+      "name": "Free Fire",
+      "slug": "free-fire",
+      "start_time": "0900",
+      "end_time": "1800",
+      "event_type": "cult_formal",
+      "location": "Old Library"
+    },
+    {
+      "name": "Triathlon",
+      "slug": "triathlon",
+      "start_time": "1000",
+      "end_time": "1300",
+      "event_type": "flagship",
+      "location": "H41"
+    },
+    {
+      "name": "Frame Parunga Ji",
+      "slug": null,
+      "start_time": "1400",
+      "end_time": "1800",
+      "event_type": "cult_informal",
+      "location": "H04"
+    },
+    {
+      "name": "Robo-Soccer",
+      "slug": "robo-soccer",
+      "start_time": "1000",
+      "end_time": "1400",
+      "event_type": "tech_formal",
+      "location": "Football Ground"
+    },
+    {
+      "name": "Not a Hunt",
+      "slug": null,
+      "start_time": "1400",
+      "end_time": "1800",
+      "event_type": "informal",
+      "location": "H13"
+    },
+    {
+      "name": "WaveQuest",
+      "slug": "wavequest",
+      "start_time": "1000",
+      "end_time": "1400",
+      "event_type": "flagship",
+      "location": "Old Lib Lawn"
+    },
+    {
+      "name": "Reverse Engineering Challenge",
+      "slug": "reverse-engineering-challenge",
+      "start_time": "1400",
+      "end_time": "1800",
+      "event_type": "flagship",
+      "location": "H45"
+    },
+    {
+      "name": "Hack and Shield",
+      "slug": "hack-and-shield",
+      "start_time": "0900",
+      "end_time": "1600",
+      "event_type": "tech_formal",
+      "location": "H15"
+    },
+    {
+      "name": "Farewell",
+      "slug": null,
+      "start_time": "1800",
+      "end_time": "2200",
+      "event_type": "stage",
+      "location": "Stage"
+    }
+  ],
+  "4": [
+    {
+      "name": "One Line One Rhythm",
+      "slug": "one-line-one-rhythm",
+      "start_time": "1000",
+      "end_time": "1200",
+      "event_type": "cult_formal",
+      "location": "H04"
+    },
+    {
+      "name": "Game Jam",
+      "slug": "game-jam",
+      "start_time": "0900",
+      "end_time": "1100",
+      "event_type": "flagship",
+      "location": "H25"
+    },
+    {
+      "name": "Code Hunt",
+      "slug": null,
+      "start_time": "1400",
+      "end_time": "1800",
+      "event_type": "tech_informal",
+      "location": "H45"
+    },
+    {
+      "name": "Motersport Triva",
+      "slug": null,
+      "start_time": "1000",
+      "end_time": "1300",
+      "event_type": "tech_informal",
+      "location": "H02"
+    },
+    {
+      "name": "Mind Maze",
+      "slug": null,
+      "start_time": "1300",
+      "end_time": "1700",
+      "event_type": "tech_informal",
+      "location": "H02"
+    },
+    {
+      "name": "Opcode: Optimal Coding Challenge",
+      "slug": "opcode-optimal-coding-challenge",
+      "start_time": "0900",
+      "end_time": "1300",
+      "event_type": "tech_formal",
+      "location": "H45"
+    },
+    {
+      "name": "Storycraft",
+      "slug": "storycraft",
+      "start_time": "1300",
+      "end_time": "1800",
+      "event_type": "tech_informal",
+      "location": "H45"
+    },
+    {
+      "name": "Backend Breakdown",
+      "slug": "backend-breakdown",
+      "start_time": "1000",
+      "end_time": "1300",
+      "event_type": "tech_formal",
+      "location": "H15"
+    },
+    {
+      "name": "Savāra Flagship Quiz",
+      "slug": "savra-flagship-quiz",
+      "start_time": "1300",
+      "end_time": "1800",
+      "event_type": "cult_formal",
+      "location": "H05"
+    },
+    {
+      "name": "Vivaadham - Classic Debate",
+      "slug": "vivaadham-classic-debate",
+      "start_time": "0900",
+      "end_time": "1300",
+      "event_type": "cult_formal",
+      "location": "H05"
+    },
+    {
+      "name": "Theatrical Odyssey",
+      "slug": "theatrical-odyssey",
+      "start_time": "1300",
+      "end_time": "1800",
+      "event_type": "cult_formal",
+      "location": "H15"
+    },
+    {
+      "name": "Solos : Vocals and Instrumental",
+      "slug": "solos-vocals-and-instrumental",
+      "start_time": "1000",
+      "end_time": "1500",
+      "event_type": "cult_formal",
+      "location": "H25"
+    },
+    {
+      "name": "Lens & Logic",
+      "slug": "lens-logic",
+      "start_time": "1500",
+      "end_time": "1800",
+      "event_type": "tech_formal",
+      "location": "H44"
+    },
+    {
+      "name": "Music Band Event + Band Proshow",
+      "slug": null,
+      "start_time": "1800",
+      "end_time": "2200",
+      "event_type": "cult_flagship",
+      "location": "STAGE"
+    }
+  ],
+  "5": [
+    {
+      "name": "Face Painting",
+      "slug": null,
+      "start_time": "1000",
+      "end_time": "1300",
+      "event_type": "cult_informal",
+      "location": "H02"
+    },
+    {
+      "name": "Luminary Talks",
+      "slug": "luminary-talks",
+      "start_time": "0900",
+      "end_time": "1300",
+      "event_type": "flagship",
+      "location": "H04"
+    },
+    {
+      "name": "Temporal Whispers",
+      "slug": "temporal-whispers",
+      "start_time": "1300",
+      "end_time": "1700",
+      "event_type": "cult_formal",
+      "location": "H25"
+    },
+    {
+      "name": "AlgoXchange",
+      "slug": "algoxchange",
+      "start_time": "0900",
+      "end_time": "1300",
+      "event_type": "tech_formal",
+      "location": "H25"
+    },
+    {
+      "name": "IEEE Paper Presentation",
+      "slug": "ieee-paper-presentation",
+      "start_time": "1300",
+      "end_time": "1700",
+      "event_type": "flagship",
+      "location": "H04"
+    },
+    {
+      "name": "Aero Innovation Challenge",
+      "slug": "aero-innovation-challenge",
+      "start_time": "1400",
+      "end_time": "1700",
+      "event_type": "tech_formal",
+      "location": "H13 & H14"
+    },
+    {
+      "name": "Cad Verse 3D Modelling Challenge",
+      "slug": "cad-verse-3d-modelling-challenge",
+      "start_time": "0900",
+      "end_time": "1300",
+      "event_type": "tech_formal",
+      "location": "H15"
+    },
+    {
+      "name": "Ricing & Scripting",
+      "slug": "ricing-scripting",
+      "start_time": "1300",
+      "end_time": "1700",
+      "event_type": "tech_formal",
+      "location": "H15"
+    },
+    {
+      "name": "Code Sprint",
+      "slug": null,
+      "start_time": "0900",
+      "end_time": "1300",
+      "event_type": "informal",
+      "location": "H45"
+    },
+    {
+      "name": "Dance solo and Group + Proshow",
+      "slug": null,
+      "start_time": "1700",
+      "end_time": "2200",
+      "event_type": "stage",
+      "location": "STAGE"
+    }
+  ]
+}

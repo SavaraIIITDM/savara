@@ -150,6 +150,24 @@ export default function EventsPage() {
                     >
                         Choose your journey — cultural or technical
                     </p>
+
+                    <div className="mt-6 flex justify-center">
+                        <Link
+                            href="/schedule"
+                            className="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] sm:text-sm"
+                            style={{
+                                fontFamily: "var(--font-rajdhani), sans-serif",
+                                borderColor: "rgba(212, 165, 116, 0.65)",
+                                color: "var(--savara-cream)",
+                                background:
+                                    "linear-gradient(120deg, rgba(240, 148, 49, 0.18), rgba(74, 20, 140, 0.24))",
+                                boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
+                            }}
+                        >
+                            Explore The Schedule Daywise
+                            <span aria-hidden="true">→</span>
+                        </Link>
+                    </div>
                 </header>
 
                 {/* Cards */}
