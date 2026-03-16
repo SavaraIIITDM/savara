@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import Image from "next/image";
-import { toPng } from "html-to-image";
 
 type PerkItem = {
   perk_id: string;
@@ -76,7 +75,6 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
   const drawerStartRef = useRef(0);
   const flipStartRef = useRef(0);
   const pointerIdRef = useRef<number | null>(null);
-  const exportCardRef = useRef<HTMLDivElement | null>(null);
   const hasInitializedRef = useRef(false);
   const movedRef = useRef(false);
 
@@ -96,7 +94,7 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
 
   useEffect(() => {
     const recalc = () => {
-      const maxHeight = Math.min(window.innerHeight * 0.82, 700);
+      const maxHeight = Math.min(window.innerHeight - 24, 860);
       const maxWidth = Math.min(window.innerWidth * 0.94, 430);
       const nextWidth = Math.round(Math.min(maxWidth, maxHeight * ART_ASPECT));
       const nextHeight = Math.round(nextWidth / ART_ASPECT);
@@ -136,35 +134,65 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
     });
   }, [visible, hiddenHeight, drawerY, isInteracting]);
 
+  useEffect(() => {
+    if (visible || isInteracting || pointerIdRef.current !== null) {
+      return;
+    }
+
+    const isClosed = hiddenHeight === 0 ? drawerY <= 1 : drawerY >= hiddenHeight - 1;
+    if (!isClosed || flipProgress <= 0.001) {
+      return;
+    }
+
+    setIsAnimatingFlip(true);
+    animateTo({
+      from: flipProgress,
+      to: 0,
+      duration: 260,
+      onFrame: (value) => setFlipProgress(value),
+      onComplete: () => setIsAnimatingFlip(false),
+    });
+  }, [visible, isInteracting, hiddenHeight, drawerY, flipProgress]);
+
   const ticketTypeLabel = participantType.toUpperCase();
   const showPerks = participantType === "internal";
   const visiblePerks = useMemo(() => (showPerks ? perks : []), [perks, showPerks]);
 
   async function downloadPassImage() {
-    if (!exportCardRef.current || downloadPending) {
+    if (downloadPending) {
       return;
     }
 
     setDownloadPending(true);
     try {
-      const dataUrl = await toPng(exportCardRef.current, {
-        cacheBust: true,
-        pixelRatio: 3,
-        backgroundColor: "#f2a043",
+      const response = await fetch("/dashboard/ticket/pass", {
+        method: "GET",
+        credentials: "include",
       });
 
-      const link = document.createElement("a");
-      const isIOS = /iPad|iPhone|iPod/.test(window.navigator.userAgent);
+      if (!response.ok) {
+        throw new Error("pass_download_failed");
+      }
 
-      if (typeof link.download === "string" && !isIOS) {
-        link.href = dataUrl;
-        link.download = `SAVARA_PASS_${ticketSerial}.png`;
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+
+      const isIOS = /iPad|iPhone|iPod/.test(window.navigator.userAgent);
+      const contentDisposition = response.headers.get("content-disposition");
+      const filenameMatch = contentDisposition?.match(/filename="?([^";]+)"?/i);
+      const downloadName = filenameMatch?.[1] ?? `SAVARA_PASS_${ticketSerial}.png`;
+
+      if (!isIOS) {
+        const link = document.createElement("a");
+        link.href = objectUrl;
+        link.download = downloadName;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       } else {
-        window.open(dataUrl, "_blank", "noopener,noreferrer");
+        window.open(objectUrl, "_blank", "noopener,noreferrer");
       }
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
     } catch {
       window.alert("Unable to generate pass image right now. Please try again.");
     } finally {
@@ -196,6 +224,12 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (pointerIdRef.current !== null) {
+      return;
+    }
+
+    const target = event.target as HTMLElement | null;
+    const withinScrollArea = target?.closest('[data-ticket-scroll-area="true"]');
+    if (withinScrollArea && isOpen) {
       return;
     }
 
@@ -395,7 +429,22 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
               <div className="absolute inset-x-0 top-0 h-44 bg-[linear-gradient(180deg,rgba(255,255,255,0.25)_0%,rgba(255,255,255,0)_100%)]" />
               <div className="absolute inset-x-0 top-0 h-px bg-[rgba(255,255,255,0.5)]" />
 
-              <div className="relative flex h-full flex-col px-5 pb-5 pt-6 text-[#2f180a]">
+              <div
+                data-ticket-scroll-area="true"
+                className="relative flex h-full flex-col overflow-y-auto px-5 pb-16 pt-6 text-[#2f180a]"
+                style={{
+                  WebkitOverflowScrolling: "touch",
+                  overscrollBehavior: "contain",
+                }}
+                onClick={(event) => {
+                  const target = event.target as HTMLElement;
+                  if (target.closest("button, a, input, textarea, select, [role='button']")) {
+                    return;
+                  }
+                  const isBackFace = flipProgress >= 0.5;
+                  snapFlip(!isBackFace);
+                }}
+              >
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(47,24,10,0.78)]">Ticket Holder</p>
@@ -454,12 +503,12 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
                 </button>
 
                 {showPerks && (
-                  <div className="mt-5 min-h-0 flex-1">
+                  <div className="mt-5">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(47,24,10,0.78)]">Perks</p>
                     {visiblePerks.length === 0 ? (
                       <p className="mt-2 text-sm">No perks available.</p>
                     ) : (
-                      <ul className="mt-2 space-y-1 overflow-y-auto pr-1 text-[15px] leading-relaxed">
+                      <ul className="mt-2 space-y-1 pr-1 pb-2 text-[15px] leading-relaxed">
                         {visiblePerks.map((perk) => (
                           <li key={perk.perk_id} className={perk.attended ? "line-through opacity-70" : ""}>
                             {perk.perk_name}
@@ -475,28 +524,6 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
         </div>
       </div>
 
-      <div className="pointer-events-none fixed -left-[9999px] top-0 z-[-1] opacity-0">
-        <div
-          ref={exportCardRef}
-          className="w-[520px] border border-[rgba(47,24,10,0.2)] bg-[linear-gradient(180deg,#f2a043_0%,#ea8b2a_44%,#df7a1c_100%)] px-8 py-8 text-[#2f180a]"
-          style={{ fontFamily: "var(--font-rajdhani), sans-serif" }}
-        >
-          <p className="text-[13px] font-semibold uppercase tracking-[0.24em] text-[rgba(47,24,10,0.8)]">Savara 2026 Pass</p>
-          <p className="mt-2 text-[34px] font-bold uppercase leading-tight">{displayName}</p>
-          <span className="mt-2 inline-flex rounded-full border border-[rgba(47,24,10,0.26)] bg-[rgba(255,255,255,0.32)] px-3 py-1 text-[13px] font-bold tracking-[0.12em]">
-            {ticketTypeLabel}
-          </span>
-
-          <div className="mt-6 rounded-2xl border border-[rgba(47,24,10,0.18)] bg-white/92 p-4">
-            <img src={qrDataUrl} alt="Ticket QR export" width={420} height={420} className="mx-auto h-auto w-full max-w-[420px]" draggable={false} />
-          </div>
-
-          <div className="mt-5 rounded-md border border-[rgba(47,24,10,0.18)] bg-[rgba(255,255,255,0.44)] px-4 py-3">
-            <p className="text-[11px] uppercase tracking-[0.16em] text-[rgba(47,24,10,0.72)]">Ticket Serial</p>
-            <p className="font-mono text-[22px] font-bold tracking-[0.18em]">{ticketSerial}</p>
-          </div>
-        </div>
-      </div>
     </section>
   );
 }
