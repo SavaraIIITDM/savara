@@ -184,11 +184,11 @@ export default function Sponsors() {
             }}
           >
             <div
-              className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 sm:px-5"
+              className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-b px-4 py-3 sm:px-5"
               style={{ borderColor: "rgba(212, 165, 116, 0.12)" }}
             >
               <p
-                className="text-[0.7rem] font-bold uppercase tracking-[0.22em] sm:text-xs"
+                className="min-w-0 truncate text-[0.68rem] font-bold uppercase tracking-[0.12em] sm:tracking-[0.22em] sm:text-xs"
                 style={{
                   fontFamily: "var(--font-rajdhani), sans-serif",
                   color: "rgba(245, 230, 211, 0.88)",
@@ -199,6 +199,20 @@ export default function Sponsors() {
               </p>
 
               <div className="flex items-center gap-2">
+                <a
+                  href="/Samgatha X Vashisht Brochure.pdf"
+                  download="Savara-2026-Sponsor-Brochure.pdf"
+                  aria-label="Download sponsor brochure PDF"
+                  className="rounded-full px-3 py-2 text-[0.68rem] font-bold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-105"
+                  style={{
+                    fontFamily: "var(--font-rajdhani), sans-serif",
+                    color: "rgba(245, 230, 211, 0.92)",
+                    border: "1px solid rgba(212, 165, 116, 0.4)",
+                    background: "linear-gradient(135deg, rgba(230, 81, 0, 0.18), rgba(74, 20, 140, 0.14))",
+                  }}
+                >
+                  ↓ PDF
+                </a>
                 <button
                   type="button"
                   onClick={() => changeBrochurePage(brochurePage - 1)}
@@ -232,7 +246,7 @@ export default function Sponsors() {
               </div>
             </div>
 
-            <div className="relative aspect-[3/4] overflow-hidden bg-[#10090e] sm:aspect-[16/10]">
+            <div className="relative aspect-[4/3] overflow-hidden bg-[#10090e] sm:aspect-[16/10]" style={{ transform: "translateZ(0)" }}>
               <div
                 className="absolute inset-2 rounded-[1.2rem]"
                 style={{
@@ -254,6 +268,7 @@ export default function Sponsors() {
                 style={{
                   borderColor: "rgba(212, 165, 116, 0.16)",
                   boxShadow: "inset 0 0 24px rgba(10, 4, 8, 0.35)",
+                  transform: "translateZ(0)",
                 }}
               >
                 <button
