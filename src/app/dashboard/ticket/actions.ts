@@ -2,23 +2,20 @@
 
 import { revalidatePath } from "next/cache";
 import { requireDashboardUser } from "@/lib/auth/guards";
-import { createClient } from "@/lib/supabase/server";
+import { redeemActivationCode } from "@/lib/db/queries";
 
 export async function redeemTicketAction(formData: FormData) {
-  await requireDashboardUser();
-  const supabase = await createClient();
+  const user = await requireDashboardUser();
 
   const activationCode = String(formData.get("activationCode") ?? "").trim().toUpperCase();
   if (!activationCode) {
     return { error: "Activation code is required." };
   }
 
-  const { error } = await supabase.rpc("redeem_activation_code", {
-    p_code: activationCode,
-  });
-
-  if (error) {
-    return { error: error.message };
+  try {
+    await redeemActivationCode(user.id, user.email, activationCode);
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "Unable to redeem activation code." };
   }
 
   revalidatePath("/dashboard/ticket");

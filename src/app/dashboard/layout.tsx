@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireDashboardRole } from "@/lib/auth/guards";
-import { createClient } from "@/lib/supabase/server";
+import { destroyCurrentSession } from "@/lib/auth/session";
 
 export default async function DashboardLayout({
   children,
@@ -11,8 +11,7 @@ export default async function DashboardLayout({
 
   async function signOut() {
     "use server";
-    const supabase = await createClient();
-    await supabase.auth.signOut();
+    await destroyCurrentSession();
   }
 
   return (

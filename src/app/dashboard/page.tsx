@@ -1,33 +1,23 @@
 import Link from "next/link";
 import QRCode from "qrcode";
 import { requireDashboardRole, requireDashboardUser } from "@/lib/auth/guards";
-import { createClient } from "@/lib/supabase/server";
+import { getMyParticipations, getMyPerkStatus, getProfileByUserId, getTicketByUserId } from "@/lib/db/queries";
 import { getPendingActivationCodeForEmail } from "@/lib/tickets/pending-code";
 import { DashboardTicketPanel } from "@/components/dashboard/DashboardTicketPanel";
 
 export default async function DashboardHomePage() {
   const user = await requireDashboardUser();
   const role = await requireDashboardRole();
-  const supabase = await createClient();
-  const { data: participations } = await supabase.rpc("get_my_participations");
+  const [participations, ticket, profile, perks] = await Promise.all([
+    getMyParticipations(user.id),
+    getTicketByUserId(user.id),
+    getProfileByUserId(user.id),
+    getMyPerkStatus(user.id),
+  ]);
 
-  const { data: ticket } = await supabase
-    .from("tickets")
-    .select("id, qr_token, participant_type")
-    .eq("user_id", user.id)
-    .maybeSingle();
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("full_name, email")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  const { data: perks } = await supabase.rpc("get_my_perk_status");
-
-  const displayName = profile?.full_name || user.user_metadata?.full_name || user.email || "Participant";
+  const displayName = profile?.fullName || user.fullName || user.email || "Participant";
   const pendingCode = user.email ? await getPendingActivationCodeForEmail(user.email) : null;
-  const qrPayload = ticket ? JSON.stringify({ token: ticket.qr_token }) : null;
+  const qrPayload = ticket ? JSON.stringify({ token: ticket.qrToken }) : null;
   const qrDataUrl = qrPayload ? await QRCode.toDataURL(qrPayload, { margin: 1, width: 240 }) : null;
 
   return (
@@ -35,10 +25,10 @@ export default async function DashboardHomePage() {
       <DashboardTicketPanel
         hasTicket={Boolean(ticket)}
         displayName={displayName}
-        participantType={ticket?.participant_type === "internal" ? "internal" : "external"}
+        participantType={ticket?.participantType === "internal" ? "internal" : "external"}
         qrDataUrl={qrDataUrl}
         ticketSerial={ticket?.id.slice(0, 8).toUpperCase() ?? ""}
-        perks={(perks ?? []).map((perk) => ({
+        perks={(perks ?? []).map((perk: { perk_id: string; perk_name: string; attended: boolean }) => ({
           perk_id: perk.perk_id,
           perk_name: perk.perk_name,
           attended: perk.attended,
@@ -106,7 +96,7 @@ export default async function DashboardHomePage() {
                 </tr>
               </thead>
               <tbody>
-                {(participations ?? []).map((row) => (
+                {(participations ?? []).map((row: { event_id: string; checked_in_at: string; event_name: string; team_name: string | null }) => (
                   <tr key={`${row.event_id}-${row.checked_in_at}`} className="border-t" style={{ borderColor: "rgba(212, 165, 116, 0.14)" }}>
                     <td className="py-2">{row.event_name}</td>
                     <td className="py-2">

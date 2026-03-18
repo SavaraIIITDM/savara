@@ -1,16 +1,10 @@
 import { requireVolunteerOrAdmin } from "@/lib/auth/guards";
-import { createClient } from "@/lib/supabase/server";
+import { listActiveEvents } from "@/lib/db/queries";
 import { CheckInForms } from "@/components/dashboard/CheckInForms";
 
 export default async function EventCheckInPage() {
   await requireVolunteerOrAdmin();
-  const supabase = await createClient();
-
-  const { data: events } = await supabase
-    .from("events")
-    .select("id, name, team_min_size, team_max_size")
-    .eq("is_active", true)
-    .order("name", { ascending: true });
+  const events = await listActiveEvents();
 
   return (
     <>

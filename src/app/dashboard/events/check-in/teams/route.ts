@@ -1,15 +1,11 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireVolunteerOrAdminRequest } from "@/lib/auth/route-helpers";
+import { listTeamsByEvent } from "@/lib/db/queries";
 
 export async function GET(request: Request) {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Authentication required." }, { status: 401 });
+  const access = await requireVolunteerOrAdminRequest(request);
+  if (access.error) {
+    return access.error;
   }
 
   const url = new URL(request.url);
@@ -19,15 +15,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Event id is required." }, { status: 400 });
   }
 
-  const { data, error } = await supabase
-    .from("teams")
-    .select("id, event_id, name")
-    .eq("event_id", eventId)
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
-  }
+  const data = await listTeamsByEvent(eventId);
 
   return NextResponse.json({ teams: data ?? [] });
 }

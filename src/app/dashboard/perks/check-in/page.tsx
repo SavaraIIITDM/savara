@@ -1,16 +1,10 @@
 import { requireVolunteerOrAdmin } from "@/lib/auth/guards";
-import { createClient } from "@/lib/supabase/server";
+import { listActivePerks } from "@/lib/db/queries";
 import { PerkCheckInForms } from "@/components/dashboard/PerkCheckInForms";
 
 export default async function PerkCheckInPage() {
   await requireVolunteerOrAdmin();
-  const supabase = await createClient();
-
-  const { data: perks } = await supabase
-    .from("perks")
-    .select("id, name")
-    .eq("is_active", true)
-    .order("name", { ascending: true });
+  const perks = await listActivePerks();
 
   return (
     <>

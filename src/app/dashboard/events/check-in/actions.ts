@@ -2,7 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { requireVolunteerOrAdmin } from "@/lib/auth/guards";
-import { createClient } from "@/lib/supabase/server";
+import {
+  checkInIndividual,
+  createTeamWithMembers,
+  joinTeamWithMembers,
+  removeEventCheckinByQr,
+  removeEventCheckinByTicket,
+} from "@/lib/db/queries";
 
 function extractQrToken(rawValue: string) {
   const value = rawValue.trim();
@@ -23,8 +29,7 @@ function extractQrToken(rawValue: string) {
 }
 
 export async function checkInIndividualAction(formData: FormData) {
-  await requireVolunteerOrAdmin();
-  const supabase = await createClient();
+  const role = await requireVolunteerOrAdmin();
 
   const eventId = String(formData.get("eventId") ?? "").trim();
   const rawQr = String(formData.get("qrToken") ?? "");
@@ -34,13 +39,11 @@ export async function checkInIndividualAction(formData: FormData) {
     return { error: "Event and QR token are required." };
   }
 
-  const { data, error } = await supabase.rpc("check_in_individual", {
-    p_event_id: eventId,
-    p_qr_token: qrToken,
-  });
-
-  if (error) {
-    return { error: error.message };
+  let data: string;
+  try {
+    data = await checkInIndividual({ eventId, qrToken, actorUserId: role.id });
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "Unable to check in participant." };
   }
 
   revalidatePath("/dashboard/events/check-in");
@@ -54,7 +57,6 @@ export async function checkInIndividualAction(formData: FormData) {
 
 export async function removeCheckInAction(formData: FormData) {
   await requireVolunteerOrAdmin();
-  const supabase = await createClient();
 
   const eventId = String(formData.get("eventId") ?? "").trim();
   const rawQr = String(formData.get("qrToken") ?? "");
@@ -64,14 +66,7 @@ export async function removeCheckInAction(formData: FormData) {
     return { error: "Event and QR token are required." };
   }
 
-  const { data, error } = await supabase.rpc("remove_event_checkin", {
-    p_event_id: eventId,
-    p_qr_token: qrToken,
-  });
-
-  if (error) {
-    return { error: error.message };
-  }
+  const data = await removeEventCheckinByQr(eventId, qrToken);
 
   revalidatePath("/dashboard/events/check-in");
 
@@ -84,7 +79,6 @@ export async function removeCheckInAction(formData: FormData) {
 
 export async function removeCheckInByTicketAction(formData: FormData) {
   await requireVolunteerOrAdmin();
-  const supabase = await createClient();
 
   const eventId = String(formData.get("eventId") ?? "").trim();
   const ticketId = String(formData.get("ticketId") ?? "").trim();
@@ -93,14 +87,7 @@ export async function removeCheckInByTicketAction(formData: FormData) {
     return { error: "Event and ticket are required." };
   }
 
-  const { data, error } = await supabase.rpc("remove_event_checkin_by_ticket", {
-    p_event_id: eventId,
-    p_ticket_id: ticketId,
-  });
-
-  if (error) {
-    return { error: error.message };
-  }
+  const data = await removeEventCheckinByTicket(eventId, ticketId);
 
   revalidatePath("/dashboard/events/check-in");
 
@@ -112,8 +99,7 @@ export async function removeCheckInByTicketAction(formData: FormData) {
 }
 
 export async function createTeamAction(formData: FormData) {
-  await requireVolunteerOrAdmin();
-  const supabase = await createClient();
+  const role = await requireVolunteerOrAdmin();
 
   const eventId = String(formData.get("eventId") ?? "").trim();
   const teamName = String(formData.get("teamName") ?? "").trim();
@@ -136,15 +122,16 @@ export async function createTeamAction(formData: FormData) {
     return { error: "Scan at least one team member." };
   }
 
-  const { error } = await supabase.rpc("create_team_with_members", {
-    p_event_id: eventId,
-    p_team_name: teamName,
-    p_leader_qr: leaderQr,
-    p_member_qrs: memberQrs,
-  });
-
-  if (error) {
-    return { error: error.message };
+  try {
+    await createTeamWithMembers({
+      eventId,
+      teamName,
+      leaderQr,
+      memberQrs,
+      actorUserId: role.id,
+    });
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "Unable to create team." };
   }
 
   revalidatePath("/dashboard/events/check-in");
@@ -152,8 +139,7 @@ export async function createTeamAction(formData: FormData) {
 }
 
 export async function joinTeamAction(formData: FormData) {
-  await requireVolunteerOrAdmin();
-  const supabase = await createClient();
+  const role = await requireVolunteerOrAdmin();
 
   const teamId = String(formData.get("teamId") ?? "").trim();
   const memberQrsJson = String(formData.get("memberQrsJson") ?? "[]");
@@ -170,13 +156,15 @@ export async function joinTeamAction(formData: FormData) {
     return { error: "Team and at least one member QR are required." };
   }
 
-  const { error, data } = await supabase.rpc("join_team_with_members", {
-    p_team_id: teamId,
-    p_member_qrs: memberQrs,
-  });
-
-  if (error) {
-    return { error: error.message };
+  let data: number;
+  try {
+    data = await joinTeamWithMembers({
+      teamId,
+      memberQrs,
+      actorUserId: role.id,
+    });
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "Unable to join team." };
   }
 
   revalidatePath("/dashboard/events/check-in");

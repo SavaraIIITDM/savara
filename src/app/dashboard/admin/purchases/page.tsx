@@ -1,16 +1,10 @@
 import { requireAdmin } from "@/lib/auth/guards";
-import { createClient } from "@/lib/supabase/server";
+import { listRecentActivationCodes } from "@/lib/db/queries";
 import { AdminVerifyPurchaseForm } from "@/components/dashboard/AdminVerifyPurchaseForm";
 
 export default async function AdminPurchasesPage() {
   await requireAdmin();
-  const supabase = await createClient();
-
-  const { data: recentCodes } = await supabase
-    .from("activation_codes")
-    .select("code, purchaser_email, ticket_quota, redeemed_count, purchase_type, verified_at")
-    .order("verified_at", { ascending: false })
-    .limit(20);
+  const recentCodes = await listRecentActivationCodes(20);
 
   return (
     <section className="grid gap-4 lg:grid-cols-2">

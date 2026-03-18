@@ -1,15 +1,11 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireVolunteerOrAdminRequest } from "@/lib/auth/route-helpers";
+import { removeEventCheckinByTicket } from "@/lib/db/queries";
 
 export async function POST(request: Request) {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Authentication required." }, { status: 401 });
+  const access = await requireVolunteerOrAdminRequest(request);
+  if (access.error) {
+    return access.error;
   }
 
   const body = (await request.json()) as { eventId?: string; ticketId?: string };
@@ -20,14 +16,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Event and ticket are required." }, { status: 400 });
   }
 
-  const { data, error } = await supabase.rpc("remove_event_checkin_by_ticket", {
-    p_event_id: eventId,
-    p_ticket_id: ticketId,
-  });
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
-  }
+  const data = await removeEventCheckinByTicket(eventId, ticketId);
 
   return NextResponse.json({ removed: Boolean(data) });
 }

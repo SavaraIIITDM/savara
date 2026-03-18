@@ -2,12 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth/guards";
-import { createClient } from "@/lib/supabase/server";
+import { verifyPurchase } from "@/lib/db/queries";
 import { sendActivationCodeEmail } from "@/lib/email/gmail";
 
 export async function verifyPurchaseAction(formData: FormData) {
-  await requireAdmin();
-  const supabase = await createClient();
+  const user = await requireAdmin();
 
   const purchaserEmail = String(formData.get("purchaserEmail") ?? "").trim().toLowerCase();
   const ticketCount = Number(formData.get("ticketCount") ?? 0);
@@ -26,18 +25,20 @@ export async function verifyPurchaseAction(formData: FormData) {
     return { error: "Purchase type must be internal or external." };
   }
 
-  const { data, error } = await supabase.rpc("admin_verify_purchase", {
-    p_purchaser_email: purchaserEmail,
-    p_ticket_quota: ticketCount,
-    p_purchase_type: purchaseType,
-  });
-
-  if (error || !data?.[0]) {
-    return { error: error?.message ?? "Unable to verify purchase." };
+  let result: { code: string; ticket_assigned: boolean };
+  try {
+    result = await verifyPurchase({
+      purchaserEmail,
+      ticketCount,
+      purchaseType: purchaseType as "internal" | "external",
+      actorUserId: user.id,
+    });
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "Unable to verify purchase." };
   }
 
-  const activationCode = data[0].code;
-  const ticketAssigned = data[0].ticket_assigned;
+  const activationCode = result.code;
+  const ticketAssigned = result.ticket_assigned;
 
   if (notifyByEmail) {
     try {

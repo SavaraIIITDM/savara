@@ -1,6 +1,6 @@
 import QRCode from "qrcode";
 import { requireDashboardRole, requireDashboardUser } from "@/lib/auth/guards";
-import { createClient } from "@/lib/supabase/server";
+import { getMyPerkStatus, getProfileByUserId, getTicketByUserId } from "@/lib/db/queries";
 import { TicketActivationForm } from "@/components/dashboard/TicketActivationForm";
 import { TicketDrawerCard } from "@/components/dashboard/TicketDrawerCard";
 import { getPendingActivationCodeForEmail } from "@/lib/tickets/pending-code";
@@ -8,28 +8,18 @@ import { getPendingActivationCodeForEmail } from "@/lib/tickets/pending-code";
 export default async function DashboardTicketPage() {
   const user = await requireDashboardUser();
   await requireDashboardRole();
-  const supabase = await createClient();
+  const [ticket, profile, perks] = await Promise.all([
+    getTicketByUserId(user.id),
+    getProfileByUserId(user.id),
+    getMyPerkStatus(user.id),
+  ]);
 
-  const { data: ticket } = await supabase
-    .from("tickets")
-    .select("id, qr_token, participant_type, created_at")
-    .eq("user_id", user.id)
-    .maybeSingle();
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("full_name, email")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  const { data: perks } = await supabase.rpc("get_my_perk_status");
-
-  const displayName = profile?.full_name || user.user_metadata?.full_name || user.email || "Participant";
+  const displayName = profile?.fullName || user.fullName || user.email || "Participant";
   const pendingCode = user.email ? await getPendingActivationCodeForEmail(user.email) : null;
 
   const qrPayload = ticket
     ? JSON.stringify({
-        token: ticket.qr_token,
+        token: ticket.qrToken,
       })
     : null;
 
@@ -75,10 +65,10 @@ export default async function DashboardTicketPage() {
           visible
           onRequestHide={undefined}
           displayName={displayName}
-          participantType={ticket.participant_type === "internal" ? "internal" : "external"}
+          participantType={ticket.participantType === "internal" ? "internal" : "external"}
           qrDataUrl={qrDataUrl}
           ticketSerial={ticket.id.slice(0, 8).toUpperCase()}
-          perks={(perks ?? []).map((perk) => ({
+          perks={(perks ?? []).map((perk: { perk_id: string; perk_name: string; attended: boolean }) => ({
             perk_id: perk.perk_id,
             perk_name: perk.perk_name,
             attended: perk.attended,

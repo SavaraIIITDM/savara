@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireVolunteerOrAdmin } from "@/lib/auth/guards";
-import { createClient } from "@/lib/supabase/server";
+import { checkInPerkIndividual, removePerkCheckin } from "@/lib/db/queries";
 
 function extractQrToken(rawValue: string) {
   const value = rawValue.trim();
@@ -23,8 +23,7 @@ function extractQrToken(rawValue: string) {
 }
 
 export async function checkInPerkIndividualAction(formData: FormData) {
-  await requireVolunteerOrAdmin();
-  const supabase = await createClient();
+  const role = await requireVolunteerOrAdmin();
 
   const perkId = String(formData.get("perkId") ?? "").trim();
   const qrToken = extractQrToken(String(formData.get("qrToken") ?? ""));
@@ -33,13 +32,15 @@ export async function checkInPerkIndividualAction(formData: FormData) {
     return { error: "Perk and QR token are required." };
   }
 
-  const { data, error } = await supabase.rpc("check_in_perk_individual", {
-    p_perk_id: perkId,
-    p_qr_token: qrToken,
-  });
-
-  if (error) {
-    return { error: error.message };
+  let data: string;
+  try {
+    data = await checkInPerkIndividual({
+      perkId,
+      qrToken,
+      actorUserId: role.id,
+    });
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "Unable to check in perk." };
   }
 
   revalidatePath("/dashboard/perks/check-in");
@@ -54,7 +55,6 @@ export async function checkInPerkIndividualAction(formData: FormData) {
 
 export async function removePerkCheckInAction(formData: FormData) {
   await requireVolunteerOrAdmin();
-  const supabase = await createClient();
 
   const perkId = String(formData.get("perkId") ?? "").trim();
   const qrToken = extractQrToken(String(formData.get("qrToken") ?? ""));
@@ -63,14 +63,7 @@ export async function removePerkCheckInAction(formData: FormData) {
     return { error: "Perk and QR token are required." };
   }
 
-  const { data, error } = await supabase.rpc("remove_perk_checkin", {
-    p_perk_id: perkId,
-    p_qr_token: qrToken,
-  });
-
-  if (error) {
-    return { error: error.message };
-  }
+  const data = await removePerkCheckin({ perkId, qrToken });
 
   revalidatePath("/dashboard/perks/check-in");
   revalidatePath("/dashboard/ticket");

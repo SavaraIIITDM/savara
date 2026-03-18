@@ -1,42 +1,33 @@
 import { ImageResponse } from "next/og";
 import QRCode from "qrcode";
-import { createClient } from "@/lib/supabase/server";
+import { getCurrentUser } from "@/lib/auth/session";
+import { getProfileByUserId, getTicketByUserId } from "@/lib/db/queries";
 
 export const runtime = "nodejs";
 
 export async function GET() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const { data: ticket } = await supabase
-    .from("tickets")
-    .select("id, qr_token, participant_type")
-    .eq("user_id", user.id)
-    .maybeSingle();
+  const [ticket, profile] = await Promise.all([
+    getTicketByUserId(user.id),
+    getProfileByUserId(user.id),
+  ]);
 
   if (!ticket) {
     return new Response("Ticket not found", { status: 404 });
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("full_name")
-    .eq("id", user.id)
-    .maybeSingle();
-
   const displayName =
-    profile?.full_name || user.user_metadata?.full_name || user.email || "Participant";
+    profile?.fullName || user.fullName || user.email || "Participant";
   const ticketTypeLabel =
-    ticket.participant_type === "internal" ? "INTERNAL" : "EXTERNAL";
+    ticket.participantType === "internal" ? "INTERNAL" : "EXTERNAL";
   const ticketSerial = ticket.id.slice(0, 8).toUpperCase();
 
-  const qrPayload = JSON.stringify({ token: ticket.qr_token });
+  const qrPayload = JSON.stringify({ token: ticket.qrToken });
   const qrDataUrl = await QRCode.toDataURL(qrPayload, { margin: 1, width: 420 });
 
   return new ImageResponse(

@@ -1,6 +1,8 @@
-import { createClient } from "@/lib/supabase/server";
+import { getCurrentUser } from "@/lib/auth/session";
+import { getProfileByUserId, getRoleRow } from "@/lib/db/queries";
 
 export type DashboardRole = {
+  id: string;
   email: string;
   isAdmin: boolean;
   isVolunteer: boolean;
@@ -8,10 +10,7 @@ export type DashboardRole = {
 };
 
 export async function getDashboardRole(): Promise<DashboardRole | null> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user?.email) {
     return null;
@@ -19,23 +18,20 @@ export async function getDashboardRole(): Promise<DashboardRole | null> {
 
   const normalizedEmail = user.email.toLowerCase();
 
-  const [{ data: roleRow }, { data: profileRow }] = await Promise.all([
-    supabase
-      .from("roles")
-      .select("is_admin, is_volunteer")
-      .eq("email", normalizedEmail)
-      .maybeSingle(),
-    supabase.from("profiles").select("participant_type").eq("id", user.id).maybeSingle(),
+  const [roleRow, profileRow] = await Promise.all([
+    getRoleRow(normalizedEmail),
+    getProfileByUserId(user.id),
   ]);
 
   const participantType =
-    (profileRow?.participant_type as "internal" | "external" | undefined) ??
+    (profileRow?.participantType as "internal" | "external" | undefined) ??
     (normalizedEmail.endsWith("@iiitdm.ac.in") ? "internal" : "external");
 
   return {
+    id: user.id,
     email: normalizedEmail,
-    isAdmin: roleRow?.is_admin ?? false,
-    isVolunteer: roleRow?.is_volunteer ?? false,
+    isAdmin: roleRow?.isAdmin ?? false,
+    isVolunteer: roleRow?.isVolunteer ?? false,
     participantType,
   };
 }

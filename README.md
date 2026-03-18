@@ -1,6 +1,6 @@
 ## Savara Ticketing Dashboard
 
-This project now includes a Supabase-backed ticketing and event participation workflow for Savara:
+This project includes a custom Google OAuth2 and PostgreSQL (Drizzle ORM) ticketing and event participation workflow for Savara:
 
 - Google OAuth sign-in only
 - Protected dashboard routes under `/dashboard/*`
@@ -19,26 +19,35 @@ cp .env.example .env.local
 Required variables:
 
 - `NEXT_PUBLIC_SITE_URL` (example: `http://localhost:3000`)
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- `DATABASE_URL`
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `AUTH_COOKIE_NAME` (optional, defaults to `savara_session`)
 - `GMAIL_USER`
 - `GMAIL_APP_PASSWORD`
 
-## Supabase Auth Setup
+## Google OAuth Setup
 
-In Supabase dashboard:
+In Google Cloud Console:
 
-1. Enable Google provider under Auth > Providers.
-2. Set Site URL to your app URL.
-3. Add redirect URL: `https://<your-domain>/auth/callback` and local `http://localhost:3000/auth/callback`.
+1. Create OAuth client credentials for a web application.
+2. Add Authorized redirect URI: `https://<your-domain>/auth/callback`.
+3. Add local redirect URI: `http://localhost:3000/auth/callback`.
 
 ## Database Setup
 
-Schema and RLS were applied via Supabase MCP migrations in this branch, including:
+Schema is managed through Drizzle. Generate and apply migrations:
+
+```bash
+npm run db:generate
+npm run db:migrate
+```
+
+Core tables include:
 
 - `profiles`, `roles`, `activation_codes`, `tickets`
 - `events`, `teams`, `team_members`, `event_checkins`
-- RPC functions for admin verification, activation redemption, and check-in workflows
+- `users`, `sessions` for custom auth
 
 ## Role Management
 
