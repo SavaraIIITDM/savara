@@ -2,22 +2,22 @@
   "event_id": "1648479",
   "url": "https://unstop.com/events/bgmi-savara-indian-institute-of-information-technology-design-and-manufacturing-iiitdm-kancheepuram-1648479",
   "event_name": "BGMI",
-  "event_banner": "",
-  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/lambda-pdfs/opportunity-bannerImages/1772036252.png",
+  "event_banner": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/69b9ad0ce75a5_bgmi.png",
+  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/mobile_banner/69b9ad6106a92_bgmi.png",
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-699f1f3da926f_esports_club.jpg",
   "description_html": "<p><strong>Tournament Guideline:</strong></p>\n<ul>\n<li>Players Will Participate As A 4-Man Squad.</li>\n<li>Up To 64 Players Will Be Playing In A Lobby.</li>\n<li>Maps Selected Will Be Notified To The Participants Before The Match.</li>\n</ul>\n<p><strong>Group Stage:</strong></p>\n<ul>\n<li>Erangle</li>\n<li>Sanhok</li>\n<li>Miramar</li>\n<li>Vikendi</li>\n</ul>\n<p><strong>Points System:</strong></p>\n<ul>\n<li>Kill &ndash; 1 Point</li>\n<li>1st &ndash; 15 Points</li>\n<li>2nd &ndash; 12 Points</li>\n<li>3rd &ndash; 10 Points</li>\n<li>4th &ndash; 8 Points</li>\n<li>5th &ndash; 6 Points</li>\n<li>6th &ndash; 4 Points</li>\n<li>7th &ndash; 2 Points</li>\n<li>8th&ndash;12th &ndash; 1 Point</li>\n<li>13th&ndash;16th &ndash; 0 Point</li>\n</ul>\n<p><strong>BGMI Rule Book:</strong></p>\n<ul>\n<li>Emulators And Tablets Are Not Allowed In Any Game Mode Organized. The Player Will Be Disqualified If Found Using Any Kind Of Emulator Or Tablet.</li>\n<li>Any Game Modifying Tools Except &lsquo;GFX Tool&rsquo; Are Not Allowed.</li>\n<li>Players Can Only Play With Android/IOS Phones.</li>\n<li>Any Use Of Unfair Means Such As Aimbot, Trigger Bot, ESP Will Be Disqualified.</li>\n<li>The Exploitation Of Bugs That Hinders Fair Play Will Result In Disqualification.</li>\n<li>For The Tiebreaker Of Points, Total Team/Solo Kills Will Be Considered.</li>\n<li>For Further Tiebreaker, Number Of Chicken Dinners Will Be Considered.</li>\n<li>Organizers Would Not Be Held Responsible For Connectivity Issues On The Participant's Side.</li>\n<li>Network Support Is Not Provided By The Organizers For Online Matches.</li>\n<li>Participants Are Requested To Remain Ready At Least 10 Minutes Prior To The Start Of Any Match.</li>\n</ul>",
   "start_date": "2026-02-25T00:00:00+05:30",
-  "end_date": "2026-03-25T00:00:00+05:30",
+  "end_date": "2026-03-21T23:59:00+05:30",
   "location": "IIITDM Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"
@@ -28,7 +28,7 @@
     },
     "gender": "All",
     "same_college_only": false,
-    "registration_deadline": "2026-03-25T00:00:00+05:30"
+    "registration_deadline": "2026-03-21T23:59:00+05:30"
   },
   "organizer": {
     "organisation_name": "Indian Institute of Information Technology, Design and Manufacturing (IIITDM), Kancheepuram",

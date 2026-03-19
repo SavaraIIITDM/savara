@@ -5,19 +5,19 @@
   "event_banner": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/69994ee480af4_aero-innovation-challenge.png",
   "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/mobile_banner/69994ef684f6d_aero-innovation-challenge.png",
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-698b555dc3124_tad_club.png",
-  "description_html": "<p class=\"blue_un-border-before hdng mock-title\"><span style=\"color: #383838; font-size: 16px;\">The Aero Innovation Challenge, is an exciting platform for aspiring innovators, technologists, and aerospace enthusiasts to showcase their creativity and problem-solving skills. This challenge aims to address real-world problems in the aerospace sector by encouraging participants to design, develop, and present innovative solutions that could revolutionize the industry.<br /></span>Participants will get the opportunity to work on cutting-edge topics like sustainable aviation, advanced propulsion systems, satellite technologies, or unmanned aerial systems. With a focus on creativity, feasibility, and impact, the challenge fosters interdisciplinary collaboration, technical expertise, and out-of-the-box thinking.</p>\n<div class=\"position-relative\">\n<div class=\"blue_un-border-before comp-detail un_editor_text_live expanded\">\n<p><strong>Theme: Hybrid and Electric Flight Systems:<br /></strong></p>\n<p><strong>Team Description:</strong></p>\n<ul>\n<li>A team of a maximum 3 participants is allowed.</li>\n<li>Participants can be interdisciplinary, across years and from different colleges.&nbsp;</li>\n</ul>\n<p><strong>The competition consists of two rounds:</strong></p>\n<ul>\n<li>Abstract Submission Round</li>\n<li>Final Presentation Round</li>\n</ul>\n</div>\n</div>",
+  "description_html": "<p data-start=\"262\" data-end=\"658\"><strong data-start=\"262\" data-end=\"295\">The Aero Innovation Challenge</strong> is an exciting platform for aspiring innovators, technologists, and aerospace enthusiasts to showcase their creativity and problem-solving skills. This challenge aims to address real-world problems in the aerospace sector by encouraging participants to design, develop, and present innovative solutions inspired by nature that could revolutionize flight systems.</p>\n<p data-start=\"660\" data-end=\"1068\">Participants will get the opportunity to explore cutting-edge concepts inspired by biological systems such as bird flight dynamics, insect wing mechanisms, energy-efficient gliding, swarm intelligence, and other natural aerodynamic principles. With a strong focus on creativity, feasibility, and impact, the challenge fosters interdisciplinary collaboration, technical expertise, and out-of-the-box thinking.</p>\n<p data-start=\"1070\" data-end=\"1112\"><strong data-start=\"1070\" data-end=\"1080\">Theme:</strong> Bio-Mimicry in Flight Systems</p>\n<h3 data-section-id=\"1iin799\" data-start=\"1114\" data-end=\"1134\">Team Description</h3>\n<ul data-start=\"1135\" data-end=\"1275\">\n<li data-section-id=\"2nvhs6\" data-start=\"1135\" data-end=\"1187\">\n<p data-start=\"1137\" data-end=\"1187\">A team of <strong data-start=\"1147\" data-end=\"1173\">maximum 3 participants</strong> is allowed.</p>\n</li>\n<li data-section-id=\"jh3azn\" data-start=\"1188\" data-end=\"1275\">\n<p data-start=\"1190\" data-end=\"1275\">Participants can be <strong data-start=\"1210\" data-end=\"1274\">interdisciplinary, across years, and from different colleges</strong>.</p>\n</li>\n</ul>\n<h3 data-section-id=\"1ncgea\" data-start=\"1277\" data-end=\"1299\">Competition Rounds</h3>\n<p data-start=\"1300\" data-end=\"1343\">The competition consists of <strong data-start=\"1328\" data-end=\"1342\">two rounds</strong>:</p>\n<ol data-start=\"1344\" data-end=\"1410\">\n<li data-section-id=\"15ka7bk\" data-start=\"1344\" data-end=\"1378\">\n<p data-start=\"1347\" data-end=\"1378\"><strong data-start=\"1347\" data-end=\"1376\">Abstract Submission Round</strong></p>\n</li>\n<li data-section-id=\"9ir4pt\" data-start=\"1379\" data-end=\"1410\">\n<p data-start=\"1382\" data-end=\"1410\"><strong data-start=\"1382\" data-end=\"1410\">Final Presentation Round</strong></p>\n</li>\n</ol>",
   "start_date": "2026-02-10T00:00:00+05:30",
-  "end_date": "2026-03-29T12:00:00+05:30",
+  "end_date": "2026-03-31T17:00:56+05:30",
   "location": "Indian Institute of Information Technology Design and Manufaturing Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"
@@ -38,7 +38,7 @@
     "contacts": [
       {
         "name": "Deeraj",
-        "email": "ec23b1066@iiitdm.ac.in",
+        "email": "tad@iiitdm.ac.in",
         "phone": "+919345205443",
         "designation": null
       }
@@ -63,10 +63,10 @@
   },
   "attachments": [
     {
-      "name": "Rule Book",
-      "url": "https://d8it4huxumps7.cloudfront.net/uploads/attachements/files/8a3d6c21-1d45-4db4-aae0-30aa3dc2b312.pdf",
+      "name": "Rule Book.pdf",
+      "url": "https://d8it4huxumps7.cloudfront.net/uploads/attachements/files/1914d68a-a146-427e-bf1b-eeb016666ed9.pdf",
       "file_type": "application/pdf",
-      "file_size_bytes": 139995
+      "file_size_bytes": 132732
     }
   ]
 }

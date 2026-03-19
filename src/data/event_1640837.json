@@ -7,17 +7,17 @@
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-698df97501133_black_logo_unstop.png",
   "description_html": "<p>Pitch on Pitch&nbsp;is a startup pitching competition designed to evaluate how effectively participants present, explain, and defend their business ideas. The event emphasizes clarity, structure, feasibility, and confidence in pitching. It aims to promote entrepreneurial thinking, innovation, and real-world problem-solving by providing participants a platform to showcase their startup ideas before experienced judges and mentors.</p>\n<p><strong>Event Structure &amp; Process:</strong></p>\n<p><strong>Round 1: Online Shortlisting Round:</strong></p>\n<p>Participants must submit:</p>\n<ul>\n<li>A&nbsp;Pitch Deck</li>\n<li>A&nbsp;Short Pitch Video</li>\n</ul>\n<p>Submissions will be evaluated based on clarity, originality, feasibility, and overall pitch quality. Based on this evaluation, the&nbsp;top 8&ndash;10 teams&nbsp;will be shortlisted for the final on-campus round.</p>\n<p><strong>Round 2: On-Campus Live Pitch (Final Round):</strong></p>\n<p>Shortlisted teams will pitch live before a panel of judges:</p>\n<ul>\n<li>5 minutes &ndash; Live Pitch</li>\n<li>2 minutes &ndash; Q&amp;A Session</li>\n</ul>\n<p>Final rankings will be decided solely based on performance in this round.</p>\n<p><strong>Eligibility:</strong></p>\n<ul>\n<li>Open to&nbsp;students and early-stage founders</li>\n<li>Participation can be&nbsp;individual or in teams</li>\n<li>Maximum 4 members per team</li>\n<li>One participant can be part of only one team</li>\n<li>Cross-year and cross-specialisation teams are allowed, while inter-college teams are not permitted</li>\n</ul>\n<p><strong>Submission Guidelines:</strong></p>\n<p><strong>Pitch Deck Requirements:</strong></p>\n<ul>\n<li>Maximum&nbsp;7 slides</li>\n<li>Must include:</li>\n<li>Problem Statement</li>\n<li>Solution (Product/Service)</li>\n<li>Target Market</li>\n<li>Business Model</li>\n<li>Competitive Advantage</li>\n<li>Financial Projections (if available)</li>\n<li>Team Overview</li>\n</ul>\n<p><strong>Pitch Video Requirements:</strong></p>\n<ul>\n<li>A short video explaining the startup idea</li>\n<li>The video must be shared&nbsp;as a Google Drive link</li>\n<li>The Drive link must be&nbsp;embedded or attached on the first page of the pitch deck</li>\n<li>Access settings must be set to &ldquo;Anyone with the link can view&rdquo;</li>\n<li>Submissions with restricted access or inaccessible links&nbsp;will not be evaluated</li>\n<li>Clear audio and video quality is mandatory</li>\n</ul>\n<p><strong>Submission Deadline:</strong></p>\n<ul>\n<li>Before 20 March</li>\n<li>Late submissions will&nbsp;not be accepted</li>\n</ul>\n<p><strong>Rules:</strong></p>\n<ul>\n<li>One person can be part of only one team</li>\n<li>Judges&rsquo; decisions will be&nbsp;final and binding</li>\n<li>The organizing committee reserves the right to&nbsp;disqualify teams for rule violations</li>\n</ul>\n<p><strong>Originality &amp; Ethics:</strong></p>\n<ul>\n<li>All ideas must be&nbsp;original</li>\n<li>Plagiarism or copied content&nbsp;will result in immediate disqualification</li>\n<li>Offensive, misleading, or inappropriate content&nbsp;is strictly prohibited</li>\n</ul>\n<p><strong>Judging Criteria:</strong></p>\n<ul>\n<li>Clarity of pitch</li>\n<li>Understanding of the problem and relevance of the solution</li>\n<li>Feasibility and logic of the idea</li>\n<li>Structure and presentation flow</li>\n<li>Responses during Q&amp;A</li>\n<li>Overall pitch delivery</li>\n</ul>\n<p><strong>Rewards &amp; Recognition:</strong></p>\n<ul>\n<li>Cash prizes&nbsp;for the&nbsp;Top 3 teams</li>\n<li>Mentorship opportunities&nbsp;with judges and industry experts</li>\n<li>Certificates of participation&nbsp;for all participants</li>\n</ul>\n<p><strong>General Conditions:</strong></p>\n<ul>\n<li>The organizing committee reserves the right to&nbsp;modify the event format if required</li>\n<li>All updates will be communicated in advance</li>\n<li>Participants are expected to maintain&nbsp;professionalism&nbsp;throughout the event</li>\n</ul>",
   "start_date": "2026-02-12T00:00:00+05:30",
-  "end_date": "2026-03-28T12:00:00+05:30",
+  "end_date": "2026-03-28T17:00:00+05:30",
   "location": "Indian Institute of Information Technology, Design and Manufacturing, Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"
@@ -28,7 +28,7 @@
     },
     "gender": "All",
     "same_college_only": false,
-    "registration_deadline": "2026-03-25T00:00:00+05:30"
+    "registration_deadline": "2026-03-21T00:00:00+05:30"
   },
   "organizer": {
     "organisation_name": "IIITDM Kancheepuram",
@@ -47,17 +47,17 @@
   "prizes": {
     "winner": {
       "label": "1",
-      "value": "INR 9,000",
+      "value": "INR 18,000",
       "certificate": true
     },
     "runner_up": {
       "label": "2",
-      "value": "INR 7,000",
+      "value": "INR 10,000",
       "certificate": true
     },
     "second_runner_up": {
       "label": "3",
-      "value": "INR 4,000",
+      "value": "INR 7,000",
       "certificate": true
     }
   },

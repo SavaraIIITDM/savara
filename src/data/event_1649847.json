@@ -2,8 +2,8 @@
   "event_id": "1649847",
   "url": "https://unstop.com/events/temporal-whispers-savara-indian-institute-of-information-technology-design-and-manufacturing-iiitdm-kancheepuram-1649847",
   "event_name": "Temporal Whispers",
-  "event_banner": "",
-  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/lambda-pdfs/opportunity-bannerImages/1772216580.png",
+  "event_banner": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/69b9b2283f272_temporal-whispers.png",
+  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/mobile_banner/69b9b2208c5e4_temporal-whispers.png",
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-69a1dee3225dd_book_club___literati_society__.png",
   "description_html": "<p data-start=\"1000\" data-end=\"1021\"><strong>Team:</strong></p>\n<ul>\n<li data-start=\"1025\" data-end=\"1075\">Each team must register before the event begins.</li>\n<li data-start=\"1078\" data-end=\"1146\">Teams will choose or be assigned a side at the start of the event.</li>\n<li data-start=\"1149\" data-end=\"1195\">Once a side is chosen, it cannot be changed.</li>\n</ul>\n<p data-start=\"1202\" data-end=\"1220\"><strong>Event:</strong></p>\n<ul>\n<li data-start=\"1224\" data-end=\"1294\">The event will unfold in multiple phases across the 4-hour duration.</li>\n<li data-start=\"1297\" data-end=\"1348\">Each phase reveals new developments in the story.</li>\n<li data-start=\"1351\" data-end=\"1424\">Progression depends on participation, observation, and decision-making.</li>\n</ul>\n<p data-start=\"1431\" data-end=\"1456\"><strong>Rules:</strong></p>\n<ul>\n<li data-start=\"1460\" data-end=\"1532\">Teams must pay close attention to all story segments and instructions.</li>\n<li data-start=\"1535\" data-end=\"1597\">Information provided at any point may become relevant later.</li>\n<li data-start=\"1600\" data-end=\"1677\">Decisions made by teams can influence their standing and available options.</li>\n</ul>",
   "start_date": "2026-02-28T00:00:00+05:30",
@@ -11,13 +11,13 @@
   "location": "IIITDM Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"

@@ -2,8 +2,8 @@
   "event_id": "1640800",
   "url": "https://unstop.com/events/vivaadham-classic-debate-savara-iiitdm-kancheepuram-1640800",
   "event_name": "Vivaadham - Classic Debate",
-  "event_banner": "",
-  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/lambda-pdfs/opportunity-bannerImages/1770912835.png",
+  "event_banner": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/69b9b0bfbc40a_vivaadham-classic-debate.png",
+  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/mobile_banner/69b9b0a68da5a_vivaadham-classic-debate.png",
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-698dfb0ebc96c_ts.jpg",
   "description_html": "<p style=\"text-align: left;\"><strong> Details:</strong></p>\n<ul>\n<li>VIVADHAM is an inter-college, multilingual group debate show presented by the Tamil Saalaram Club.</li>\n<li>Designed to celebrate logic, language, and cultural diversity, the event provides a dynamic platform for students to express perspectives, challenge ideas, and engage in respectful intellectual discourse.</li>\n<li>The event features two exclusive debate sessions&mdash;one in Tamil and one in English, each lasting 1.5 hours. Two teams compete in every session. Participants register individually .</li>\n<li>The debate topics will be announced on spot, and participants may choose their side (For / Against) on a first-come, first-serve basis. The debates will be guided by a neutral Moderator from the club.</li>\n<li>Best 3 Talkers from each session will be awarded with price money and certificates.&nbsp;</li>\n<li>Judgment will be fair and transparent, combining expert judges&rsquo; evaluation and a live audience poll, making the experience both competitive and engaging.</li>\n<li>Open to students from all colleges, VIVADHAM invites voices beyond borders to debate with reason, respect, and confidence.</li>\n</ul>",
   "start_date": "2026-02-12T00:00:00+05:30",
@@ -11,13 +11,13 @@
   "location": "IIITDM KANCHEEPURAM",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"

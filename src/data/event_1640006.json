@@ -5,19 +5,19 @@
   "event_banner": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6998a37a5683e_vashisht-hackathon-3o.png",
   "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/mobile_banner/6998a3849f12e_vashisht-hackathon-3o.png",
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-698c9a595fb3f_club_logo-removebg-preview__1___1__-_developers_club_iiitdm.png",
-  "description_html": "<p data-start=\"327\" data-end=\"1259\">Vashisht Hackathon 3.0 is an intensive 36-hour tech competition inviting student teams from all institutes to solve real-world challenges through innovative solutions. Participants select one of four tracks &mdash; EdTech, FinTech, RetailTech or EcoTech &mdash; and develop functional prototypes under time constraints. The event begins with an in-person kickoff, followed by continuous hacking and culminates in final project submission and presentations. Teams will be evaluated on innovation, technical implementation, feasibility, presentation clarity and alignment with their track. This hackathon encourages interdisciplinary collaboration, rapid problem solving and practical application of technology. Awards of ₹12,500 per track and merit certificates will be given to winning teams. E-participation certificates will be issued to participants who attend the event in person for at least one day.</p>\n<p><strong>A detailed document with rules and guidelines is attached. Kindly go through it.</strong></p>",
+  "description_html": "<p data-start=\"327\" data-end=\"1259\">Vashisht Hackathon 3.0 is an intensive 36-hour tech competition inviting student teams from all institutes to solve real-world challenges through innovative solutions. Participants select one of four tracks &mdash; EdTech, FinTech, RetailTech or EcoTech &mdash; and develop functional prototypes under time constraints. The event begins with an in-person kickoff, followed by continuous hacking and culminates in final project submission and presentations. Teams will be evaluated on innovation, technical implementation, feasibility, presentation clarity and alignment with their track. This hackathon encourages interdisciplinary collaboration, rapid problem solving and practical application of technology. Awards of ₹12,500 per track and merit certificates will be given to winning teams. E-participation certificates will be issued to participants who attend the event in person for at least one day.</p>\n<p data-start=\"327\" data-end=\"1259\"><strong>Note :- Fest Ticket is required to Participate in the Hackathon.Get the ticket <a href=\"https://www.savara.in/tickets\">here</a></strong></p>\n<p><strong>A detailed document with rules and guidelines is attached. Kindly go through it.</strong></p>",
   "start_date": "2026-02-11T00:00:00+05:30",
   "end_date": "2026-03-29T21:00:00+05:30",
   "location": "Indian Institute of Information Technology Design and Manufacturing (IIITDM) Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"
@@ -70,9 +70,9 @@
   "attachments": [
     {
       "name": "Vashisht Hackathon 3.0 Rulebook.docx",
-      "url": "https://d8it4huxumps7.cloudfront.net/uploads/attachements/files/f91ed15d-eb6e-449f-8070-5e066166eedf.docx",
+      "url": "https://d8it4huxumps7.cloudfront.net/uploads/attachements/files/af110e1d-df2a-49f8-ad10-da767104ddbd.docx",
       "file_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      "file_size_bytes": 20071
+      "file_size_bytes": 20600
     }
   ]
 }

@@ -11,13 +11,13 @@
   "location": "Indian Institute of Information Technology, Design and Manufacturing, Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"
@@ -28,7 +28,7 @@
     },
     "gender": "All",
     "same_college_only": false,
-    "registration_deadline": "2026-03-25T00:00:00+05:30"
+    "registration_deadline": "2026-03-28T08:00:00+05:30"
   },
   "organizer": {
     "organisation_name": "IIITDM Kancheepuram",

@@ -2,8 +2,8 @@
   "event_id": "1640787",
   "url": "https://unstop.com/competitions/savara-flagship-quiz-savara-iiitdm-kancheepuram-1640787",
   "event_name": "Savāra Flagship Quiz",
-  "event_banner": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/699978158a8b6_savara-flagship-quiz.png",
-  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/mobile_banner/6999781d9612c_savara-flagship-quiz.png",
+  "event_banner": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/69b9b3a930ee0_savara-flagship-quiz.png",
+  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/mobile_banner/69b9b3a24abf4_savara-flagship-quiz.png",
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-698dea9f489f0_quize_club__quriosity_club____1_.png",
   "description_html": "<p><strong data-start=\"0\" data-end=\"29\">IIITDM-K&rsquo;s Flagship Fest:</strong></p>\n<ul data-start=\"33\" data-end=\"669\" data-is-only-node=\"\" data-is-last-node=\"\">\n<li data-start=\"33\" data-end=\"106\">Welcome to IIITDM-K&rsquo;s Flagship fest organised by Quriosity Quiz Club.</li>\n<li data-start=\"108\" data-end=\"204\">The quiz consists of a prelims round and a finals round where top 6 teams make it to finals.</li>\n<li data-start=\"206\" data-end=\"413\">Quiz topics are wide and varied ranging from sports, history, culture, contemporary, literature etc... with many finding inspiration from the theme &ldquo;Chrono-sync- a moment where the future meets the past&rdquo;</li>\n<li data-start=\"415\" data-end=\"580\">Connections ought to be made as most questions involve well known things, phenomenon and events with just additional twists in the question to put you off track.</li>\n<li data-start=\"582\" data-end=\"669\" data-is-last-node=\"\">Quiz organisers will have all final say in decisions and will be binding on the spot.</li>\n</ul>",
   "start_date": "2026-02-12T00:00:00+05:30",
@@ -11,13 +11,13 @@
   "location": "Indian Institute of Information Technology, Design and Manufacturing Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"
@@ -46,8 +46,8 @@
   },
   "prizes": {
     "winner": {
-      "label": "Top 3 Teams will be awarded from the total Prize pool of 15 K",
-      "value": "INR 15,000",
+      "label": "Top 3 Teams will be awarded from the total Prize pool of 18 K",
+      "value": "INR 18,000",
       "certificate": true
     },
     "runner_up": null,

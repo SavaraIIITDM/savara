@@ -11,14 +11,14 @@
   "location": "Indian Institute of Information Technology Design and Manufacturing, Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
+      "School Students",
       "Management",
-      "Arts, Commerce, Sciences & Others",
-      "Law",
       "Medical",
-      "School Students"
+      "Law",
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students",

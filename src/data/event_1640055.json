@@ -7,17 +7,17 @@
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-698caa5c1726b_cybersecurity_club_logo.jpg",
   "description_html": "<p>A two-round individual competition designed to test both aesthetic design skills and practical Linux problem-solving ability. Participants compete in a desktop customization challenge followed by a live scripting challenge.</p>\n<p><strong>Theme will be the official fest theme</strong></p>\n<p>Design must meaningfully reflect the theme (color, mood, workflow, or concept)</p>\n<p><strong>Allowed:</strong></p>\n<ul>\n<li>Any Linux distribution</li>\n<li>Any window manager or desktop environment</li>\n<li>Custom GTK/QT themes, status bars, widgets, scripts, animations</li>\n<li>Modified dotfiles from others with proper credit</li>\n<li>Open-source tools and assets</li>\n</ul>\n<p><strong>Submission Requirements:</strong></p>\n<ul>\n<li>Screenshots:</li>\n<li>Screen recording</li>\n<li>Dotfiles repository with README, setup steps, dependencies, and credits</li>\n<li>Design write-up (300&ndash;500 words)</li>\n</ul>\n<p><strong>Competition Structure:<br /></strong></p>\n<ul>\n<li>Round 1: Linux Ricing (Online)</li>\n<li>Round 2: Linux Scripting (Offline / Physical)</li>\n</ul>\n<p><strong>Requirements:</strong><strong>&nbsp;</strong></p>\n<ul>\n<li>One laptop per person with Ethernet support</li>\n<li>USB-to-Ethernet adapter if required</li>\n<li>Exclusively use linux distribution</li>\n</ul>",
   "start_date": "2026-02-11T00:00:00+05:30",
-  "end_date": "2026-03-28T13:51:00+05:30",
+  "end_date": "2026-03-31T17:00:00+05:30",
   "location": "IIITDM Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"

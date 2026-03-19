@@ -2,18 +2,18 @@
   "event_id": "1648423",
   "url": "https://unstop.com/hackathons/algoxchange-savara-iiitdm-kancheepuram-1648423",
   "event_name": "AlgoXchange",
-  "event_banner": "",
-  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/lambda-pdfs/opportunity-bannerImages/1772083651.png",
+  "event_banner": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/69b9b27ae9538_algoxchange.png",
+  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/mobile_banner/69b9b276e0c76_algoxchange.png",
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-699f290f9003c_cs_club_logo.png",
   "description_html": "<p>AlgoXchange is a competitive coding contest conducted over two rounds. Teams use an initial pool of points to unlock coding problems, solve them for profit, and make real-time decisions to maximize their net balance. The event emphasizes problem-solving skills, time management, and strategic planning.</p>\n<h2 data-start=\"679\" data-end=\"694\">Event Format</h2>\n<ul>\n<li data-start=\"696\" data-end=\"820\">The competition will be conducted in<strong> </strong>two rounds, where team performance and accumulated points determine final rankings.</li>\n</ul>\n<h3 data-start=\"822\" data-end=\"852\">Round 1:&nbsp;</h3>\n<ul>\n<li data-start=\"855\" data-end=\"918\">Each team starts with 1000 points as their initial balance.</li>\n<li data-start=\"921\" data-end=\"970\">A list of coding problems will be available with:</li>\n<li data-start=\"975\" data-end=\"991\">Difficulty level</li>\n<li data-start=\"996\" data-end=\"1007\">Unlock cost</li>\n<li data-start=\"1012\" data-end=\"1024\">Profit value</li>\n<li data-start=\"1029\" data-end=\"1051\">Estimated solving time</li>\n<li data-start=\"1054\" data-end=\"1097\">Teams must spend points to unlock problems.</li>\n<li data-start=\"1100\" data-end=\"1176\">Upon correct solution verification, profits are added to the team&rsquo;s balance.</li>\n<li data-start=\"1179\" data-end=\"1220\">No eliminations take place in this round.</li>\n<li data-start=\"1223\" data-end=\"1262\">Team balances carry forward to Round 2.</li>\n</ul>\n<h3 data-start=\"1264\" data-end=\"1294\">Round 2:</h3>\n<ul data-start=\"1295\" data-end=\"1488\">\n<li data-start=\"1295\" data-end=\"1359\">\n<p data-start=\"1297\" data-end=\"1359\">Teams continue solving problems using their remaining balance.</p>\n</li>\n<li data-start=\"1360\" data-end=\"1428\">\n<p data-start=\"1362\" data-end=\"1428\">Strategic decision-making and time efficiency play a crucial role.</p>\n</li>\n<li data-start=\"1429\" data-end=\"1488\">\n<p data-start=\"1431\" data-end=\"1488\">Final rankings are determined based on total net balance.</p>\n</li>\n</ul>\n<h2 data-start=\"1495\" data-end=\"1516\">Problem Categories</h2>\n<div class=\"TyagGW_tableContainer\">\n<p><strong>Difficulty Levels:</strong></p>\n<p>Difficulty: Easy</p>\n<ul>\n<li>Cost: 100</li>\n<li>Profit: 150</li>\n<li>Estimated Time: 10 minutes</li>\n</ul>\n<p>Difficulty: Medium</p>\n<ul>\n<li>Cost: 250</li>\n<li>Profit: 400</li>\n<li>Estimated Time: 20 minutes</li>\n</ul>\n<p>Difficulty: Hard</p>\n<ul>\n<li>Cost: 400</li>\n<li>Profit: 750</li>\n<li>Estimated Time: 30 minutes</li>\n</ul>\n</div>\n<h2 data-start=\"1943\" data-end=\"1964\">Rules &amp; Guidelines:</h2>\n<ul>\n<li>Solutions will be verified by moderators before awarding profits.</li>\n<li data-start=\"2096\" data-end=\"2142\">Incorrect submissions will not receive points.</li>\n<li data-start=\"2145\" data-end=\"2191\">All problem purchases are final once recorded.</li>\n<li data-start=\"2194\" data-end=\"2278\">Any unfair practices or use of unauthorized assistance may lead to disqualification.</li>\n<li data-start=\"2281\" data-end=\"2336\">The decision of the organizing committee will be final.</li>\n</ul>\n<p><strong>Evaluation Criteria:</strong></p>\n<ul>\n<li>Teams will be ranked based on:</li>\n<li data-start=\"2400\" data-end=\"2445\">Final net balance at the end of the contest</li>\n<li data-start=\"2449\" data-end=\"2480\">Time efficiency&nbsp;</li>\n<li data-start=\"2484\" data-end=\"2521\">Number of correctly solved problems</li>\n</ul>\n<p><strong>Skills Tested:</strong></p>\n<ul>\n<li data-start=\"2547\" data-end=\"2569\">Algorithmic Thinking</li>\n<li data-start=\"2572\" data-end=\"2597\">Competitive Programming</li>\n<li data-start=\"2600\" data-end=\"2627\">Strategic Decision Making</li>\n<li data-start=\"2630\" data-end=\"2647\">Time Management</li>\n<li data-start=\"2650\" data-end=\"2670\">Team Collaboration</li>\n</ul>",
   "start_date": "2026-02-25T00:00:00+05:30",
-  "end_date": "2026-03-29T18:00:00+05:30",
+  "end_date": "2026-03-31T13:00:00+05:30",
   "location": "Indian Institute of Information Technology, Design and Manufacturing, Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
+      "Engineering Students",
       "Postgraduate",
-      "Engineering Students"
+      "Undergraduate"
     ],
     "sectors": [
       "students"
@@ -24,7 +24,7 @@
     },
     "gender": "All",
     "same_college_only": false,
-    "registration_deadline": "2026-03-25T00:00:00+05:30"
+    "registration_deadline": "2026-03-31T08:00:00+05:30"
   },
   "organizer": {
     "organisation_name": "IIITDM Kancheepuram",

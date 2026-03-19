@@ -2,8 +2,8 @@
   "event_id": "1639340",
   "url": "https://unstop.com/events/solos-vocals-and-instrumental-savara-iiitdm-kancheepuram-1639340",
   "event_name": "Solos : Vocals and Instrumental",
-  "event_banner": "",
-  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/lambda-pdfs/opportunity-bannerImages/1770998821.png",
+  "event_banner": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/69b9af2ae86db_solos-vocals-and-instrumental.png",
+  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/mobile_banner/69b9af1f784d6_solos-vocals-and-instrumental.png",
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-698b4c1a9f557_music-club-logo.jpeg",
   "description_html": "<p>This event is about individuality &ndash; how you interpret a song and connect with the audience using just your voice. It is all about how you make a song your own and make it shine in your own style.<br />Participants can use an instrumental backing track. Judges will focus on pitch, dynamics, expression, clarity, and stage presence.</p>\n<p><strong>Rules and Guidelines:</strong></p>\n<p><strong>Preliminary Round:</strong></p>\n<ul data-start=\"702\" data-end=\"1019\">\n<li data-start=\"702\" data-end=\"820\">Each Participant Is Required to Submit a Pre-Recorded Vocal Performance as Part of The Initial Selection Process.</li>\n<li data-start=\"821\" data-end=\"892\">The Submitted Recording Should Not Exceed a Duration of 2 Minutes.</li>\n<li data-start=\"893\" data-end=\"1019\">Participants Are Encouraged to Ensure that The Recording Is of Good Quality, with Minimal Background Noise and Clear Audio.</li>\n</ul>\n<p><strong>Final Round:</strong></p>\n<ul data-start=\"1043\" data-end=\"1661\">\n<li data-start=\"1043\" data-end=\"1134\">Finalists Selected from The Preliminary Round Will Compete in A Live Performance Round.</li>\n<li data-start=\"1135\" data-end=\"1233\">Each Finalist Will Be Given a Maximum of 5 Minutes to Showcase Their Vocal Abilities on Stage.</li>\n<li data-start=\"1234\" data-end=\"1349\">Participants May Bring Any Musical Instruments They Wish to Use as Self-Accompaniment During Their Performance.</li>\n<li data-start=\"1350\" data-end=\"1426\">Participants May Also Use Backing Karaoke Tracks with No Backing Vocals.</li>\n<li data-start=\"1427\" data-end=\"1529\">All Performances Must Be Strictly Live, with No Use of Pre-Recorded Vocals or Instrumental Tracks.</li>\n<li data-start=\"1530\" data-end=\"1661\">Participants Are Encouraged to Showcase Their Unique Vocal Style and Stage Presence While Adhering to The Given Time Constraints.</li>\n</ul>\n<p><strong>Solo Instrumental:</strong></p>\n<ul>\n<li>An Instrumental Performance Event Where Musicians Present a Solo Piece on An Instrument of Their Choice. Any Style Is Welcome &ndash; Classical, Contemporary, or Fusion.</li>\n<li>Evaluation Will Be Based on Technique, Musicality, Rhythm, and Overall Presentation. This Is a Space for Musicians Who Communicate Through Sound Rather than Lyrics.</li>\n</ul>\n<p><strong>Rules and Guidelines:</strong></p>\n<p><strong>Preliminary Round:</strong></p>\n<ul data-start=\"2074\" data-end=\"2505\">\n<li data-start=\"2074\" data-end=\"2198\">Each Participant Is Required to Submit a Pre-Recorded Instrumental Performance as Part of The Initial Selection Process.</li>\n<li data-start=\"2199\" data-end=\"2265\">The Submitted Recording Must Not Exceed 3 Minutes in Duration.</li>\n<li data-start=\"2266\" data-end=\"2389\">Participants Are Advised to Ensure Good Audio Quality, with Minimal Background Noise and Clear Sound of The Instrument.</li>\n<li data-start=\"2390\" data-end=\"2505\">Submissions Will Be Evaluated Based on Musical Technicality, Timing, Expression, and Overall Performance Quality.</li>\n</ul>\n<p><strong>Final Round:</strong></p>\n<ul data-start=\"2529\" data-end=\"2950\">\n<li data-start=\"2529\" data-end=\"2626\">Participants Shortlisted from The Preliminary Round Will Advance to A Live Performance Round.</li>\n<li data-start=\"2627\" data-end=\"2716\">Each Finalist Will Be Allotted a Maximum of 5 Minutes for Their On-Stage Performance.</li>\n<li data-start=\"2717\" data-end=\"2796\">Participants Must Bring Their Own Instruments. a Drum Kit Will Be Provided.</li>\n<li data-start=\"2797\" data-end=\"2950\">Participants are encouraged to demonstrate their technical proficiency, musical expression, and stage presence while adhering to the given time limits.</li>\n</ul>",
   "start_date": "2026-02-10T00:00:00+05:30",
@@ -11,13 +11,13 @@
   "location": "IIITDM Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"

@@ -2,8 +2,8 @@
   "event_id": "1640026",
   "url": "https://unstop.com/events/spotlight-savara-iiitdm-kancheepuram-1640026",
   "event_name": "Spotlight",
-  "event_banner": "",
-  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/lambda-pdfs/opportunity-bannerImages/1770824028.png",
+  "event_banner": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/69b9ae742a2f1_spotlight.png",
+  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/mobile_banner/69b9ae6fe9e44_spotlight.png",
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-698c9fb383251_dance.jpeg",
   "description_html": "<p>Spotlight is a solo dance competition conducted as part of SAMGATHA Fest, giving dancers a platform to showcase their talent, expression, and stage presence.</p>\n<p><strong>Number of Rounds:</strong></p>\n<ul>\n<li>2 Rounds</li>\n</ul>\n<p><strong>Round 1: Prelims (Online):</strong></p>\n<ul data-start=\"495\" data-end=\"626\">\n<li data-start=\"495\" data-end=\"587\">Participants must submit a dance performance video of 1&ndash;2 minutes during registration.</li>\n<li data-start=\"588\" data-end=\"626\">This round will be evaluated online.</li>\n</ul>\n<p><strong>Round 2: Finals (Offline):</strong></p>\n<ul data-start=\"662\" data-end=\"890\">\n<li data-start=\"662\" data-end=\"720\">Shortlisted participants will perform live on stage.</li>\n<li data-start=\"721\" data-end=\"761\">Performance duration: 3&ndash;5 minutes.</li>\n<li data-start=\"762\" data-end=\"824\">Participants may perform to any song(s) of their choice.</li>\n<li data-start=\"825\" data-end=\"890\">The final round will be conducted during the Savara Fest.</li>\n</ul>\n<p><strong>Qualification &amp; Communication:</strong></p>\n<ul data-start=\"933\" data-end=\"1205\">\n<li data-start=\"933\" data-end=\"1037\">Participants qualified for the final round will be notified via email or WhatsApp before the fest.</li>\n<li data-start=\"1038\" data-end=\"1126\">Qualified participants will be given a designated time slot for their performance.</li>\n<li data-start=\"1127\" data-end=\"1205\">Failure to perform at the allotted time will result in disqualification.</li>\n</ul>\n<p><strong>Important Guidelines &amp; Notes:</strong></p>\n<ul data-start=\"1246\" data-end=\"1636\">\n<li data-start=\"1246\" data-end=\"1316\">A valid event/fest pass is mandatory to participate and perform.</li>\n<li data-start=\"1317\" data-end=\"1378\">No props or costumes will be provided by the institute.</li>\n<li data-start=\"1379\" data-end=\"1429\">The time limit includes prop setup on stage.</li>\n<li data-start=\"1430\" data-end=\"1502\">Participants must not spoil the stage or exceed the allotted time.</li>\n<li data-start=\"1503\" data-end=\"1574\">The institute is not responsible for any issues with audio files.</li>\n<li data-start=\"1575\" data-end=\"1636\">Participants must arrive on time for the offline round.</li>\n</ul>\n<p><strong>Disqualification:</strong></p>\n<ul data-start=\"1665\" data-end=\"1786\">\n<li data-start=\"1665\" data-end=\"1691\">Exceeding the time limit</li>\n<li data-start=\"1692\" data-end=\"1740\">Not reporting at the assigned performance slot</li>\n<li data-start=\"1741\" data-end=\"1786\">Failure to follow stage or event guidelines</li>\n</ul>",
   "start_date": "2026-02-11T00:00:00+05:30",
@@ -11,13 +11,13 @@
   "location": "IIITDM Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"
@@ -40,6 +40,12 @@
         "name": "Contact",
         "email": "fest@iiitdm.ac.in",
         "phone": "+917207502716",
+        "designation": null
+      },
+      {
+        "name": "YENIGALLA SUBHASREE",
+        "email": "cs23b1079@iiitdm.ac.in",
+        "phone": "+916303701925",
         "designation": null
       }
     ]

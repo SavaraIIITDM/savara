@@ -2,8 +2,8 @@
   "event_id": "1639367",
   "url": "https://unstop.com/competitions/robo-soccer-savara-iiitdm-kancheepuram-1639367",
   "event_name": "Robo-Soccer",
-  "event_banner": "",
-  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/lambda-pdfs/opportunity-bannerImages/1772645302.png",
+  "event_banner": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/69b9b1d538957_robo-soccer.png",
+  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/mobile_banner/69b9b1cfe5b42_robo-soccer.png",
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-698b5899801ce_shunya_logo_1.png",
   "description_html": "<p><span style=\"font-weight: 400;\">Teams are required to design and build a manually controlled Robot-Soccer bot 1 (or 2). One is a Striker, and the other is a Goalkeeper. The bot must be capable of pushing the ball into the opponent's goal without using any gripping mechanisms. The teams are also required to submit a video of their bots in motion through unstop.</span></p>\n<p><strong>Gameplay:&nbsp;</strong></p>\n<ul>\n<li><span style=\"font-weight: 400;\"> At the beginning of each half, the ball will be positioned at the center of the center circle. One robot must be stationed at the goalpost, while the other should be placed at the halfway point of the half in the arena.&nbsp;</span></li>\n<li><span style=\"font-weight: 400;\"> The attacking team will begin the game with a striker bot while the defending team's robot will wait till the attacker team starts.&nbsp;</span></li>\n<li><span style=\"font-weight: 400;\"> After each goal, the ball will be placed within the center circle, with both team's robots positioned above. The scoring team will defend while the other will attack.&nbsp;</span></li>\n<li><span style=\"font-weight: 400;\"> Each match will have two halves, with the duration depending on the stage of the competition: o Initial knockout matches: 2 minutes per half o Quarter-finals and Semi-finals: 3 minutes per half o Final: 4 minutes per half&nbsp;</span></li>\n<li><span style=\"font-weight: 400;\"> In the event of a penalty, then the other team will be attacking&nbsp;</span></li>\n<li><span style=\"font-weight: 400;\"> In case of a draw, the tiebreaker will proceed as follows: o An additional 1-minute period will be provided, during which no bonuses will be considered. o The game will restart at the beginning of the half, and both robots may enter the center circle once play begins. o The team that scores more points will win.&nbsp;</span></li>\n<li><span style=\"font-weight: 400;\"> If no winner is determined after the tiebreaker (maximum time of 2 minutes), the golden goal rule will be applied. The first team to score will be declared the winner. If a foul is committed during this phase, the opposing team will be declared the winner.&nbsp;</span></li>\n<li><span style=\"font-weight: 400;\"> If a team achieves a lead of 12 points, it will be immediately declared the winner of the match. </span></li>\n</ul>",
   "start_date": "2026-02-10T00:00:00+05:30",
@@ -11,13 +11,13 @@
   "location": "IIITDM Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"

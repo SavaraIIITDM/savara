@@ -2,8 +2,8 @@
   "event_id": "1640033",
   "url": "https://unstop.com/events/groovy-moovy-savara-iiitdm-kancheepuram-1640033",
   "event_name": "Groovy Moovy",
-  "event_banner": "",
-  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/lambda-pdfs/opportunity-bannerImages/1770825347.png",
+  "event_banner": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/69b9b12011aa6_groovy-moovy.png",
+  "event_banner_mobile": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/mobile_banner/69b9b12576170_groovy-moovy.png",
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-698ca2098c680_dance.jpeg",
   "description_html": "<p data-start=\"235\" data-end=\"364\">Groovy Moovy is a high-energy group dance competition that celebrates teamwork, coordination, creativity, and stage presence.</p>\n<p><strong>Team Size:</strong></p>\n<ul data-start=\"387\" data-end=\"422\">\n<li data-start=\"387\" data-end=\"422\">2 to 15 participants per team</li>\n</ul>\n<p><strong>Number of Rounds:</strong></p>\n<ul>\n<li data-start=\"452\" data-end=\"464\">2 Rounds</li>\n</ul>\n<p><strong data-start=\"496\" data-end=\"525\">Round 1: Prelims (Online):</strong></p>\n<ul data-start=\"526\" data-end=\"701\">\n<li data-start=\"526\" data-end=\"602\">Teams must submit a group dance performance video during registration.</li>\n<li data-start=\"603\" data-end=\"660\">The video must include all registered team members.</li>\n<li data-start=\"661\" data-end=\"701\">Performance duration: 1&ndash;2 minutes.</li>\n</ul>\n<p><strong data-start=\"707\" data-end=\"736\">Round 2: Finals (Offline):</strong></p>\n<ul data-start=\"737\" data-end=\"983\">\n<li data-start=\"737\" data-end=\"788\">Shortlisted teams will perform live on stage.</li>\n<li data-start=\"789\" data-end=\"828\">Teams may perform to any song(s).</li>\n<li data-start=\"829\" data-end=\"881\">Single unified performance by the entire team.</li>\n<li data-start=\"882\" data-end=\"922\">Performance duration: 4&ndash;7 minutes.</li>\n<li data-start=\"923\" data-end=\"983\">The final round will be held during the Savara Fest.</li>\n</ul>\n<p><strong>Qualification &amp; Communication:</strong></p>\n<ul data-start=\"1026\" data-end=\"1277\">\n<li data-start=\"1026\" data-end=\"1123\">Teams qualified for the final round will be notified via email or WhatsApp before the fest.</li>\n<li data-start=\"1124\" data-end=\"1198\">Qualified teams will be assigned a designated performance time slot.</li>\n<li data-start=\"1199\" data-end=\"1277\">Failure to perform at the allotted time will result in disqualification.</li>\n</ul>\n<p><strong>Important Guidelines &amp; Notes:</strong></p>\n<ul data-start=\"1318\" data-end=\"1695\">\n<li data-start=\"1318\" data-end=\"1388\">A valid event/fest pass is mandatory to participate and perform.</li>\n<li data-start=\"1389\" data-end=\"1450\">No props or costumes will be provided by the institute.</li>\n<li data-start=\"1451\" data-end=\"1501\">The time limit includes prop setup on stage.</li>\n<li data-start=\"1502\" data-end=\"1567\">Teams must not spoil the stage or exceed the allotted time.</li>\n<li data-start=\"1568\" data-end=\"1633\">The institute is not responsible for any audio file errors.</li>\n<li data-start=\"1634\" data-end=\"1695\">Participants must arrive on time for the offline round.</li>\n</ul>\n<p><strong>Disqualification:</strong></p>\n<ul data-start=\"1724\" data-end=\"1834\">\n<li data-start=\"1724\" data-end=\"1752\">Exceeding the time limit</li>\n<li data-start=\"1753\" data-end=\"1794\">Missing the assigned performance slot</li>\n<li data-start=\"1795\" data-end=\"1834\">Violating stage or event guidelines</li>\n</ul>",
   "start_date": "2026-02-11T00:00:00+05:30",
@@ -11,13 +11,13 @@
   "location": "IIITDM Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"
@@ -40,6 +40,12 @@
         "name": "Contact",
         "email": "fest@iiitdm.ac.in",
         "phone": "+917207502716",
+        "designation": null
+      },
+      {
+        "name": "YENIGALLA SUBHASREE",
+        "email": "cs23b1079@iiitdm.ac.in",
+        "phone": "+916303701925",
         "designation": null
       }
     ]

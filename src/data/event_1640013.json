@@ -7,13 +7,13 @@
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-698ca183b2c27_cybersecurity_club_logo.jpg",
   "description_html": "<p><strong>About the Event:</strong></p>\n<ul>\n<li>A Capture The Flag competition where participants hack a vulnerable virtual machine to obtain flags</li>\n<li>Focuses on practical penetration testing skills</li>\n<li>Participants work on exploiting vulnerabilities in a controlled environment</li>\n</ul>\n<p><strong>Mode and Duration:</strong></p>\n<ul>\n<li>Mode: Offline</li>\n<li>Duration: 12 hours</li>\n<li>Inter-college team members are allowed</li>\n</ul>\n<p><strong>System Requirements:</strong></p>\n<ul>\n<li>Laptop with VirtualBox installed</li>\n<li>Attacker virtual machine such as Kali Linux or Parrot OS recommended</li>\n<li>Ability to configure isolated virtual machine networking</li>\n</ul>\n<p><strong>Guidelines:</strong></p>\n<ul>\n<li>Bring your own device and extension box</li>\n<li>The challenge virtual machine must run in an isolated network</li>\n<li>SecureBoot is not allowed</li>\n</ul>\n<p><strong>Key Rules:</strong></p>\n<ul>\n<li>Do not attack the scoreboard</li>\n<li>Do not share flags as they are unique and one-time use</li>\n</ul>",
   "start_date": "2026-02-25T00:00:00+05:30",
-  "end_date": "2026-03-29T15:01:00+05:30",
+  "end_date": "2026-03-28T21:00:00+05:30",
   "location": "IIITDM Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [

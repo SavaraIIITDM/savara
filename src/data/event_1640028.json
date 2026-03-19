@@ -7,13 +7,13 @@
   "event_logo": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-698ca05f75ff9_club_logo-removebg-preview__1___1__-_developers_club_iiitdm.png",
   "description_html": "<p><strong>Backend Breakdown &ndash; Offline Hackathon:</strong></p>\n<ul>\n<li>Mode: Offline (No internet or AI tools allowed)</li>\n<li>Duration: 90 minutes</li>\n<li>Team Size: Solo or teams of up to 2 members</li>\n</ul>\n<p><strong>Event Overview:</strong><br />Backend Breakdown is a hands-on technical hackathon focused on debugging and restoring backend systems under strict time constraints. The event is designed to test practical backend engineering skills in a real-world simulation environment.</p>\n<p>Participants will receive:</p>\n<ul>\n<li>A partially broken backend project</li>\n<li>Frontend files</li>\n<li>A pre-configured local database</li>\n</ul>\n<p>The goal is to identify bugs, fix misconfigurations, resolve server issues, and make the backend fully functional within 90 minutes.</p>\n<p><strong>Key Highlights:</strong></p>\n<ul>\n<li>Fully offline environment</li>\n<li>No internet access</li>\n<li>No AI tools permitted</li>\n<li>Only reference materials provided by organizers can be used</li>\n</ul>\n<p><strong>Judging Criteria:</strong></p>\n<ul>\n<li>Successful server execution</li>\n<li>API correctness and response handling</li>\n<li>Proper database operations</li>\n<li>Configuration fixes</li>\n<li>Code quality and structure</li>\n</ul>",
   "start_date": "2026-02-11T00:00:00+05:30",
-  "end_date": "2026-03-30T15:30:00+05:30",
+  "end_date": "2026-03-30T13:00:00+05:30",
   "location": "Indian Institute of Information Technology Design and Manufacturing (IIITDM) Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
@@ -54,5 +54,12 @@
     },
     "second_runner_up": null
   },
-  "attachments": []
+  "attachments": [
+    {
+      "name": "Backend Breakdown Rulebook.docx",
+      "url": "https://d8it4huxumps7.cloudfront.net/uploads/attachements/files/9a64b75b-1cf1-49ed-a751-89bf33639b0e.docx",
+      "file_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "file_size_bytes": 29547
+    }
+  ]
 }

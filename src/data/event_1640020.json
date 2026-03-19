@@ -11,13 +11,13 @@
   "location": "IIITDM Kancheepuram",
   "eligibility": {
     "eligible_for": [
-      "Undergraduate",
-      "Postgraduate",
       "Engineering Students",
+      "Postgraduate",
+      "Undergraduate",
       "Management",
-      "Arts, Commerce, Sciences & Others",
+      "Medical",
       "Law",
-      "Medical"
+      "Arts, Commerce, Sciences & Others"
     ],
     "sectors": [
       "students"
@@ -35,20 +35,7 @@
     "organisation_url": "https://unstop.com/c/iiitdm-kancheepuram-recruiter-career-interview-selection-process-job-profile-articles-videos-1161222",
     "created_by_name": "Savaara IIITDM",
     "created_by_email": "fest@iiitdm.ac.in",
-    "contacts": [
-      {
-        "name": "Nishant",
-        "email": "cs23i1002@iiitdm.ac.in",
-        "phone": "+916385162752",
-        "designation": null
-      },
-      {
-        "name": "Anurag",
-        "email": "cs23b1062@iiitdm.ac.in",
-        "phone": "+917236090923",
-        "designation": null
-      }
-    ]
+    "contacts": []
   },
   "prizes": {
     "winner": null,

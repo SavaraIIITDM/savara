@@ -86,7 +86,7 @@
   {
     "name": "Robowars - 8KG",
     "team_min_size": 1,
-    "team_max_size": 8,
+    "team_max_size": 10,
     "slug": "robowars-8kg"
   },
   {
