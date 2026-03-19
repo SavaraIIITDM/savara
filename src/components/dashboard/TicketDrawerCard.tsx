@@ -1,8 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import Image from "next/image";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 type PerkItem = {
   perk_id: string;
@@ -20,167 +28,399 @@ type TicketDrawerCardProps = {
   onRequestHide?: () => void;
 };
 
+// ─── Constants ────────────────────────────────────────────────────────────────
+
 const PEEK_HEIGHT = 86;
-const VERTICAL_THRESHOLD = 0.25;
-const FLIP_THRESHOLD = 0.3;
 const ART_ASPECT = 708 / 1372;
 
-function easeOutCubic(t: number) {
-  return 1 - Math.pow(1 - t, 3);
+// Dismiss: if dragged down more than this fraction of card height, or velocity exceeds this px/ms
+const DISMISS_RATIO = 0.28;
+const DISMISS_VELOCITY = 0.55; // px/ms — flick threshold
+
+// Flip: if dragged more than this fraction of card width, commit the flip
+const FLIP_RATIO = 0.28;
+const FLIP_VELOCITY = 0.45;
+
+// ─── Easing ───────────────────────────────────────────────────────────────────
+
+function easeOutExpo(t: number): number {
+  return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
 }
 
-function animateTo({
-  from,
-  to,
-  duration,
-  onFrame,
-  onComplete,
-}: {
-  from: number;
-  to: number;
-  duration: number;
-  onFrame: (value: number) => void;
-  onComplete?: () => void;
-}) {
-  if (typeof window === "undefined") {
-    onFrame(to);
-    onComplete?.();
-    return;
-  }
+// ─── Spring-style animator ────────────────────────────────────────────────────
+// Returns a cancel function. All state is kept in refs — no React setState during RAF ticks.
 
-  const start = window.performance.now();
+function springTo(
+  fromRef: { current: number },
+  to: number,
+  durationMs: number,
+  onFrame: (v: number) => void,
+  onDone?: () => void,
+): () => void {
+  let rafId = 0;
+  let startTime = 0;
+  const from = fromRef.current;
 
   const tick = (now: number) => {
-    const elapsed = now - start;
-    const progress = Math.min(1, elapsed / duration);
-    const eased = easeOutCubic(progress);
-    onFrame(from + (to - from) * eased);
-
-    if (progress < 1) {
-      window.requestAnimationFrame(tick);
-      return;
+    if (!startTime) startTime = now;
+    const elapsed = now - startTime;
+    const t = Math.min(1, elapsed / durationMs);
+    const value = from + (to - from) * easeOutExpo(t);
+    fromRef.current = value;
+    onFrame(value);
+    if (t < 1) {
+      rafId = requestAnimationFrame(tick);
+    } else {
+      fromRef.current = to;
+      onFrame(to);
+      onDone?.();
     }
-
-    onComplete?.();
   };
 
-  window.requestAnimationFrame(tick);
+  rafId = requestAnimationFrame(tick);
+  return () => cancelAnimationFrame(rafId);
 }
 
-export function TicketDrawerCard({ visible, displayName, participantType, qrDataUrl, ticketSerial, perks, onRequestHide }: TicketDrawerCardProps) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const dragAxisRef = useRef<"none" | "vertical" | "horizontal">("none");
-  const pointerStartRef = useRef({ x: 0, y: 0 });
-  const pointerDeltaRef = useRef({ x: 0, y: 0 });
-  const drawerStartRef = useRef(0);
-  const flipStartRef = useRef(0);
-  const pointerIdRef = useRef<number | null>(null);
-  const hasInitializedRef = useRef(false);
-  const movedRef = useRef(false);
+// ─── Component ────────────────────────────────────────────────────────────────
 
-  const [cardHeight, setCardHeight] = useState(620);
-  const [cardWidth, setCardWidth] = useState(320);
+export function TicketDrawerCard({
+  visible,
+  displayName,
+  participantType,
+  qrDataUrl,
+  ticketSerial,
+  perks,
+  onRequestHide,
+}: TicketDrawerCardProps) {
+  // ── Dimension refs
+  const cardRef = useRef<HTMLDivElement>(null);
+  const cardDims = useRef({ width: 320, height: 620, hiddenHeight: 534 });
+
+  // ── Animation value refs (source of truth during animations/gestures)
+  const drawerYRef = useRef(0); // 0 = fully open, hiddenHeight = fully closed
+  const flipRef = useRef(0); // 0 = front, 1 = back
+
+  // ── Animation cancel handles
+  const cancelDrawer = useRef<(() => void) | null>(null);
+  const cancelFlip = useRef<(() => void) | null>(null);
+
+  // ── Gesture tracking refs
+  const pointerId = useRef<number | null>(null);
+  const startXY = useRef({ x: 0, y: 0 });
+  const startDrawerY = useRef(0);
+  const startFlip = useRef(0);
+  const axis = useRef<"none" | "vertical" | "horizontal">("none");
+  const lastXY = useRef({ x: 0, y: 0, t: 0 });
+  const velocityRef = useRef({ vx: 0, vy: 0 }); // px/ms
+  const hasMoved = useRef(false);
+
+  // ── React display state (updated from RAF for smooth rendering)
   const [drawerY, setDrawerY] = useState(0);
-  const [flipProgress, setFlipProgress] = useState(0);
-  const [isAnimatingDrawer, setIsAnimatingDrawer] = useState(false);
-  const [isAnimatingFlip, setIsAnimatingFlip] = useState(false);
+  const [flip, setFlip] = useState(0);
   const [isInteracting, setIsInteracting] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [copiedSerial, setCopiedSerial] = useState(false);
   const [downloadPending, setDownloadPending] = useState(false);
+  const initialized = useRef(false);
 
-  const hiddenHeight = Math.max(0, cardHeight - PEEK_HEIGHT);
-  const isOpen = drawerY <= 1;
-  const openRatio = hiddenHeight === 0 ? 1 : 1 - drawerY / hiddenHeight;
+  // ── Compute card dimensions once and on resize
+  const recalcDims = useCallback(() => {
+    const maxH = Math.min(window.innerHeight - 24, 860);
+    const maxW = Math.min(window.innerWidth * 0.94, 430);
+    const w = Math.round(Math.min(maxW, maxH * ART_ASPECT));
+    const h = Math.round(w / ART_ASPECT);
+    const hidden = Math.max(0, h - PEEK_HEIGHT);
+    cardDims.current = { width: w, height: h, hiddenHeight: hidden };
+    return { w, h, hidden };
+  }, []);
 
+  // ── Animate drawer to target (0=open, hiddenHeight=closed)
+  const animateDrawer = useCallback(
+    (to: number, duration = 380, onDone?: () => void) => {
+      cancelDrawer.current?.();
+      cancelDrawer.current = springTo(
+        drawerYRef,
+        to,
+        duration,
+        (v) => {
+          setDrawerY(v);
+          setIsOpen(v <= 2);
+        },
+        () => {
+          setDrawerY(to);
+          setIsOpen(to <= 2);
+          onDone?.();
+        },
+      );
+    },
+    [],
+  );
+
+  // ── Animate flip to target (0=front, 1=back)
+  const animateFlip = useCallback((to: number, duration = 300) => {
+    cancelFlip.current?.();
+    cancelFlip.current = springTo(flipRef, to, duration, setFlip, () =>
+      setFlip(to),
+    );
+  }, []);
+
+  // ── Snap drawer (open/close decision)
+  const snapDrawer = useCallback(
+    (open: boolean) => {
+      const { hiddenHeight } = cardDims.current;
+      animateDrawer(open ? 0 : hiddenHeight);
+    },
+    [animateDrawer],
+  );
+
+  // ── Snap flip (front/back decision)
+  const snapFlip = useCallback(
+    (toBack: boolean) => {
+      animateFlip(toBack ? 1 : 0);
+    },
+    [animateFlip],
+  );
+
+  // ── Init: place card at peeking position before first render
+  useLayoutEffect(() => {
+    const { hidden } = recalcDims();
+    if (!initialized.current) {
+      initialized.current = true;
+      drawerYRef.current = hidden;
+      setDrawerY(hidden);
+      setIsOpen(false);
+    }
+  }, [recalcDims]);
+
+  // ── React to `visible` prop changes
   useEffect(() => {
-    const recalc = () => {
-      const maxHeight = Math.min(window.innerHeight - 24, 860);
-      const maxWidth = Math.min(window.innerWidth * 0.94, 430);
-      const nextWidth = Math.round(Math.min(maxWidth, maxHeight * ART_ASPECT));
-      const nextHeight = Math.round(nextWidth / ART_ASPECT);
-      const nextHidden = Math.max(0, nextHeight - PEEK_HEIGHT);
-      setCardWidth(nextWidth);
-      setCardHeight(nextHeight);
-      setDrawerY((current) => {
-        if (!hasInitializedRef.current) {
-          hasInitializedRef.current = true;
-          return nextHidden;
-        }
+    if (pointerId.current !== null) return; // don't interrupt active gesture
 
-        if (current <= 1 || visible) {
-          return 0;
-        }
-        return nextHidden;
+    const { hiddenHeight } = cardDims.current;
+    if (visible) {
+      animateDrawer(0);
+    } else {
+      animateDrawer(hiddenHeight, 380, () => {
+        // Once closed, snap flip back to front
+        if (flipRef.current > 0.01) animateFlip(0, 260);
       });
+    }
+  }, [visible, animateDrawer, animateFlip]);
+
+  // ── Resize handler
+  useEffect(() => {
+    const onResize = () => {
+      recalcDims();
+      // Reposition card without animation
+      const { hiddenHeight } = cardDims.current;
+      const target = isOpen ? 0 : hiddenHeight;
+      drawerYRef.current = target;
+      setDrawerY(target);
     };
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => window.removeEventListener("resize", onResize);
+  }, [recalcDims, isOpen]);
 
-    recalc();
-    window.addEventListener("resize", recalc);
-    return () => window.removeEventListener("resize", recalc);
-  }, [visible]);
+  // ─── Pointer handlers ─────────────────────────────────────────────────────
 
-  useEffect(() => {
-    if (pointerIdRef.current !== null || isInteracting) {
-      return;
+  const onPointerDown = useCallback(
+    (e: ReactPointerEvent<HTMLDivElement>) => {
+      if (pointerId.current !== null) return;
+
+      // Only block capture if the touch starts inside the scroll area AND the
+      // scroll area itself has scrollable content that has been scrolled — i.e.
+      // the user is genuinely scrolling the back-face content, not trying to
+      // flip or dismiss. We never block horizontal starts here; axis is resolved
+      // in onPointerMove once direction is clear.
+      const target = e.target as HTMLElement;
+      const scrollEl = target.closest<HTMLElement>("[data-scroll-area]");
+      if (scrollEl && isOpen) {
+        // Only defer to native scroll if the element actually has overflow
+        // and is currently scrolled away from top — otherwise let our gesture
+        // handler take over (tap-to-flip, swipe-to-dismiss, swipe-to-flip).
+        const isScrolled = scrollEl.scrollTop > 4;
+        if (isScrolled) return;
+      }
+
+      e.preventDefault();
+      pointerId.current = e.pointerId;
+      startXY.current = { x: e.clientX, y: e.clientY };
+      lastXY.current = { x: e.clientX, y: e.clientY, t: e.timeStamp };
+      startDrawerY.current = drawerYRef.current;
+      startFlip.current = flipRef.current;
+      axis.current = "none";
+      hasMoved.current = false;
+      velocityRef.current = { vx: 0, vy: 0 };
+
+      // Cancel any in-progress animations immediately
+      cancelDrawer.current?.();
+      cancelFlip.current?.();
+
+      setIsInteracting(true);
+      e.currentTarget.setPointerCapture(e.pointerId);
+    },
+    [isOpen],
+  );
+
+  const onPointerMove = useCallback((e: ReactPointerEvent<HTMLDivElement>) => {
+    if (pointerId.current !== e.pointerId) return;
+
+    const dx = e.clientX - startXY.current.x;
+    const dy = e.clientY - startXY.current.y;
+
+    // Track instantaneous velocity
+    const dt = e.timeStamp - lastXY.current.t;
+    if (dt > 0) {
+      velocityRef.current = {
+        vx: (e.clientX - lastXY.current.x) / dt,
+        vy: (e.clientY - lastXY.current.y) / dt,
+      };
+    }
+    lastXY.current = { x: e.clientX, y: e.clientY, t: e.timeStamp };
+
+    // Determine axis lock
+    if (axis.current === "none") {
+      const absX = Math.abs(dx);
+      const absY = Math.abs(dy);
+      if (Math.max(absX, absY) < 6) return; // dead zone
+      hasMoved.current = true;
+      const currentOpenRatio =
+        cardDims.current.hiddenHeight === 0
+          ? 1
+          : 1 - drawerYRef.current / cardDims.current.hiddenHeight;
+      // Only allow horizontal flip when card is substantially open
+      axis.current =
+        absX > absY && currentOpenRatio > 0.6 ? "horizontal" : "vertical";
     }
 
-    setIsAnimatingDrawer(true);
-    animateTo({
-      from: drawerY,
-      to: visible ? 0 : hiddenHeight,
-      duration: 360,
-      onFrame: (value) => setDrawerY(value),
-      onComplete: () => setIsAnimatingDrawer(false),
-    });
-  }, [visible, hiddenHeight, drawerY, isInteracting]);
-
-  useEffect(() => {
-    if (visible || isInteracting || pointerIdRef.current !== null) {
-      return;
+    if (axis.current === "vertical") {
+      const { hiddenHeight } = cardDims.current;
+      // Clamp: can't pull above 0 (add subtle rubber-band for opening past top)
+      const raw = startDrawerY.current + dy;
+      const clamped =
+        raw < 0
+          ? raw * 0.12 // rubber-band upward overshoot
+          : Math.min(raw, hiddenHeight + 40); // allow slight over-pull downward
+      drawerYRef.current = clamped;
+      setDrawerY(clamped);
+      setIsOpen(clamped <= 2);
+    } else {
+      // Horizontal flip drag
+      const { width } = cardDims.current;
+      const ratio = Math.min(1, Math.abs(dx) / width);
+      const isBackStart = startFlip.current >= 0.5;
+      const next = isBackStart ? 1 - ratio : ratio;
+      flipRef.current = next;
+      setFlip(next);
     }
+  }, []);
 
-    const isClosed = hiddenHeight === 0 ? drawerY <= 1 : drawerY >= hiddenHeight - 1;
-    if (!isClosed || flipProgress <= 0.001) {
-      return;
-    }
+  const onPointerEnd = useCallback(
+    (e: ReactPointerEvent<HTMLDivElement>) => {
+      if (pointerId.current !== e.pointerId) return;
 
-    setIsAnimatingFlip(true);
-    animateTo({
-      from: flipProgress,
-      to: 0,
-      duration: 260,
-      onFrame: (value) => setFlipProgress(value),
-      onComplete: () => setIsAnimatingFlip(false),
-    });
-  }, [visible, isInteracting, hiddenHeight, drawerY, flipProgress]);
+      const { vy, vx } = velocityRef.current;
+      const currentAxis = axis.current;
 
-  const ticketTypeLabel = participantType.toUpperCase();
-  const showPerks = participantType === "internal";
-  const visiblePerks = useMemo(() => (showPerks ? perks : []), [perks, showPerks]);
+      // Reset gesture state
+      pointerId.current = null;
+      axis.current = "none";
+      setIsInteracting(false);
+      if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      }
 
-  async function downloadPassImage() {
-    if (downloadPending) {
-      return;
-    }
+      if (!hasMoved.current) {
+        // Tap: toggle flip
+        snapFlip(flipRef.current < 0.5);
+        return;
+      }
 
+      if (currentAxis === "vertical") {
+        const { hiddenHeight } = cardDims.current;
+        const draggedRatio =
+          hiddenHeight === 0 ? 0 : drawerYRef.current / hiddenHeight;
+        const flickDown = vy > DISMISS_VELOCITY;
+        const flickUp = vy < -DISMISS_VELOCITY;
+        const wasOpen = startDrawerY.current <= 2;
+
+        if (wasOpen) {
+          // Dismiss if dragged far enough OR flicked down
+          const shouldDismiss = flickDown || draggedRatio > DISMISS_RATIO;
+          if (shouldDismiss) {
+            // Animate to closed, then call onRequestHide
+            animateDrawer(hiddenHeight, 300, () => {
+              onRequestHide?.();
+            });
+          } else {
+            // Snap back open
+            snapDrawer(true);
+          }
+        } else {
+          // Card was closed; open if flicked up or dragged up significantly
+          const shouldOpen = flickUp || draggedRatio < 1 - DISMISS_RATIO;
+          snapDrawer(shouldOpen);
+        }
+      } else if (currentAxis === "horizontal") {
+        const { width } = cardDims.current;
+        const dx = Math.abs(e.clientX - startXY.current.x);
+        const ratio = Math.min(1, dx / width);
+        const absVx = Math.abs(vx);
+        const isBackStart = startFlip.current >= 0.5;
+
+        const shouldFlip = ratio > FLIP_RATIO || absVx > FLIP_VELOCITY;
+        snapFlip(shouldFlip ? !isBackStart : isBackStart);
+      }
+    },
+    [snapDrawer, snapFlip, animateDrawer, onRequestHide],
+  );
+
+  const copyToClipboard = useCallback(
+    async (text: string): Promise<boolean> => {
+      // navigator.clipboard requires HTTPS + document focus; fall back to execCommand
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch {
+          // fall through to execCommand fallback
+        }
+      }
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.cssText =
+          "position:fixed;top:0;left:0;opacity:0;pointer-events:none";
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return ok;
+      } catch {
+        return false;
+      }
+    },
+    [],
+  );
+
+  const downloadPassImage = useCallback(async () => {
+    if (downloadPending) return;
     setDownloadPending(true);
     try {
       const response = await fetch("/dashboard/ticket/pass", {
         method: "GET",
         credentials: "include",
       });
-
-      if (!response.ok) {
-        throw new Error("pass_download_failed");
-      }
+      if (!response.ok) throw new Error("pass_download_failed");
 
       const blob = await response.blob();
       const objectUrl = URL.createObjectURL(blob);
-
-      const isIOS = /iPad|iPhone|iPod/.test(window.navigator.userAgent);
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       const contentDisposition = response.headers.get("content-disposition");
       const filenameMatch = contentDisposition?.match(/filename="?([^";]+)"?/i);
-      const downloadName = filenameMatch?.[1] ?? `SAVARA_PASS_${ticketSerial}.png`;
+      const downloadName =
+        filenameMatch?.[1] ?? `SAVARA_PASS_${ticketSerial}.png`;
 
       if (!isIOS) {
         const link = document.createElement("a");
@@ -192,270 +432,187 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
       } else {
         window.open(objectUrl, "_blank", "noopener,noreferrer");
       }
-      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
     } catch {
-      window.alert("Unable to generate pass image right now. Please try again.");
+      alert("Unable to generate pass image right now. Please try again.");
     } finally {
       setDownloadPending(false);
     }
-  }
+  }, [downloadPending, ticketSerial]);
 
-  const snapDrawer = (targetOpen: boolean) => {
-    setIsAnimatingDrawer(true);
-    animateTo({
-      from: drawerY,
-      to: targetOpen ? 0 : hiddenHeight,
-      duration: 360,
-      onFrame: (value) => setDrawerY(value),
-      onComplete: () => setIsAnimatingDrawer(false),
-    });
-  };
+  // ─── Derived display values ────────────────────────────────────────────────
 
-  const snapFlip = (targetBackFace: boolean) => {
-    setIsAnimatingFlip(true);
-    animateTo({
-      from: flipProgress,
-      to: targetBackFace ? 1 : 0,
-      duration: 300,
-      onFrame: (value) => setFlipProgress(value),
-      onComplete: () => setIsAnimatingFlip(false),
-    });
-  };
+  const { width: cardWidth, height: cardHeight } = cardDims.current;
+  const ticketTypeLabel = participantType.toUpperCase();
+  const showPerks = participantType === "internal";
+  const isBackFace = flip >= 0.5;
 
-  const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (pointerIdRef.current !== null) {
-      return;
-    }
+  // Opacity: show when visible OR when in peek state
+  const { hiddenHeight } = cardDims.current;
+  const fullyHidden = !visible && !isInteracting && drawerY >= hiddenHeight - 1;
 
-    const target = event.target as HTMLElement | null;
-    const withinScrollArea = target?.closest('[data-ticket-scroll-area="true"]');
-    if (withinScrollArea && isOpen) {
-      return;
-    }
-
-    event.preventDefault();
-    pointerIdRef.current = event.pointerId;
-    pointerStartRef.current = { x: event.clientX, y: event.clientY };
-    pointerDeltaRef.current = { x: 0, y: 0 };
-    drawerStartRef.current = drawerY;
-    flipStartRef.current = flipProgress;
-    dragAxisRef.current = "none";
-    movedRef.current = false;
-    setIsInteracting(true);
-
-    event.currentTarget.setPointerCapture(event.pointerId);
-  };
-
-  const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (pointerIdRef.current !== event.pointerId) {
-      return;
-    }
-
-    const deltaX = event.clientX - pointerStartRef.current.x;
-    const deltaY = event.clientY - pointerStartRef.current.y;
-    pointerDeltaRef.current = { x: deltaX, y: deltaY };
-
-    if (dragAxisRef.current === "none") {
-      const absX = Math.abs(deltaX);
-      const absY = Math.abs(deltaY);
-      if (Math.max(absX, absY) < 8) {
-        return;
-      }
-
-      movedRef.current = true;
-
-      if (absX > absY && openRatio >= 0.65) {
-        dragAxisRef.current = "horizontal";
-      } else {
-        dragAxisRef.current = "vertical";
-      }
-    }
-
-    if (dragAxisRef.current === "vertical") {
-      if (isAnimatingDrawer) {
-        return;
-      }
-      const next = Math.min(hiddenHeight, Math.max(0, drawerStartRef.current + deltaY));
-      setDrawerY(next);
-      return;
-    }
-
-    if (dragAxisRef.current === "horizontal") {
-      if (isAnimatingFlip || !containerRef.current) {
-        return;
-      }
-
-      const width = containerRef.current.clientWidth || 1;
-      const dragRatio = Math.min(1, Math.abs(deltaX) / width);
-      const isBackFaceStart = flipStartRef.current >= 0.5;
-      const next = isBackFaceStart ? 1 - dragRatio : dragRatio;
-      setFlipProgress(next);
-    }
-  };
-
-  const onPointerEnd = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (pointerIdRef.current !== event.pointerId) {
-      return;
-    }
-
-    const axis = dragAxisRef.current;
-    if (axis === "vertical") {
-      const downwardRatio = hiddenHeight === 0 ? 0 : Math.max(0, drawerY) / hiddenHeight;
-      const startedOpen = drawerStartRef.current <= 1;
-      const shouldOpen = startedOpen ? downwardRatio < 0.06 : openRatio > VERTICAL_THRESHOLD;
-      snapDrawer(shouldOpen);
-    }
-
-    if (axis === "horizontal") {
-      const width = containerRef.current?.clientWidth || 1;
-      const dragRatio = Math.min(1, Math.abs(pointerDeltaRef.current.x) / width);
-      const isBackFaceStart = flipStartRef.current >= 0.5;
-      const shouldFlipFace = dragRatio >= FLIP_THRESHOLD;
-      snapFlip(shouldFlipFace ? !isBackFaceStart : isBackFaceStart);
-    }
-
-    if (axis === "none" && !movedRef.current) {
-      const isBackFace = flipProgress >= 0.5;
-      snapFlip(!isBackFace);
-    }
-
-    dragAxisRef.current = "none";
-    pointerIdRef.current = null;
-    setIsInteracting(false);
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId);
-    }
-  };
+  // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
     <section
+      aria-label="Ticket drawer"
       className="pointer-events-none fixed inset-0"
-      style={{
-        zIndex: 20,
-        opacity: visible || isInteracting || isOpen ? 1 : 0,
-        transition: "opacity 180ms ease-out",
-      }}
+      style={{ zIndex: 20 }}
     >
-      {visible && <button type="button" className="pointer-events-auto absolute inset-0" onClick={onRequestHide} aria-label="Close ticket" />}
+      {/* Backdrop tap to close */}
+      {visible && (
+        <button
+          type="button"
+          className="pointer-events-auto absolute inset-0"
+          onClick={onRequestHide}
+          aria-label="Close ticket"
+        />
+      )}
 
-      <div className="absolute inset-x-0 top-12 text-center">
-        {!isInteracting && !isOpen && (
-          <div className="pointer-events-none mx-auto inline-flex flex-col items-center gap-1 text-[10px] uppercase tracking-[0.22em] text-[rgba(245,230,211,0.72)]">
-            <span className="text-xs leading-none animate-[float-gentle_2.1s_ease-in-out_infinite]">^</span>
+      {/* Pull hint */}
+      {!isInteracting && !isOpen && !fullyHidden && (
+        <div
+          className="pointer-events-none absolute inset-x-0 top-10 text-center"
+          aria-hidden="true"
+        >
+          <div className="mx-auto inline-flex flex-col items-center gap-1 text-[10px] uppercase tracking-[0.22em] text-[rgba(245,230,211,0.65)]">
+            <span
+              className="text-xs leading-none"
+              style={{ animation: "floatUp 2s ease-in-out infinite" }}
+            >
+              ↑
+            </span>
             <span>Pull for ticket</span>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
+      {/* Card container — only pointer events when not fully hidden */}
       <div
-        ref={containerRef}
-        className="pointer-events-auto absolute bottom-0 left-1/2"
+        ref={cardRef}
+        className="absolute bottom-0 left-1/2"
         style={{
-          width: `${cardWidth}px`,
-          height: `${cardHeight}px`,
-          transform: `translate(-50%, ${drawerY}px)`,
-          transition: isInteracting || isAnimatingDrawer ? "none" : "transform 360ms cubic-bezier(0.22, 1, 0.36, 1)",
+          width: cardWidth,
+          height: cardHeight,
+          // GPU-composited transform — no layout thrashing
+          transform: `translate3d(-50%, ${drawerY}px, 0)`,
+          willChange: "transform",
           touchAction: "none",
           userSelect: "none",
           WebkitUserSelect: "none",
+          pointerEvents: fullyHidden ? "none" : "auto",
+          // Visibility toggle prevents any paint cost when fully off-screen
+          visibility: fullyHidden ? "hidden" : "visible",
         }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerEnd}
         onPointerCancel={onPointerEnd}
-        onDragStart={(event) => event.preventDefault()}
+        onDragStart={(e) => e.preventDefault()}
       >
-        <div className="absolute inset-0 border border-[rgba(212,165,116,0.45)] bg-[rgba(12,6,11,0.8)] shadow-[0_24px_56px_rgba(0,0,0,0.55)]" />
-        <button
-          type="button"
-          aria-label="Close ticket"
-          className="absolute bottom-3 left-1/2 z-20 grid h-11 w-11 -translate-x-1/2 place-items-center rounded-full border border-[rgba(212,165,116,0.7)] bg-[rgba(10,4,8,0.92)] text-lg font-bold leading-none text-[rgba(245,230,211,0.95)]"
-          style={{ boxShadow: "0 6px 22px rgba(0,0,0,0.45)" }}
-          onPointerDown={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
+        {/* Card shell */}
+        <div
+          className="absolute inset-0 overflow-hidden border border-[rgba(212,165,116,0.45)] bg-[rgba(12,6,11,0.82)]"
+          style={{
+            boxShadow:
+              "0 28px 64px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.4)",
+            borderRadius: 2,
           }}
-          onClick={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            onRequestHide?.();
-          }}
-        >
-          X
-        </button>
+        />
+
+        {/* 3-D flip container */}
         <div
           className="relative h-full w-full overflow-hidden"
-          style={{
-            perspective: "1600px",
-          }}
+          style={{ perspective: "1800px" }}
         >
           <div
             className="relative h-full w-full"
             style={{
               transformStyle: "preserve-3d",
-              transform: `rotateY(${flipProgress * 180}deg)`,
-              transition: isInteracting || isAnimatingFlip ? "none" : "transform 300ms cubic-bezier(0.22, 1, 0.36, 1)",
+              transform: `rotateY(${flip * 180}deg)`,
+              // During active drag, remove CSS transition (we drive it from JS).
+              // When released, apply a short transition for the snap.
+              transition: isInteracting
+                ? "none"
+                : "transform 320ms cubic-bezier(0.16, 1, 0.3, 1)",
+              willChange: "transform",
             }}
           >
-            <article className="absolute inset-0 overflow-hidden" style={{ backfaceVisibility: "hidden" }}>
+            {/* ── FRONT FACE ─────────────────────────────────────────── */}
+            <article
+              className="absolute inset-0 overflow-hidden"
+              style={{
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+              }}
+              aria-hidden={isBackFace}
+            >
               <div className="absolute inset-0 bg-[#1a0f15]">
-                <div className="absolute inset-0">
-                  <Image
-                    src="/ticket_cropped_vertical.webp"
-                    alt="Savara ticket artwork"
-                    fill
-                    sizes="(max-width: 768px) 90vw, 320px"
-                    className="object-cover"
-                    priority
-                    draggable={false}
-                  />
-                </div>
+                <Image
+                  src="/ticket_cropped_vertical.webp"
+                  alt="Savara ticket artwork"
+                  fill
+                  sizes="(max-width: 768px) 90vw, 320px"
+                  className="object-cover"
+                  priority
+                  draggable={false}
+                />
               </div>
 
+              {/* Name strip */}
               <div className="absolute inset-x-0 bottom-0 border-t border-[rgba(212,165,116,0.45)] bg-[linear-gradient(90deg,#e37f1e_0%,#f09431_55%,#d17118_100%)] px-5 py-4 text-[#2f180a]">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em]">Participant</p>
-                <p className="mt-1 truncate text-lg font-bold uppercase leading-none">{displayName}</p>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em]">
+                  Participant
+                </p>
+                <p className="mt-1 truncate text-lg font-bold uppercase leading-none">
+                  {displayName}
+                </p>
                 <div className="mt-2 inline-flex rounded-full border border-[rgba(47,24,10,0.25)] bg-[rgba(255,255,255,0.28)] px-3 py-1 text-[11px] font-bold tracking-[0.14em]">
                   {ticketTypeLabel}
                 </div>
               </div>
             </article>
 
+            {/* ── BACK FACE ──────────────────────────────────────────── */}
             <article
               className="absolute inset-0 overflow-hidden"
-              style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+              style={{
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transform: "rotateY(180deg)",
+              }}
+              aria-hidden={!isBackFace}
             >
+              {/* Warm orange gradient background */}
               <div className="absolute inset-0 bg-[linear-gradient(180deg,#f2a043_0%,#ea8b2a_44%,#df7a1c_100%)]" />
-              <div className="absolute inset-x-0 top-0 h-44 bg-[linear-gradient(180deg,rgba(255,255,255,0.25)_0%,rgba(255,255,255,0)_100%)]" />
+              <div className="absolute inset-x-0 top-0 h-44 bg-[linear-gradient(180deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0)_100%)]" />
               <div className="absolute inset-x-0 top-0 h-px bg-[rgba(255,255,255,0.5)]" />
 
               <div
-                data-ticket-scroll-area="true"
-                className="relative flex h-full flex-col overflow-y-auto px-5 pb-16 pt-6 text-[#2f180a]"
+                data-scroll-area
+                className="relative flex h-full flex-col overflow-y-auto px-5 pb-14 pt-6 text-[#2f180a]"
                 style={{
                   WebkitOverflowScrolling: "touch",
                   overscrollBehavior: "contain",
                 }}
-                onClick={(event) => {
-                  const target = event.target as HTMLElement;
-                  if (target.closest("button, a, input, textarea, select, [role='button']")) {
-                    return;
-                  }
-                  const isBackFace = flipProgress >= 0.5;
-                  snapFlip(!isBackFace);
-                }}
               >
+                {/* Header row */}
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(47,24,10,0.78)]">Ticket Holder</p>
-                    <p className="mt-1 text-xl font-bold uppercase leading-tight">{displayName}</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(47,24,10,0.75)]">
+                      Ticket Holder
+                    </p>
+                    <p className="mt-1 text-xl font-bold uppercase leading-tight">
+                      {displayName}
+                    </p>
                   </div>
-                  <span className="rounded-full border border-[rgba(47,24,10,0.26)] bg-[rgba(255,255,255,0.32)] px-3 py-1 text-[11px] font-bold tracking-[0.12em]">
+                  <span className="shrink-0 rounded-full border border-[rgba(47,24,10,0.26)] bg-[rgba(255,255,255,0.32)] px-3 py-1 text-[11px] font-bold tracking-[0.12em]">
                     {ticketTypeLabel}
                   </span>
                 </div>
 
-                <div className="mt-5 rounded-2xl border border-[rgba(47,24,10,0.18)] bg-white/92 p-3">
+                {/* QR code */}
+                <div className="mt-5 rounded-2xl border border-[rgba(47,24,10,0.18)] bg-white/95 p-3">
                   <Image
                     src={qrDataUrl}
                     alt="Participant ticket QR code"
@@ -466,51 +623,61 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
                   />
                 </div>
 
+                {/* Ticket serial */}
                 <div className="mt-3 flex items-center justify-between gap-3 rounded-md border border-[rgba(47,24,10,0.18)] bg-[rgba(255,255,255,0.45)] px-3 py-2">
                   <div>
-                    <p className="text-[10px] uppercase tracking-[0.16em] text-[rgba(47,24,10,0.72)]">Ticket Serial</p>
-                    <p className="font-mono text-sm font-bold tracking-[0.18em]">{ticketSerial}</p>
+                    <p className="text-[10px] uppercase tracking-[0.16em] text-[rgba(47,24,10,0.72)]">
+                      Ticket Serial
+                    </p>
+                    <p className="font-mono text-sm font-bold tracking-[0.18em]">
+                      {ticketSerial}
+                    </p>
                   </div>
                   <button
                     type="button"
-                    className="rounded-md border border-[rgba(47,24,10,0.28)] bg-[rgba(255,255,255,0.45)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.1em]"
-                    onPointerDown={(event) => {
-                      event.stopPropagation();
-                    }}
-                    onClick={async (event) => {
-                      event.stopPropagation();
+                    className="rounded-md border border-[rgba(47,24,10,0.28)] bg-[rgba(255,255,255,0.45)] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.1em] active:opacity-70"
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onClick={async (e) => {
+                      e.stopPropagation();
                       await navigator.clipboard.writeText(ticketSerial);
                       setCopiedSerial(true);
-                      window.setTimeout(() => setCopiedSerial(false), 1200);
+                      setTimeout(() => setCopiedSerial(false), 1200);
                     }}
                   >
-                    {copiedSerial ? "Copied" : "Copy"}
+                    {copiedSerial ? "Copied!" : "Copy"}
                   </button>
                 </div>
 
+                {/* Download button */}
                 <button
                   type="button"
-                  className="mt-3 inline-flex items-center justify-center rounded-md border border-[rgba(47,24,10,0.25)] bg-[rgba(255,255,255,0.36)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.1em]"
-                  onPointerDown={(event) => {
-                    event.stopPropagation();
-                  }}
-                  onClick={async (event) => {
-                    event.stopPropagation();
+                  className="mt-3 flex w-full items-center justify-center rounded-md border border-[rgba(47,24,10,0.25)] bg-[rgba(255,255,255,0.36)] px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.1em] active:opacity-70"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={async (e) => {
+                    e.stopPropagation();
                     await downloadPassImage();
                   }}
                 >
-                  {downloadPending ? "Preparing..." : "Download Pass PNG"}
+                  {downloadPending ? "Preparing…" : "Download Pass PNG"}
                 </button>
 
+                {/* Perks */}
                 {showPerks && (
                   <div className="mt-5">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(47,24,10,0.78)]">Perks</p>
-                    {visiblePerks.length === 0 ? (
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(47,24,10,0.78)]">
+                      Perks
+                    </p>
+                    {perks.length === 0 ? (
                       <p className="mt-2 text-sm">No perks available.</p>
                     ) : (
-                      <ul className="mt-2 space-y-1 pr-1 pb-2 text-[15px] leading-relaxed">
-                        {visiblePerks.map((perk) => (
-                          <li key={perk.perk_id} className={perk.attended ? "line-through opacity-70" : ""}>
+                      <ul className="mt-2 space-y-1 pb-2 pr-1 text-[15px] leading-relaxed">
+                        {perks.map((perk) => (
+                          <li
+                            key={perk.perk_id}
+                            className={
+                              perk.attended ? "line-through opacity-60" : ""
+                            }
+                          >
                             {perk.perk_name}
                           </li>
                         ))}
@@ -522,8 +689,23 @@ export function TicketDrawerCard({ visible, displayName, participantType, qrData
             </article>
           </div>
         </div>
+
+        {/* Drag handle pill (purely decorative) */}
+        <div
+          className="absolute inset-x-0 top-0 flex justify-center pt-2.5"
+          aria-hidden="true"
+        >
+          <div className="h-[3px] w-10 rounded-full bg-[rgba(245,230,211,0.35)]" />
+        </div>
       </div>
 
+      {/* Float animation keyframe */}
+      <style>{`
+        @keyframes floatUp {
+          0%, 100% { transform: translateY(0); opacity: 0.65; }
+          50% { transform: translateY(-5px); opacity: 1; }
+        }
+      `}</style>
     </section>
   );
 }
