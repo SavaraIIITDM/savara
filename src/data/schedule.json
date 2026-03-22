@@ -142,7 +142,7 @@
       "name": "Vashisht Hackathon 3.O",
       "slug": "vashisht-hackathon-3o",
       "start_time": "0900",
-      "end_time": "1700",
+      "end_time": "2359",
       "event_type": "flagship",
       "location": "H44"
     },
@@ -204,6 +204,14 @@
     }
   ],
   "3": [
+    {
+      "name": "Vashisht Hackathon 3.O",
+      "slug": "vashisht-hackathon-3o",
+      "start_time": "0000",
+      "end_time": "2100",
+      "event_type": "flagship",
+      "location": "H44"
+    },
     {
       "name": "Robowars - 8KG",
       "slug": "robowars-8kg",
