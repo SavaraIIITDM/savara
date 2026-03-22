@@ -21,8 +21,13 @@ export default function HomeHeroStatic() {
             color: "rgba(245, 230, 211, 0.92)",
           }}
         >
-          <span className="inline-block h-2 w-2 rounded-full animate-[pulse_1.6s_ease-in-out_infinite]" style={{ background: "#f09431" }} />
-          <span>Early bird offer live • get tickets now!</span>
+          <span
+            className="inline-block h-2 w-2 rounded-full animate-[pulse_1.6s_ease-in-out_infinite]"
+            style={{ background: "#f09431" }}
+          />
+          <span>
+            Savaara tickets live : Grab them now and enjoy your events
+          </span>
         </Link>
         <div className="mb-4">
           <Image
