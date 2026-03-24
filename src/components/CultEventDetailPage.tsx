@@ -75,6 +75,7 @@ export default function CultEventDetailPage({ event, detailedEvent }: Props) {
         : null;
     const contacts = detailedEvent?.organizer?.contacts ?? [];
     const attachments = detailedEvent?.attachments ?? detailedEvent?.attachements ?? [];
+    const hasUnstopLink = Boolean(event.unstop_link?.trim());
 
     return (
         <main
@@ -184,22 +185,6 @@ export default function CultEventDetailPage({ event, detailedEvent }: Props) {
                                     {event.short_desc}
                                 </p>
                             </div>
-                            <div className="mb-5">
-                                <a
-                                    href={event.unstop_link || "https://unstop.com"}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center rounded-lg border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors hover:bg-white/10"
-                                    style={{
-                                        fontFamily: "var(--font-rajdhani), sans-serif",
-                                        borderColor: accentSoft,
-                                        color: "var(--savara-cream)",
-                                    }}
-                                >
-                                    View on Unstop
-                                </a>
-                            </div>
-
                             {teamSizeBadge && (
                                 <div className="mb-5">
                                     <span
@@ -509,20 +494,32 @@ export default function CultEventDetailPage({ event, detailedEvent }: Props) {
                                 >
                                     Registration
                                 </h3>
-                                <a
-                                    href={event.unstop_link || "https://unstop.com"}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-block w-full rounded-xl px-8 py-4 text-lg font-bold uppercase tracking-[0.25em] transition-all duration-300 hover:scale-[1.03] hover:shadow-xl sm:text-xl"
-                                    style={{
-                                        fontFamily: "var(--font-rajdhani), sans-serif",
-                                        background: `linear-gradient(135deg, ${accent}, #b388ff)`,
-                                        color: "#fff",
-                                        boxShadow: `0 4px 24px ${accentSoft}`,
-                                    }}
-                                >
-                                    Register Now →
-                                </a>
+                                {hasUnstopLink ? (
+                                    <a
+                                        href={event.unstop_link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-block w-full rounded-xl px-8 py-4 text-lg font-bold uppercase tracking-[0.25em] transition-all duration-300 hover:scale-[1.03] hover:shadow-xl sm:text-xl"
+                                        style={{
+                                            fontFamily: "var(--font-rajdhani), sans-serif",
+                                            background: `linear-gradient(135deg, ${accent}, #b388ff)`,
+                                            color: "#fff",
+                                            boxShadow: `0 4px 24px ${accentSoft}`,
+                                        }}
+                                    >
+                                        Register Now →
+                                    </a>
+                                ) : (
+                                    <p
+                                        className="text-base font-semibold sm:text-lg"
+                                        style={{
+                                            fontFamily: "var(--font-rajdhani), sans-serif",
+                                            color: "rgba(245, 230, 211, 0.85)",
+                                        }}
+                                    >
+                                        On-spot event. Registration not needed!
+                                    </p>
+                                )}
                             </div>
                         </div>
                     </div>
