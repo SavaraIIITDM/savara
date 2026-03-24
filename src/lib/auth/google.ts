@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { OAUTH_NEXT_COOKIE_NAME, OAUTH_STATE_COOKIE_NAME } from "@/lib/auth/constants";
 import { inferParticipantType, normalizeEmail } from "@/lib/auth/utils";
@@ -255,7 +255,6 @@ export async function completeGoogleSignIn(code: string, state: string) {
     .update(profiles)
     .set({
       email: normalizedEmail,
-      fullName: profile.name ?? null,
       updatedAt: new Date(),
     })
     .where(eq(profiles.id, userId));

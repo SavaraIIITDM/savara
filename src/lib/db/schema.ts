@@ -80,6 +80,7 @@ export const profiles = pgTable("profiles", {
   id: uuid("id").primaryKey().references(() => users.id, { onDelete: "cascade" }),
   email: text("email").notNull().unique(),
   fullName: text("full_name"),
+  hasChangedCertificateName: boolean("has_changed_certificate_name").notNull().default(false),
   participantType: text("participant_type").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
