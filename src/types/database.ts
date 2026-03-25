@@ -195,6 +195,7 @@ export type Database = {
           created_at: string;
           email: string;
           full_name: string | null;
+          has_changed_certificate_name: boolean;
           id: string;
           participant_type: string;
           updated_at: string;
@@ -203,6 +204,7 @@ export type Database = {
           created_at?: string;
           email: string;
           full_name?: string | null;
+          has_changed_certificate_name?: boolean;
           id: string;
           participant_type: string;
           updated_at?: string;
@@ -211,6 +213,7 @@ export type Database = {
           created_at?: string;
           email?: string;
           full_name?: string | null;
+          has_changed_certificate_name?: boolean;
           id?: string;
           participant_type?: string;
           updated_at?: string;

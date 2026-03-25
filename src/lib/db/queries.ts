@@ -28,11 +28,65 @@ export async function getRoleRow(email: string) {
 export async function getProfileByUserId(userId: string) {
   const db = getDb();
   const rows = await db
-    .select({ id: profiles.id, email: profiles.email, fullName: profiles.fullName, participantType: profiles.participantType })
+    .select({
+      id: profiles.id,
+      email: profiles.email,
+      fullName: profiles.fullName,
+      hasChangedCertificateName: profiles.hasChangedCertificateName,
+      participantType: profiles.participantType,
+    })
     .from(profiles)
     .where(eq(profiles.id, userId))
     .limit(1);
   return rows[0] ?? null;
+}
+
+export async function updateCertificateNameOnce(userId: string, nextName: string) {
+  const db = getDb();
+  const sanitizedName = nextName.trim().replace(/\s+/g, " ");
+
+  if (!sanitizedName) {
+    throw new Error("Name is required.");
+  }
+
+  const rows = await db
+    .select({
+      fullName: profiles.fullName,
+      hasChangedCertificateName: profiles.hasChangedCertificateName,
+    })
+    .from(profiles)
+    .where(eq(profiles.id, userId))
+    .limit(1);
+  const profile = rows[0];
+
+  if (!profile) {
+    throw new Error("Profile not found.");
+  }
+
+  if (profile.hasChangedCertificateName) {
+    throw new Error("You have already changed your certificate name once.");
+  }
+
+  const currentName = (profile.fullName ?? "").trim().replace(/\s+/g, " ");
+  if (currentName && currentName === sanitizedName) {
+    throw new Error("Please enter a different name.");
+  }
+
+  const updated = await db
+    .update(profiles)
+    .set({
+      fullName: sanitizedName,
+      hasChangedCertificateName: true,
+      updatedAt: new Date(),
+    })
+    .where(and(eq(profiles.id, userId), eq(profiles.hasChangedCertificateName, false)))
+    .returning({ id: profiles.id });
+
+  if (updated[0]) {
+    return;
+  }
+
+  throw new Error("You have already changed your certificate name once.");
 }
 
 export async function getTicketByUserId(userId: string) {

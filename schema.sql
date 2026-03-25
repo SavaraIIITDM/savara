@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   id uuid PRIMARY KEY REFERENCES public.users(id) ON DELETE CASCADE,
   email text NOT NULL UNIQUE,
   full_name text,
+  has_changed_certificate_name boolean NOT NULL DEFAULT false,
   participant_type text NOT NULL CHECK (participant_type IN ('internal', 'external')),
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now()

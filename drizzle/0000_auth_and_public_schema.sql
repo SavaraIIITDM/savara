@@ -29,6 +29,9 @@ ALTER TABLE public.profiles
 ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS updated_at timestamptz NOT NULL DEFAULT now();
 
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS has_changed_certificate_name boolean NOT NULL DEFAULT false;
+
 UPDATE public.profiles
 SET participant_type = CASE
   WHEN lower(email) LIKE '%@iiitdm.ac.in' THEN 'internal'

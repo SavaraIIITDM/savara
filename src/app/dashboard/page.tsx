@@ -4,6 +4,7 @@ import { requireDashboardRole, requireDashboardUser } from "@/lib/auth/guards";
 import { getMyParticipations, getMyPerkStatus, getProfileByUserId, getTicketByUserId } from "@/lib/db/queries";
 import { getPendingActivationCodeForEmail } from "@/lib/tickets/pending-code";
 import { DashboardTicketPanel } from "@/components/dashboard/DashboardTicketPanel";
+import { CertificateNameCard } from "@/components/dashboard/CertificateNameCard";
 
 export default async function DashboardHomePage() {
   const user = await requireDashboardUser();
@@ -16,6 +17,7 @@ export default async function DashboardHomePage() {
   ]);
 
   const displayName = profile?.fullName || user.fullName || user.email || "Participant";
+  const hasChangedCertificateName = profile?.hasChangedCertificateName ?? false;
   const pendingCode = user.email ? await getPendingActivationCodeForEmail(user.email) : null;
   const qrPayload = ticket ? JSON.stringify({ token: ticket.qrToken }) : null;
   const qrDataUrl = qrPayload ? await QRCode.toDataURL(qrPayload, { margin: 1, width: 240 }) : null;
@@ -35,6 +37,8 @@ export default async function DashboardHomePage() {
         }))}
         pendingCode={pendingCode}
       />
+
+      <CertificateNameCard fullName={displayName} hasChangedCertificateName={hasChangedCertificateName} />
 
       {(role.isVolunteer || role.isAdmin) && (
         <article className="rounded-xl border p-5" style={{ borderColor: "rgba(212, 165, 116, 0.2)", background: "rgba(42, 31, 26, 0.42)" }}>
@@ -71,6 +75,16 @@ export default async function DashboardHomePage() {
           </Link>
         </article>
       )}
+
+      <article
+        className="rounded-xl border p-5 sm:col-span-2 lg:col-span-3"
+        style={{ borderColor: "rgba(212, 165, 116, 0.2)", background: "rgba(42, 31, 26, 0.42)" }}
+      >
+        <h2 className="text-2xl font-bold uppercase">Need Help?</h2>
+        <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.78)" }}>
+          Email us at fest@iiitdm.ac.in for any questions!
+        </p>
+      </article>
 
       <article
         className="rounded-xl border p-5 sm:col-span-2 lg:col-span-3"
