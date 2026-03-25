@@ -13,9 +13,9 @@ const featuredSponsors = {
   partners: [
     {
       id: 2,
-      name: "Zebronics",
-      role: "Sound Partner",
-      logo: "/sponsors/zebronics.webp",
+      name: "Kwality Walls",
+      role: "Refreshment Partner",
+      logo: "/sponsors/Kwality_Wall's_idW6yaiW5D_0.png",
     },
     {
       id: 3,
@@ -502,9 +502,7 @@ function FeaturedPartnerCard({
       className={`transition-all duration-700 ease-out ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
-      style={{
-        transitionDelay: `${delay}ms`,
-      }}
+      style={{ transitionDelay: `${delay}ms` }}
     >
       <p
         className="mb-2 text-center text-[10px] uppercase tracking-[0.17em] sm:text-[11px]"
@@ -523,21 +521,25 @@ function FeaturedPartnerCard({
           background: "rgba(42, 31, 26, 0.55)",
         }}
       >
-        <div className="relative h-full w-full p-4 sm:p-5">
-          <Image
-            src={sponsor.logo}
-            alt={`${sponsor.name} logo`}
-            fill
-            className="object-contain p-3 transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
-          />
+        {/* Updated Inner Container for Uniformity */}
+        <div className="relative h-full w-full flex items-center justify-center p-6 sm:p-7">
+          <div className="relative h-full w-full">
+            <Image
+              src={sponsor.logo}
+              alt={`${sponsor.name} logo`}
+              fill
+              // Using object-contain ensures the logo is never cropped
+              // Increased padding via parent div forces "large" logos to shrink
+              className="object-contain transition-transform duration-500 group-hover:scale-110"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+            />
+          </div>
         </div>
 
         <div
           className="absolute inset-0 -translate-x-full skew-x-12 transition-transform duration-700 group-hover:translate-x-full"
           style={{
-            background:
-              "linear-gradient(to right, transparent, rgba(212, 165, 116, 0.06), transparent)",
+            background: "linear-gradient(to right, transparent, rgba(212, 165, 116, 0.06), transparent)",
           }}
         />
       </div>
