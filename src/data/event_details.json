@@ -390,20 +390,10 @@
     "unstop_event_id": "1639991"
   },
   {
-    "event_type": "cult_formal",
+    "event_type": "cult_informal",
     "event_name": "KONJAM NADINGA BOSS",
     "full_desc": "A fun-filled, interactive event that brings teamwork, creativity, and quick thinking to the forefront! Teams will get a chance to showcase their acting, communication, and collaboration skills, all while keeping the excitement alive for everyone watching. Expect laughter, surprises, and epic moments that celebrate imagination and teamwork.",
     "short_desc": "A fun, interactive acting event showcasing teamwork, quick thinking, and creative collaboration.",
-    "club_name": "Theatrix Drama Club",
-    "prize_pool": 0,
-    "unstop_link": "",
-    "unstop_event_id": ""
-  },
-  {
-    "event_type": "cult_formal",
-    "event_name": "ESCAPE ROOM/CHALLENGE ROOM",
-    "full_desc": "Step into an immersive escape room experience where logic, teamwork, and quick thinking are your only way out. Teams must solve puzzles, uncover hidden clues, and crack challenges within a limited time to escape the room. Every decision matters only those who communicate, think smart, and stay calm under pressure will succeed.",
-    "short_desc": "Solve puzzles and uncover clues within a limited time to break out of this thrilling, immersive escape room.",
     "club_name": "Theatrix Drama Club",
     "prize_pool": 0,
     "unstop_link": "",
@@ -435,7 +425,7 @@
     "full_desc": "An immersive, interactive event where the participants must choose a side and live the story from within it. The narrative unfolds in real time, shaped by perspective, attention, and choice. Every word matters, hidden details and subtle clues may determine who advances and who falls behind. Listening is survival. Each side experiences the story differently, facing unique challenges that demand strategy, collaboration, and sharp insight. Victory is not guaranteed, it is earned by those who can read between the lines and act with purpose. Presented by the Literati Society, this is not just a story you hear, it’s one you must navigate.",
     "short_desc": "An interactive storytelling experience where choices, perspective, and hidden clues shape your real-time narrative journey.",
     "club_name": "Literati Society",
-    "prize_pool": 10500,
+    "prize_pool": 11000,
     "unstop_link": "https://unstop.com/events/temporal-whispers-savara-indian-institute-of-information-technology-design-and-manufacturing-iiitdm-kancheepuram-1649847",
     "unstop_event_id": "1649847"
   },
@@ -453,19 +443,19 @@
     "event_type": "cult_formal",
     "event_name": "Solos - Vocals and Instrumentals",
     "full_desc": "Solo vocals and instrumental - A solo singing and instrumental event open to all genres and styles. Solo singing - This event is about individuality - how you interpret a song and connect with the audience using just your voice. It's all about how you make a song your own and make it shine in your own style. Participants can use an instrumental backing track. Judges will focus on pitch, dynamics, expression, clarity, and stage presence. Solo instrumental - An instrumental performance event where musicians present a solo piece on an instrument of their choice. Any style is welcome - classical, contemporary, or fusion. Evaluation will be based on technique, musicality, rhythm, and overall presentation. This is a space for musicians who communicate through sound rather than lyrics.",
-    "short_desc": "A solo singing and instrumental event open to all genres and styles.",
+    "short_desc": "A solo singing and instrumental event open to all genres and styles. Separate prizes for vocals and instrumentals!",
     "club_name": "Music Club",
     "prize_pool": 5000,
     "unstop_link": "https://unstop.com/events/solos-vocals-and-instrumental-savara-iiitdm-kancheepuram-1639340",
     "unstop_event_id": "1639340"
   },
   {
-    "event_type": "cult_flagship",
+    "event_type": "cult_formal",
     "event_name": "spotlight",
     "full_desc": "Event 1:Solo Dance Competition Round 1:Participants must submit a video performance of 1-2 minutes. Round 2:Qualifiers will perform live(on stage) for 3-5 minutes. Event 2:Group Dance Competition (maximum of 15 participants) Round 1:Participants must submit a group dance video performance of 1-2 minutes. Round 2:Teams will perform live(on stage) for 4-7 minutes.",
     "short_desc": "Showcase your moves in solo and group dance competitions featuring video prelims and electrifying live stage finals.",
     "club_name": "Footlights",
-    "prize_pool": 45000,
+    "prize_pool": 15000,
     "unstop_link": "https://unstop.com/events/spotlight-savara-iiitdm-kancheepuram-1640026",
     "unstop_event_id": "1640026"
   },
@@ -520,6 +510,16 @@
     "unstop_event_id": "1639316"
   },
   {
+    "event_type": "cult_flagship",
+    "event_name": "Groovy Moovy",
+    "full_desc": "",
+    "short_desc": "A high-energy group dance competition that celebrates teamwork, coordination, creativity, and stage presence.",
+    "club_name": "Footlights",
+    "prize_pool": 30000,
+    "unstop_link": "hhttps://unstop.com/events/groovy-moovy-savara-iiitdm-kancheepuram-1640033",
+    "unstop_event_id": "1640033"
+  },
+  {
     "event_type": "cult_informal",
     "event_name": "FRAME PAARUNGA JI",
     "full_desc": "FRAME PAARUNGA JI is a fun-filled, informal movie-guessing event organized by the Tamil Saalaram Club.",
@@ -551,10 +551,10 @@
   },
   {
     "event_type": "cult_informal",
-    "event_name": "Colab Event with Game Dev",
-    "full_desc": "",
+    "event_name": "Storycraft",
+    "full_desc": "Time hesitates, and in that pause, doors open both forward and backward. Voices of the past echo alongside visions of the future, sharing knowledge, tradition, and innovation. We enter a rare moment where time opens in both directions, allowing the past and future to meet in harmony. Beginning from a shared starting point, they navigate a structured, graph-based journey where each node reveals story fragments or randomized game mechanics drawn from different eras. Ancient traditions, future technologies, powerful abilities, and subtle constraints are collected along the chosen path, shaping a unique narrative for each participant. Every decision influences how the story unfolds. Upon reaching the end, participants must present a coherent story that integrates their journey with all the elements they gathered, and all mechanics acquired. What is all this good for? Someone’s eager to greet you at the end.",
     "short_desc": "A collaborative interactive event bringing together literature and game development for a unique experience.",
-    "club_name": "Literati Society",
+    "club_name": "Literati Society X Game Dev Community",
     "prize_pool": 0,
     "unstop_link": "",
     "unstop_event_id": ""
@@ -585,6 +585,16 @@
     "full_desc": "We are excited to host an action-packed PC Gaming Event featuring high-quality monitors and joystick controllers for an immersive gaming experience. Whether you’re a competitive gamer or just want to enjoy some intense gameplay, this event is the perfect place to showcase your skills, reflexes, and strategy. Participants will compete in a thrilling gaming environment designed to test speed, precision, and decision-making. Expect high energy, fair play, and nonstop excitement as players battle it out for victory and bragging rights.",
     "short_desc": "An action-packed PC gaming experience with immersive gear, testing player reflexes, speed, and competitive strategies.",
     "club_name": "E-Sports",
+    "prize_pool": 0,
+    "unstop_link": "",
+    "unstop_event_id": ""
+  },
+  {
+    "event_type": "cult_informal",
+    "event_name": "Judge the book by its cover",
+    "full_desc": "Live story writing event where teams choose sides, make decisions and shape narrative. Analyze book/manga covers, write 100-word story predictions purely from visual cues. Test your perception, imagination, concise writing skills in this fun event by the Literati Society.",
+    "short_desc": "Live team-based story event where participants analyze book/manga covers and craft concise 100-word predictions from visual cues, testing creativity and perception.",
+    "club_name": "Literati Society",
     "prize_pool": 0,
     "unstop_link": "",
     "unstop_event_id": ""

@@ -19,9 +19,7 @@
       "Law",
       "Arts, Commerce, Sciences & Others"
     ],
-    "sectors": [
-      "students"
-    ],
+    "sectors": ["students"],
     "team_size": {
       "min": 1,
       "max": 1
@@ -47,17 +45,12 @@
   "prizes": {
     "winner": {
       "label": "1st Vocals",
-      "value": "INR 1,500",
+      "value": "Vocals: 1,500 Inst: 1,500",
       "certificate": true
     },
     "runner_up": {
       "label": "2nd Vocals",
-      "value": "INR 1,000",
-      "certificate": true
-    },
-    "second_runner_up": {
-      "label": "2nd Instrumental",
-      "value": "INR 1,000",
+      "value": "Vocals: 1,000 Inst: 1,000",
       "certificate": true
     }
   },
