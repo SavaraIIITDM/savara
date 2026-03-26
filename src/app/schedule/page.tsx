@@ -74,9 +74,9 @@ const STYLE_BY_CATEGORY: Record<
   },
   special: {
     label: "SPECIAL",
-    accent: "#f5e6d3",
-    glow: "rgba(245, 230, 211, 0.16)",
-    surface: "rgba(245, 230, 211, 0.08)",
+    accent: "#df4343",
+    glow: "rgba(111, 16, 16, 0.22)",
+    surface: "rgba(111, 16, 16, 0.12)",
   },
 };
 
