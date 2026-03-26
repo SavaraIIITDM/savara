@@ -51,9 +51,14 @@ export default async function DashboardLayout({
               </>
             )}
             {role.isAdmin && (
-              <Link className="rounded-md border px-3 py-2 text-sm" style={{ borderColor: "rgba(212, 165, 116, 0.24)" }} href="/dashboard/admin/purchases">
-                Admin
-              </Link>
+              <>
+                <Link className="rounded-md border px-3 py-2 text-sm" style={{ borderColor: "rgba(212, 165, 116, 0.24)" }} href="/dashboard/admin/management">
+                  Management
+                </Link>
+                <Link className="rounded-md border px-3 py-2 text-sm" style={{ borderColor: "rgba(212, 165, 116, 0.24)" }} href="/dashboard/admin/purchases">
+                  Admin
+                </Link>
+              </>
             )}
             <form action={signOut}>
               <button

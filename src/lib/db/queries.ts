@@ -11,6 +11,7 @@ import {
   teamMembers,
   teams,
   tickets,
+  users,
 } from "@/lib/db/schema";
 import { inferParticipantType, normalizeEmail, randomToken } from "@/lib/auth/utils";
 
@@ -695,4 +696,705 @@ export async function getEventParticipants(eventId: string) {
     team_name: string | null;
     checked_in_at: string;
   }>;
+}
+
+export async function getManagementHubStats() {
+  const db = getDb();
+
+  const [volunteers, activeCodes, eventsCount, checkinsCount, perksCount, teamsCount] = await Promise.all([
+    db.select({ count: sql<number>`count(*)::int` }).from(roles).where(eq(roles.isVolunteer, true)),
+    db.select({ count: sql<number>`count(*)::int` }).from(activationCodes).where(eq(activationCodes.isActive, true)),
+    db.select({ count: sql<number>`count(*)::int` }).from(events),
+    db.select({ count: sql<number>`count(*)::int` }).from(eventCheckins),
+    db.select({ count: sql<number>`count(*)::int` }).from(perks),
+    db.select({ count: sql<number>`count(*)::int` }).from(teams),
+  ]);
+
+  return {
+    volunteers: volunteers[0]?.count ?? 0,
+    activeCodes: activeCodes[0]?.count ?? 0,
+    events: eventsCount[0]?.count ?? 0,
+    checkins: checkinsCount[0]?.count ?? 0,
+    perks: perksCount[0]?.count ?? 0,
+    teams: teamsCount[0]?.count ?? 0,
+  };
+}
+
+export async function listVolunteers() {
+  const db = getDb();
+  return db
+    .select({
+      email: roles.email,
+      isAdmin: roles.isAdmin,
+      createdAt: roles.createdAt,
+      updatedAt: roles.updatedAt,
+    })
+    .from(roles)
+    .where(eq(roles.isVolunteer, true))
+    .orderBy(asc(roles.email));
+}
+
+export async function grantVolunteer(email: string) {
+  const db = getDb();
+  const normalizedEmail = normalizeEmail(email);
+
+  await db
+    .insert(roles)
+    .values({
+      email: normalizedEmail,
+      isVolunteer: true,
+      isAdmin: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
+    .onConflictDoUpdate({
+      target: roles.email,
+      set: {
+        isVolunteer: true,
+        updatedAt: new Date(),
+      },
+    });
+}
+
+export async function revokeVolunteer(email: string) {
+  const db = getDb();
+  const normalizedEmail = normalizeEmail(email);
+
+  return db.transaction(async (tx) => {
+    const row = await tx.select({ isAdmin: roles.isAdmin }).from(roles).where(eq(roles.email, normalizedEmail)).limit(1);
+    if (!row[0]) {
+      return false;
+    }
+
+    if (row[0].isAdmin) {
+      await tx.update(roles).set({ isVolunteer: false, updatedAt: new Date() }).where(eq(roles.email, normalizedEmail));
+    } else {
+      await tx.delete(roles).where(eq(roles.email, normalizedEmail));
+    }
+
+    return true;
+  });
+}
+
+export async function deleteTicketWithDependencies(ticketId: string) {
+  const db = getDb();
+
+  return db.transaction(async (tx) => {
+    const row = await tx
+      .select({ id: tickets.id, activationCodeId: tickets.activationCodeId })
+      .from(tickets)
+      .where(eq(tickets.id, ticketId))
+      .limit(1);
+    const ticket = row[0];
+    if (!ticket) {
+      return false;
+    }
+
+    const leaderTeams = await tx.select({ id: teams.id }).from(teams).where(eq(teams.leaderTicketId, ticketId));
+    for (const leaderTeam of leaderTeams) {
+      await tx.delete(eventCheckins).where(eq(eventCheckins.teamId, leaderTeam.id));
+      await tx.delete(teamMembers).where(eq(teamMembers.teamId, leaderTeam.id));
+      await tx.delete(teams).where(eq(teams.id, leaderTeam.id));
+    }
+
+    await tx.delete(eventCheckins).where(eq(eventCheckins.ticketId, ticketId));
+    await tx.delete(perkCheckins).where(eq(perkCheckins.ticketId, ticketId));
+    await tx.delete(teamMembers).where(eq(teamMembers.ticketId, ticketId));
+    await tx.delete(tickets).where(eq(tickets.id, ticketId));
+
+    const usageRows = await tx
+      .select({ used: sql<number>`count(*)::int`, quota: activationCodes.ticketQuota })
+      .from(activationCodes)
+      .leftJoin(tickets, eq(activationCodes.id, tickets.activationCodeId))
+      .where(eq(activationCodes.id, ticket.activationCodeId))
+      .groupBy(activationCodes.id, activationCodes.ticketQuota)
+      .limit(1);
+
+    const usage = usageRows[0];
+    if (usage) {
+      await tx
+        .update(activationCodes)
+        .set({
+          redeemedCount: usage.used,
+          isActive: usage.used < usage.quota,
+        })
+        .where(eq(activationCodes.id, ticket.activationCodeId));
+    }
+
+    return true;
+  });
+}
+
+export async function revokeCodeAndDeleteTickets(codeId: string) {
+  const db = getDb();
+
+  return db.transaction(async (tx) => {
+    const row = await tx
+      .select({ id: activationCodes.id, code: activationCodes.code })
+      .from(activationCodes)
+      .where(eq(activationCodes.id, codeId))
+      .limit(1);
+    if (!row[0]) {
+      throw new Error("Activation code not found.");
+    }
+
+    const linkedTickets = await tx.select({ id: tickets.id }).from(tickets).where(eq(tickets.activationCodeId, codeId));
+    for (const linkedTicket of linkedTickets) {
+      const leaderTeams = await tx.select({ id: teams.id }).from(teams).where(eq(teams.leaderTicketId, linkedTicket.id));
+      for (const leaderTeam of leaderTeams) {
+        await tx.delete(eventCheckins).where(eq(eventCheckins.teamId, leaderTeam.id));
+        await tx.delete(teamMembers).where(eq(teamMembers.teamId, leaderTeam.id));
+        await tx.delete(teams).where(eq(teams.id, leaderTeam.id));
+      }
+
+      await tx.delete(eventCheckins).where(eq(eventCheckins.ticketId, linkedTicket.id));
+      await tx.delete(perkCheckins).where(eq(perkCheckins.ticketId, linkedTicket.id));
+      await tx.delete(teamMembers).where(eq(teamMembers.ticketId, linkedTicket.id));
+      await tx.delete(tickets).where(eq(tickets.id, linkedTicket.id));
+    }
+
+    await tx
+      .update(activationCodes)
+      .set({
+        isActive: false,
+        redeemedCount: 0,
+      })
+      .where(eq(activationCodes.id, codeId));
+
+    return {
+      deletedTickets: linkedTickets.length,
+      code: row[0].code,
+    };
+  });
+}
+
+export async function getActivationCodeDetails(codeRaw: string) {
+  const db = getDb();
+  const code = codeRaw.trim().toUpperCase();
+
+  const rows = await db
+    .select({
+      id: activationCodes.id,
+      code: activationCodes.code,
+      purchaserEmail: activationCodes.purchaserEmail,
+      ticketQuota: activationCodes.ticketQuota,
+      redeemedCount: activationCodes.redeemedCount,
+      purchaseType: activationCodes.purchaseType,
+      isActive: activationCodes.isActive,
+      createdAt: activationCodes.createdAt,
+    })
+    .from(activationCodes)
+    .where(eq(activationCodes.code, code))
+    .limit(1);
+
+  const activationCodeRow = rows[0];
+  if (!activationCodeRow) {
+    return null;
+  }
+
+  const redeemedTickets = await db.execute(sql`
+    select
+      t.id,
+      t.created_at,
+      t.participant_type,
+      coalesce(p.email, u.email) as email
+    from public.tickets t
+    left join public.profiles p on p.id = t.user_id
+    left join public.users u on u.id = t.user_id
+    where t.activation_code_id = ${activationCodeRow.id}
+    order by t.created_at desc
+  `);
+
+  return {
+    ...activationCodeRow,
+    tickets: redeemedTickets as unknown as Array<{
+      id: string;
+      created_at: string;
+      participant_type: string;
+      email: string;
+    }>,
+  };
+}
+
+export async function getTicketAndCodesByEmail(emailRaw: string) {
+  const db = getDb();
+  const email = normalizeEmail(emailRaw);
+
+  const profileRows = await db
+    .select({
+      id: profiles.id,
+      fullName: profiles.fullName,
+      email: profiles.email,
+      participantType: profiles.participantType,
+    })
+    .from(profiles)
+    .where(eq(profiles.email, email))
+    .limit(1);
+  const profile = profileRows[0] ?? null;
+
+  const userRows = !profile
+    ? await db.select({ id: users.id, email: users.email }).from(users).where(eq(users.email, email)).limit(1)
+    : [];
+  const userId = profile?.id ?? (userRows[0]?.id ?? null);
+
+  const ticketRows = userId
+    ? await db
+        .select({
+          id: tickets.id,
+          createdAt: tickets.createdAt,
+          activationCode: activationCodes.code,
+        })
+        .from(tickets)
+        .innerJoin(activationCodes, eq(activationCodes.id, tickets.activationCodeId))
+        .where(eq(tickets.userId, userId))
+        .limit(1)
+    : [];
+
+  const codes = await db
+    .select({
+      id: activationCodes.id,
+      code: activationCodes.code,
+      purchaserEmail: activationCodes.purchaserEmail,
+      ticketQuota: activationCodes.ticketQuota,
+      redeemedCount: activationCodes.redeemedCount,
+      purchaseType: activationCodes.purchaseType,
+      isActive: activationCodes.isActive,
+      createdAt: activationCodes.createdAt,
+    })
+    .from(activationCodes)
+    .where(eq(activationCodes.purchaserEmail, email))
+    .orderBy(desc(activationCodes.createdAt));
+
+  const codeIds = codes.map((row) => row.id);
+  const linkedTickets = codeIds.length
+    ? await db.execute(sql`
+        select
+          t.id,
+          t.activation_code_id,
+          t.created_at,
+          t.participant_type,
+          coalesce(p.email, u.email) as email
+        from public.tickets t
+        left join public.profiles p on p.id = t.user_id
+        left join public.users u on u.id = t.user_id
+        where t.activation_code_id in (${sql.join(codeIds.map((id) => sql`${id}`), sql`, `)})
+        order by t.created_at desc
+      `)
+    : [];
+
+  const ticketsByCode = new Map<string, Array<{ id: string; created_at: string; participant_type: string; email: string }>>();
+  for (const ticketRow of linkedTickets as unknown as Array<{
+    id: string;
+    activation_code_id: string;
+    created_at: string;
+    participant_type: string;
+    email: string;
+  }>) {
+    const current = ticketsByCode.get(ticketRow.activation_code_id) ?? [];
+    current.push({
+      id: ticketRow.id,
+      created_at: ticketRow.created_at,
+      participant_type: ticketRow.participant_type,
+      email: ticketRow.email,
+    });
+    ticketsByCode.set(ticketRow.activation_code_id, current);
+  }
+
+  return {
+    user: profile
+      ? {
+          id: profile.id,
+          fullName: profile.fullName,
+          email: profile.email,
+          participantType: profile.participantType,
+        }
+      : null,
+    ticket: ticketRows[0]
+      ? {
+          id: ticketRows[0].id,
+          activationCode: ticketRows[0].activationCode,
+          createdAt: ticketRows[0].createdAt,
+        }
+      : null,
+    codes: codes.map((row) => ({
+      ...row,
+      tickets: ticketsByCode.get(row.id) ?? [],
+    })),
+  };
+}
+
+export async function listEventsForManagement() {
+  const db = getDb();
+  return db
+    .select({
+      id: events.id,
+      name: events.name,
+      slug: events.slug,
+      teamMinSize: events.teamMinSize,
+      teamMaxSize: events.teamMaxSize,
+      isActive: events.isActive,
+      createdAt: events.createdAt,
+    })
+    .from(events)
+    .orderBy(asc(events.name));
+}
+
+export async function createEvent(input: {
+  name: string;
+  slug: string;
+  teamMinSize: number;
+  teamMaxSize: number;
+  isActive: boolean;
+}) {
+  const db = getDb();
+  const [row] = await db
+    .insert(events)
+    .values({
+      id: crypto.randomUUID(),
+      name: input.name.trim(),
+      slug: input.slug.trim(),
+      teamMinSize: input.teamMinSize,
+      teamMaxSize: input.teamMaxSize,
+      isActive: input.isActive,
+      createdAt: new Date(),
+    })
+    .returning({
+      id: events.id,
+      name: events.name,
+      slug: events.slug,
+      teamMinSize: events.teamMinSize,
+      teamMaxSize: events.teamMaxSize,
+      isActive: events.isActive,
+      createdAt: events.createdAt,
+    });
+
+  return row;
+}
+
+export async function updateEvent(input: {
+  id: string;
+  name: string;
+  slug: string;
+  teamMinSize: number;
+  teamMaxSize: number;
+  isActive: boolean;
+}) {
+  const db = getDb();
+  const [row] = await db
+    .update(events)
+    .set({
+      name: input.name.trim(),
+      slug: input.slug.trim(),
+      teamMinSize: input.teamMinSize,
+      teamMaxSize: input.teamMaxSize,
+      isActive: input.isActive,
+    })
+    .where(eq(events.id, input.id))
+    .returning({ id: events.id });
+
+  return Boolean(row);
+}
+
+export async function deleteEventIfNoCheckins(eventId: string) {
+  const db = getDb();
+  const exists = await db.select({ id: events.id }).from(events).where(eq(events.id, eventId)).limit(1);
+  if (!exists[0]) {
+    return { deleted: false, checkins: 0, notFound: true };
+  }
+
+  const checkins = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(eventCheckins)
+    .where(eq(eventCheckins.eventId, eventId))
+    .limit(1);
+
+  const count = checkins[0]?.count ?? 0;
+  if (count > 0) {
+    return { deleted: false, checkins: count, notFound: false };
+  }
+
+  const removed = await db.delete(events).where(eq(events.id, eventId)).returning({ id: events.id });
+  return { deleted: Boolean(removed[0]), checkins: 0, notFound: false };
+}
+
+export async function listCheckinAudit(input: { eventId: string; email?: string }) {
+  const db = getDb();
+  const normalizedEmail = normalizeEmail(input.email ?? "");
+  const hasEmailFilter = normalizedEmail.length > 0;
+
+  const data = await db.execute(sql`
+    select
+      ec.id,
+      ec.checked_in_at,
+      ec.team_id,
+      e.id as event_id,
+      e.name as event_name,
+      coalesce(p.email, u.email) as participant_email,
+      vu.email as volunteer_email
+    from public.event_checkins ec
+    join public.events e on e.id = ec.event_id
+    join public.tickets t on t.id = ec.ticket_id
+    left join public.profiles p on p.id = t.user_id
+    left join public.users u on u.id = t.user_id
+    left join public.users vu on vu.id = ec.checked_in_by
+    where ec.event_id = ${input.eventId}
+      and (
+        ${hasEmailFilter} = false
+        or lower(coalesce(p.email, u.email)) like ${`%${normalizedEmail}%`}
+      )
+    order by ec.checked_in_at desc
+  `);
+
+  return data as unknown as Array<{
+    id: number;
+    checked_in_at: string;
+    team_id: string | null;
+    event_id: string;
+    event_name: string;
+    participant_email: string;
+    volunteer_email: string | null;
+  }>;
+}
+
+export async function getCheckinAuditStats(eventId: string) {
+  const db = getDb();
+  const rows = await db.execute(sql`
+    select
+      count(*)::int as total,
+      count(*) filter (where team_id is not null)::int as team,
+      count(*) filter (where team_id is null)::int as individual
+    from public.event_checkins
+    where event_id = ${eventId}
+  `);
+
+  const row = (rows as unknown as Array<{ total: number; team: number; individual: number }>)[0];
+  return {
+    total: row?.total ?? 0,
+    team: row?.team ?? 0,
+    individual: row?.individual ?? 0,
+  };
+}
+
+export async function deleteCheckinAuditEntry(checkinId: number) {
+  const db = getDb();
+  const rows = await db
+    .select({ eventId: eventCheckins.eventId, ticketId: eventCheckins.ticketId })
+    .from(eventCheckins)
+    .where(eq(eventCheckins.id, checkinId))
+    .limit(1);
+  const row = rows[0];
+  if (!row) {
+    return false;
+  }
+
+  return removeEventCheckinByTicket(row.eventId, row.ticketId);
+}
+
+export async function listPerksForManagement() {
+  const db = getDb();
+  return db
+    .select({
+      id: perks.id,
+      name: perks.name,
+      isActive: perks.isActive,
+      createdAt: perks.createdAt,
+    })
+    .from(perks)
+    .orderBy(asc(perks.name));
+}
+
+export async function createPerk(input: { name: string; isActive: boolean }) {
+  const db = getDb();
+  const [row] = await db
+    .insert(perks)
+    .values({
+      id: crypto.randomUUID(),
+      name: input.name.trim(),
+      isActive: input.isActive,
+      createdAt: new Date(),
+    })
+    .returning({
+      id: perks.id,
+      name: perks.name,
+      isActive: perks.isActive,
+      createdAt: perks.createdAt,
+    });
+
+  return row;
+}
+
+export async function setPerkActive(perkId: string, isActive: boolean) {
+  const db = getDb();
+  const [row] = await db.update(perks).set({ isActive }).where(eq(perks.id, perkId)).returning({ id: perks.id });
+  return Boolean(row);
+}
+
+export async function deletePerkIfNoCheckins(perkId: string) {
+  const db = getDb();
+  const exists = await db.select({ id: perks.id }).from(perks).where(eq(perks.id, perkId)).limit(1);
+  if (!exists[0]) {
+    return { deleted: false, checkins: 0, notFound: true };
+  }
+
+  const rows = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(perkCheckins)
+    .where(eq(perkCheckins.perkId, perkId))
+    .limit(1);
+  const count = rows[0]?.count ?? 0;
+  if (count > 0) {
+    return { deleted: false, checkins: count, notFound: false };
+  }
+
+  const removed = await db.delete(perks).where(eq(perks.id, perkId)).returning({ id: perks.id });
+  return { deleted: Boolean(removed[0]), checkins: 0, notFound: false };
+}
+
+export async function getPerkRedemptionSummary() {
+  const db = getDb();
+  const rows = await db.execute(sql`
+    select
+      p.id,
+      p.name,
+      count(pc.id)::int as redemptions
+    from public.perks p
+    left join public.perk_checkins pc on pc.perk_id = p.id
+    group by p.id, p.name
+    order by p.name asc
+  `);
+
+  return rows as unknown as Array<{ id: string; name: string; redemptions: number }>;
+}
+
+export async function listPerkAudit(input: { perkId?: string; email?: string }) {
+  const db = getDb();
+  const normalizedEmail = normalizeEmail(input.email ?? "");
+  const perkId = input.perkId?.trim();
+  const hasPerk = Boolean(perkId);
+  const hasEmail = normalizedEmail.length > 0;
+
+  const rows = await db.execute(sql`
+    select
+      pc.id,
+      pc.checked_in_at,
+      p.id as perk_id,
+      p.name as perk_name,
+      coalesce(pp.email, pu.email) as participant_email,
+      vu.email as volunteer_email
+    from public.perk_checkins pc
+    join public.perks p on p.id = pc.perk_id
+    join public.tickets t on t.id = pc.ticket_id
+    left join public.profiles pp on pp.id = t.user_id
+    left join public.users pu on pu.id = t.user_id
+    left join public.users vu on vu.id = pc.checked_in_by
+    where 1=1
+      ${hasPerk ? sql`and p.id = ${perkId!}` : sql``}
+      ${hasEmail ? sql`and lower(coalesce(pp.email, pu.email)) like ${`%${normalizedEmail}%`}` : sql``}
+    order by pc.checked_in_at desc
+  `);
+
+  return rows as unknown as Array<{
+    id: number;
+    checked_in_at: string;
+    perk_id: string;
+    perk_name: string;
+    participant_email: string;
+    volunteer_email: string | null;
+  }>;
+}
+
+export async function deletePerkAuditEntry(checkinId: number) {
+  const db = getDb();
+  const removed = await db.delete(perkCheckins).where(eq(perkCheckins.id, checkinId)).returning({ id: perkCheckins.id });
+  return Boolean(removed[0]);
+}
+
+export async function listTeamsForManagement(eventId: string) {
+  const db = getDb();
+  const rows = await db.execute(sql`
+    select
+      tm.id,
+      tm.name,
+      coalesce(lp.email, lu.email) as leader_email,
+      count(m.ticket_id)::int as member_count
+    from public.teams tm
+    join public.tickets lt on lt.id = tm.leader_ticket_id
+    left join public.profiles lp on lp.id = lt.user_id
+    left join public.users lu on lu.id = lt.user_id
+    left join public.team_members m on m.team_id = tm.id
+    where tm.event_id = ${eventId}
+    group by tm.id, tm.name, coalesce(lp.email, lu.email), tm.created_at
+    order by tm.created_at desc
+  `);
+
+  return rows as unknown as Array<{ id: string; name: string; leader_email: string; member_count: number }>;
+}
+
+export async function listTeamMembersForManagement(teamId: string, eventId: string) {
+  const db = getDb();
+  const rows = await db.execute(sql`
+    select
+      t.id as ticket_id,
+      t.participant_type,
+      tm.created_at as joined_at,
+      coalesce(p.email, u.email) as email
+    from public.team_members tm
+    join public.tickets t on t.id = tm.ticket_id
+    left join public.profiles p on p.id = t.user_id
+    left join public.users u on u.id = t.user_id
+    join public.teams team on team.id = tm.team_id
+    where tm.team_id = ${teamId}
+      and team.event_id = ${eventId}
+    order by tm.created_at asc
+  `);
+
+  return rows as unknown as Array<{
+    ticket_id: string;
+    participant_type: string;
+    joined_at: string;
+    email: string;
+  }>;
+}
+
+export async function removeTeamMemberForManagement(input: { teamId: string; eventId: string; ticketId: string }) {
+  const db = getDb();
+  return db.transaction(async (tx) => {
+    const teamRow = await tx.select({ id: teams.id }).from(teams).where(and(eq(teams.id, input.teamId), eq(teams.eventId, input.eventId))).limit(1);
+    if (!teamRow[0]) {
+      throw new Error("Team not found for selected event.");
+    }
+
+    await tx.delete(eventCheckins).where(and(eq(eventCheckins.eventId, input.eventId), eq(eventCheckins.teamId, input.teamId), eq(eventCheckins.ticketId, input.ticketId)));
+    const removed = await tx
+      .delete(teamMembers)
+      .where(and(eq(teamMembers.teamId, input.teamId), eq(teamMembers.ticketId, input.ticketId)))
+      .returning({ teamId: teamMembers.teamId });
+
+    return Boolean(removed[0]);
+  });
+}
+
+export async function deleteTeamIfNoCheckins(input: { teamId: string; eventId: string }) {
+  const db = getDb();
+  return db.transaction(async (tx) => {
+    const teamRow = await tx.select({ id: teams.id }).from(teams).where(and(eq(teams.id, input.teamId), eq(teams.eventId, input.eventId))).limit(1);
+    if (!teamRow[0]) {
+      throw new Error("Team not found for selected event.");
+    }
+
+    const rows = await tx
+      .select({ count: sql<number>`count(*)::int` })
+      .from(eventCheckins)
+      .where(and(eq(eventCheckins.teamId, input.teamId), eq(eventCheckins.eventId, input.eventId)))
+      .limit(1);
+    const count = rows[0]?.count ?? 0;
+
+    if (count > 0) {
+      return { deleted: false, checkins: count };
+    }
+
+    await tx.delete(teamMembers).where(eq(teamMembers.teamId, input.teamId));
+    await tx.delete(teams).where(eq(teams.id, input.teamId));
+    return { deleted: true, checkins: 0 };
+  });
 }

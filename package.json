@@ -16,6 +16,7 @@
     "@types/three": "^0.181.0",
     "@vercel/analytics": "^1.6.1",
     "@zxing/browser": "^0.1.5",
+    "csv-parse": "^6.2.1",
     "dotenv": "^17.3.1",
     "drizzle-orm": "^0.44.6",
     "gsap": "^3.13.0",
@@ -23,8 +24,8 @@
     "lucide-react": "^0.555.0",
     "next": "16.0.7",
     "nodemailer": "^8.0.1",
-    "qrcode": "^1.5.4",
     "postgres": "^3.4.7",
+    "qrcode": "^1.5.4",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "three": "^0.181.2"
