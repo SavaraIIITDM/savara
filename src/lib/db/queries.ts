@@ -816,7 +816,6 @@ export async function deleteTicketWithDependencies(ticketId: string) {
         .update(activationCodes)
         .set({
           redeemedCount: usage.used,
-          isActive: usage.used < usage.quota,
         })
         .where(eq(activationCodes.id, ticket.activationCodeId));
     }
@@ -853,13 +852,7 @@ export async function revokeCodeAndDeleteTickets(codeId: string) {
       await tx.delete(tickets).where(eq(tickets.id, linkedTicket.id));
     }
 
-    await tx
-      .update(activationCodes)
-      .set({
-        isActive: false,
-        redeemedCount: 0,
-      })
-      .where(eq(activationCodes.id, codeId));
+    await tx.delete(activationCodes).where(eq(activationCodes.id, codeId));
 
     return {
       deletedTickets: linkedTickets.length,
