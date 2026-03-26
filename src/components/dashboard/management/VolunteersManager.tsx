@@ -9,7 +9,12 @@ import { InlineError } from "@/components/dashboard/management/InlineError";
 type VolunteerRow = {
   email: string;
   isAdmin: boolean;
+  isVolunteer: boolean;
+  isEventVolunteer: boolean;
+  isPerkVolunteer: boolean;
 };
+
+type AccessRoleType = "volunteer" | "event_volunteer" | "perk_volunteer";
 
 type ActionState = {
   error?: string;
@@ -17,6 +22,13 @@ type ActionState = {
 };
 
 const initialState: ActionState = {};
+
+function pickRoleType(row: VolunteerRow): AccessRoleType | null {
+  if (row.isVolunteer) return "volunteer";
+  if (row.isEventVolunteer) return "event_volunteer";
+  if (row.isPerkVolunteer) return "perk_volunteer";
+  return null;
+}
 
 export function VolunteersManager({
   initialVolunteers,
@@ -28,13 +40,22 @@ export function VolunteersManager({
   const [search, setSearch] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
   const [rows, setRows] = useState(initialVolunteers);
+  const [selectedRoleType, setSelectedRoleType] = useState<AccessRoleType>("volunteer");
 
   const [addState, addFormAction, addPending] = useActionState(async (_: ActionState, formData: FormData) => {
     const result = await addVolunteerAction(formData);
     if (result.success) {
       const email = String(formData.get("email") ?? "").trim().toLowerCase();
+      const roleType = String(formData.get("roleType") ?? "").trim().toLowerCase() as AccessRoleType;
+      const patch = {
+        isVolunteer: roleType === "volunteer",
+        isEventVolunteer: roleType === "event_volunteer",
+        isPerkVolunteer: roleType === "perk_volunteer",
+      };
       if (email && !rows.some((row) => row.email === email)) {
-        setRows((current) => [...current, { email, isAdmin: false }].sort((a, b) => a.email.localeCompare(b.email)));
+        setRows((current) => [...current, { email, isAdmin: false, ...patch }].sort((a, b) => a.email.localeCompare(b.email)));
+      } else if (email) {
+        setRows((current) => current.map((row) => (row.email === email ? { ...row, ...patch } : row)));
       }
     }
     return result;
@@ -42,6 +63,48 @@ export function VolunteersManager({
 
   const [removeError, setRemoveError] = useState("");
   const [removeBusyEmail, setRemoveBusyEmail] = useState("");
+
+  const handleRemoveVolunteer = async (row: VolunteerRow) => {
+    setRemoveError("");
+    setRemoveBusyEmail(row.email);
+    try {
+      const roleType = pickRoleType(row);
+      if (!roleType) {
+        setRemoveError("No volunteer role found for this account.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.set("email", row.email);
+      formData.set("roleType", roleType);
+      const result = await removeVolunteerAction(formData);
+      if (result.error) {
+        setRemoveError(result.error);
+        return;
+      }
+
+      setRows((current) =>
+        current.flatMap((item) => {
+          if (item.email !== row.email) return [item];
+
+          const nextRow = {
+            ...item,
+            isVolunteer: roleType === "volunteer" ? false : item.isVolunteer,
+            isEventVolunteer: roleType === "event_volunteer" ? false : item.isEventVolunteer,
+            isPerkVolunteer: roleType === "perk_volunteer" ? false : item.isPerkVolunteer,
+          };
+
+          if (!nextRow.isVolunteer && !nextRow.isEventVolunteer && !nextRow.isPerkVolunteer) {
+            return [];
+          }
+
+          return [nextRow];
+        }),
+      );
+    } finally {
+      setRemoveBusyEmail("");
+    }
+  };
 
   const filteredRows = useMemo(
     () => rows.filter((row) => row.email.toLowerCase().includes(search.trim().toLowerCase())),
@@ -78,6 +141,44 @@ export function VolunteersManager({
             className="w-full rounded-md border bg-transparent px-3 py-2 text-sm"
             style={{ borderColor: "rgba(212, 165, 116, 0.28)" }}
           />
+          <fieldset className="rounded-md border px-3 py-2" style={{ borderColor: "rgba(212, 165, 116, 0.28)" }}>
+            <legend className="px-1 text-xs" style={{ color: "rgba(245, 230, 211, 0.78)" }}>
+              Access Role
+            </legend>
+            <div className="flex flex-wrap items-center gap-3 text-xs">
+              <label className="inline-flex items-center gap-1">
+                <input
+                  type="radio"
+                  name="roleType"
+                  value="volunteer"
+                  checked={selectedRoleType === "volunteer"}
+                  onChange={() => setSelectedRoleType("volunteer")}
+                />
+                volunteer
+              </label>
+              <label className="inline-flex items-center gap-1">
+                <input
+                  type="radio"
+                  name="roleType"
+                  value="event_volunteer"
+                  checked={selectedRoleType === "event_volunteer"}
+                  onChange={() => setSelectedRoleType("event_volunteer")}
+                />
+                event_volunteer
+              </label>
+              <label className="inline-flex items-center gap-1">
+                <input
+                  type="radio"
+                  name="roleType"
+                  value="perk_volunteer"
+                  checked={selectedRoleType === "perk_volunteer"}
+                  onChange={() => setSelectedRoleType("perk_volunteer")}
+                />
+                perk_volunteer
+              </label>
+            </div>
+          </fieldset>
+
           <button
             type="submit"
             disabled={addPending}
@@ -105,15 +206,16 @@ export function VolunteersManager({
                   <p className="font-medium">{row.email}</p>
                   {row.isAdmin ? (
                     <p className="text-xs" style={{ color: "rgba(245, 230, 211, 0.68)" }}>
-                      {row.email === currentAdminEmail ? "Also admin (your account)" : "Also admin (protected)"}
+                      admin
                     </p>
                   ) : null}
+                  <p className="text-xs" style={{ color: "rgba(245, 230, 211, 0.68)" }}>
+                    {row.isVolunteer ? "volunteer" : row.isEventVolunteer ? "event_volunteer" : row.isPerkVolunteer ? "perk_volunteer" : "-"}
+                  </p>
                 </div>
 
                 {row.isAdmin && row.email !== currentAdminEmail ? (
-                  <p className="text-xs" style={{ color: "rgba(245, 230, 211, 0.68)" }}>
-                    Cannot modify another admin
-                  </p>
+                  <p className="text-xs" style={{ color: "rgba(245, 230, 211, 0.68)" }}>admin</p>
                 ) : (
                   <>
                     <div className="hidden sm:block">
@@ -123,22 +225,7 @@ export function VolunteersManager({
                         consequence="Volunteer privileges will be revoked."
                         busy={removeBusyEmail === row.email}
                         busyLabel="Removing..."
-                        onConfirm={async () => {
-                          setRemoveError("");
-                          setRemoveBusyEmail(row.email);
-                          try {
-                            const formData = new FormData();
-                            formData.set("email", row.email);
-                            const result = await removeVolunteerAction(formData);
-                            if (result.error) {
-                              setRemoveError(result.error);
-                              return;
-                            }
-                            setRows((current) => current.filter((item) => item.email !== row.email));
-                          } finally {
-                            setRemoveBusyEmail("");
-                          }
-                        }}
+                        onConfirm={() => handleRemoveVolunteer(row)}
                       />
                     </div>
 
@@ -149,22 +236,7 @@ export function VolunteersManager({
                         consequence="Remove volunteer access"
                         busy={removeBusyEmail === row.email}
                         busyLabel="..."
-                        onConfirm={async () => {
-                          setRemoveError("");
-                          setRemoveBusyEmail(row.email);
-                          try {
-                            const formData = new FormData();
-                            formData.set("email", row.email);
-                            const result = await removeVolunteerAction(formData);
-                            if (result.error) {
-                              setRemoveError(result.error);
-                              return;
-                            }
-                            setRows((current) => current.filter((item) => item.email !== row.email));
-                          } finally {
-                            setRemoveBusyEmail("");
-                          }
-                        }}
+                        onConfirm={() => handleRemoveVolunteer(row)}
                         className="inline-block"
                       />
                       <span className="-ml-9 pointer-events-none inline-flex items-center">

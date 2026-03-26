@@ -19,7 +19,12 @@ export async function getRoleRow(email: string) {
   const db = getDb();
   const normalizedEmail = normalizeEmail(email);
   const rows = await db
-    .select({ isAdmin: roles.isAdmin, isVolunteer: roles.isVolunteer })
+    .select({
+      isAdmin: roles.isAdmin,
+      isVolunteer: roles.isVolunteer,
+      isEventVolunteer: roles.isEventVolunteer,
+      isPerkVolunteer: roles.isPerkVolunteer,
+    })
     .from(roles)
     .where(eq(roles.email, normalizedEmail))
     .limit(1);
@@ -702,7 +707,10 @@ export async function getManagementHubStats() {
   const db = getDb();
 
   const [volunteers, activeCodes, eventsCount, checkinsCount, perksCount, teamsCount] = await Promise.all([
-    db.select({ count: sql<number>`count(*)::int` }).from(roles).where(eq(roles.isVolunteer, true)),
+    db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(roles)
+      .where(sql`${roles.isVolunteer} = true or ${roles.isEventVolunteer} = true or ${roles.isPerkVolunteer} = true`),
     db.select({ count: sql<number>`count(*)::int` }).from(activationCodes).where(eq(activationCodes.isActive, true)),
     db.select({ count: sql<number>`count(*)::int` }).from(events),
     db.select({ count: sql<number>`count(*)::int` }).from(eventCheckins),
@@ -726,23 +734,37 @@ export async function listVolunteers() {
     .select({
       email: roles.email,
       isAdmin: roles.isAdmin,
+      isVolunteer: roles.isVolunteer,
+      isEventVolunteer: roles.isEventVolunteer,
+      isPerkVolunteer: roles.isPerkVolunteer,
       createdAt: roles.createdAt,
       updatedAt: roles.updatedAt,
     })
     .from(roles)
-    .where(eq(roles.isVolunteer, true))
+    .where(sql`${roles.isVolunteer} = true or ${roles.isEventVolunteer} = true or ${roles.isPerkVolunteer} = true`)
     .orderBy(asc(roles.email));
 }
 
-export async function grantVolunteer(email: string) {
+export type AccessRoleType = "volunteer" | "event_volunteer" | "perk_volunteer";
+
+export async function grantVolunteer(email: string, roleType: AccessRoleType) {
   const db = getDb();
   const normalizedEmail = normalizeEmail(email);
+
+  const rolePatch =
+    roleType === "volunteer"
+      ? { isVolunteer: true, isEventVolunteer: false, isPerkVolunteer: false }
+      : roleType === "event_volunteer"
+        ? { isVolunteer: false, isEventVolunteer: true, isPerkVolunteer: false }
+        : { isVolunteer: false, isEventVolunteer: false, isPerkVolunteer: true };
 
   await db
     .insert(roles)
     .values({
       email: normalizedEmail,
-      isVolunteer: true,
+      isVolunteer: rolePatch.isVolunteer,
+      isEventVolunteer: rolePatch.isEventVolunteer,
+      isPerkVolunteer: rolePatch.isPerkVolunteer,
       isAdmin: false,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -750,26 +772,63 @@ export async function grantVolunteer(email: string) {
     .onConflictDoUpdate({
       target: roles.email,
       set: {
-        isVolunteer: true,
+        isVolunteer: rolePatch.isVolunteer,
+        isEventVolunteer: rolePatch.isEventVolunteer,
+        isPerkVolunteer: rolePatch.isPerkVolunteer,
         updatedAt: new Date(),
       },
     });
 }
 
-export async function revokeVolunteer(email: string) {
+export async function revokeVolunteer(email: string, roleType: AccessRoleType) {
   const db = getDb();
   const normalizedEmail = normalizeEmail(email);
 
   return db.transaction(async (tx) => {
-    const row = await tx.select({ isAdmin: roles.isAdmin }).from(roles).where(eq(roles.email, normalizedEmail)).limit(1);
+    const row = await tx
+      .select({
+        isAdmin: roles.isAdmin,
+        isVolunteer: roles.isVolunteer,
+        isEventVolunteer: roles.isEventVolunteer,
+        isPerkVolunteer: roles.isPerkVolunteer,
+      })
+      .from(roles)
+      .where(eq(roles.email, normalizedEmail))
+      .limit(1);
     if (!row[0]) {
       return false;
     }
 
+    const nextFlags = {
+      isVolunteer: roleType === "volunteer" ? false : row[0].isVolunteer,
+      isEventVolunteer: roleType === "event_volunteer" ? false : row[0].isEventVolunteer,
+      isPerkVolunteer: roleType === "perk_volunteer" ? false : row[0].isPerkVolunteer,
+    };
+
     if (row[0].isAdmin) {
-      await tx.update(roles).set({ isVolunteer: false, updatedAt: new Date() }).where(eq(roles.email, normalizedEmail));
+      await tx
+        .update(roles)
+        .set({
+          isVolunteer: nextFlags.isVolunteer,
+          isEventVolunteer: nextFlags.isEventVolunteer,
+          isPerkVolunteer: nextFlags.isPerkVolunteer,
+          updatedAt: new Date(),
+        })
+        .where(eq(roles.email, normalizedEmail));
     } else {
-      await tx.delete(roles).where(eq(roles.email, normalizedEmail));
+      if (!nextFlags.isVolunteer && !nextFlags.isEventVolunteer && !nextFlags.isPerkVolunteer) {
+        await tx.delete(roles).where(eq(roles.email, normalizedEmail));
+      } else {
+        await tx
+          .update(roles)
+          .set({
+            isVolunteer: nextFlags.isVolunteer,
+            isEventVolunteer: nextFlags.isEventVolunteer,
+            isPerkVolunteer: nextFlags.isPerkVolunteer,
+            updatedAt: new Date(),
+          })
+          .where(eq(roles.email, normalizedEmail));
+      }
     }
 
     return true;

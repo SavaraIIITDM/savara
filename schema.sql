@@ -47,6 +47,8 @@ CREATE TABLE IF NOT EXISTS public.profiles (
 CREATE TABLE IF NOT EXISTS public.roles (
   email text PRIMARY KEY,
   is_volunteer boolean NOT NULL DEFAULT false,
+  is_event_volunteer boolean NOT NULL DEFAULT false,
+  is_perk_volunteer boolean NOT NULL DEFAULT false,
   is_admin boolean NOT NULL DEFAULT false,
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now()

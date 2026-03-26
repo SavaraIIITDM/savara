@@ -19,6 +19,9 @@ export default async function ManagementVolunteersPage() {
           initialVolunteers={(volunteers ?? []).map((volunteer) => ({
             email: volunteer.email,
             isAdmin: volunteer.isAdmin,
+            isVolunteer: volunteer.isVolunteer,
+            isEventVolunteer: volunteer.isEventVolunteer,
+            isPerkVolunteer: volunteer.isPerkVolunteer,
           }))}
           currentAdminEmail={admin.email}
         />

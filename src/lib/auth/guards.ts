@@ -30,6 +30,22 @@ export async function requireVolunteerOrAdmin() {
   return role;
 }
 
+export async function requireEventVolunteerOrAdmin() {
+  const role = await requireDashboardRole();
+  if (!role.isAdmin && !role.isVolunteer && !role.isEventVolunteer) {
+    redirect("/dashboard?error=forbidden");
+  }
+  return role;
+}
+
+export async function requirePerkVolunteerOrAdmin() {
+  const role = await requireDashboardRole();
+  if (!role.isAdmin && !role.isVolunteer && !role.isPerkVolunteer) {
+    redirect("/dashboard?error=forbidden");
+  }
+  return role;
+}
+
 export async function requireAdmin(): Promise<DashboardRole> {
   const role = await requireDashboardRole();
   if (!role.isAdmin) {

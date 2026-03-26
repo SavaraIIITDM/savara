@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { getRequestUser, requireVolunteerOrAdminForRequest } from "@/lib/auth/server-guards";
+import {
+  getRequestUser,
+  requireEventVolunteerOrAdminForRequest,
+  requirePerkVolunteerOrAdminForRequest,
+  requireVolunteerOrAdminForRequest,
+} from "@/lib/auth/server-guards";
 import { getRoleRow } from "@/lib/db/queries";
 
 export async function requireAuthenticatedRequest(request: Request) {
@@ -35,5 +40,25 @@ export async function requireAdminRequest(request: Request) {
     };
   }
 
+  return { user: access.user };
+}
+
+export async function requireEventVolunteerOrAdminRequest(request: Request) {
+  const access = await requireEventVolunteerOrAdminForRequest(request);
+  if (access.error) {
+    return {
+      error: NextResponse.json({ error: access.error }, { status: access.status }),
+    };
+  }
+  return { user: access.user };
+}
+
+export async function requirePerkVolunteerOrAdminRequest(request: Request) {
+  const access = await requirePerkVolunteerOrAdminForRequest(request);
+  if (access.error) {
+    return {
+      error: NextResponse.json({ error: access.error }, { status: access.status }),
+    };
+  }
   return { user: access.user };
 }

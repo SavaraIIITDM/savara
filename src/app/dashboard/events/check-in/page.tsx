@@ -1,9 +1,9 @@
-import { requireVolunteerOrAdmin } from "@/lib/auth/guards";
+import { requireEventVolunteerOrAdmin } from "@/lib/auth/guards";
 import { listActiveEvents } from "@/lib/db/queries";
 import { CheckInForms } from "@/components/dashboard/CheckInForms";
 
 export default async function EventCheckInPage() {
-  await requireVolunteerOrAdmin();
+  await requireEventVolunteerOrAdmin();
   const events = await listActiveEvents();
 
   return (

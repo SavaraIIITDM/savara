@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireVolunteerOrAdminRequest } from "@/lib/auth/route-helpers";
+import { requirePerkVolunteerOrAdminRequest } from "@/lib/auth/route-helpers";
 import { resolveInternalParticipantByQrForPerk } from "@/lib/db/queries";
 
 function extractQrToken(rawValue: string) {
@@ -21,7 +21,7 @@ function extractQrToken(rawValue: string) {
 }
 
 export async function POST(request: Request) {
-  const access = await requireVolunteerOrAdminRequest(request);
+  const access = await requirePerkVolunteerOrAdminRequest(request);
   if (access.error) {
     return access.error;
   }

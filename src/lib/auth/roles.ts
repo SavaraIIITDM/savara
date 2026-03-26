@@ -6,6 +6,8 @@ export type DashboardRole = {
   email: string;
   isAdmin: boolean;
   isVolunteer: boolean;
+  isEventVolunteer: boolean;
+  isPerkVolunteer: boolean;
   participantType: "internal" | "external";
 };
 
@@ -32,6 +34,8 @@ export async function getDashboardRole(): Promise<DashboardRole | null> {
     email: normalizedEmail,
     isAdmin: roleRow?.isAdmin ?? false,
     isVolunteer: roleRow?.isVolunteer ?? false,
+    isEventVolunteer: roleRow?.isEventVolunteer ?? false,
+    isPerkVolunteer: roleRow?.isPerkVolunteer ?? false,
     participantType,
   };
 }

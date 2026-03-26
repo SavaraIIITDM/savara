@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireVolunteerOrAdmin } from "@/lib/auth/guards";
+import { requireEventVolunteerOrAdmin } from "@/lib/auth/guards";
 import {
   checkInIndividual,
   createTeamWithMembers,
@@ -29,7 +29,7 @@ function extractQrToken(rawValue: string) {
 }
 
 export async function checkInIndividualAction(formData: FormData) {
-  const role = await requireVolunteerOrAdmin();
+  const role = await requireEventVolunteerOrAdmin();
 
   const eventId = String(formData.get("eventId") ?? "").trim();
   const rawQr = String(formData.get("qrToken") ?? "");
@@ -56,7 +56,7 @@ export async function checkInIndividualAction(formData: FormData) {
 }
 
 export async function removeCheckInAction(formData: FormData) {
-  await requireVolunteerOrAdmin();
+  await requireEventVolunteerOrAdmin();
 
   const eventId = String(formData.get("eventId") ?? "").trim();
   const rawQr = String(formData.get("qrToken") ?? "");
@@ -78,7 +78,7 @@ export async function removeCheckInAction(formData: FormData) {
 }
 
 export async function removeCheckInByTicketAction(formData: FormData) {
-  await requireVolunteerOrAdmin();
+  await requireEventVolunteerOrAdmin();
 
   const eventId = String(formData.get("eventId") ?? "").trim();
   const ticketId = String(formData.get("ticketId") ?? "").trim();
@@ -99,7 +99,7 @@ export async function removeCheckInByTicketAction(formData: FormData) {
 }
 
 export async function createTeamAction(formData: FormData) {
-  const role = await requireVolunteerOrAdmin();
+  const role = await requireEventVolunteerOrAdmin();
 
   const eventId = String(formData.get("eventId") ?? "").trim();
   const teamName = String(formData.get("teamName") ?? "").trim();
@@ -139,7 +139,7 @@ export async function createTeamAction(formData: FormData) {
 }
 
 export async function joinTeamAction(formData: FormData) {
-  const role = await requireVolunteerOrAdmin();
+  const role = await requireEventVolunteerOrAdmin();
 
   const teamId = String(formData.get("teamId") ?? "").trim();
   const memberQrsJson = String(formData.get("memberQrsJson") ?? "[]");

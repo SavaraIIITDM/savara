@@ -40,14 +40,69 @@ export async function requireVolunteerOrAdminForRequest(request: NextRequest | R
 
   const db = getDb();
   const roleRows = await db
-    .select({ isAdmin: roles.isAdmin, isVolunteer: roles.isVolunteer })
+    .select({
+      isAdmin: roles.isAdmin,
+      isVolunteer: roles.isVolunteer,
+      isEventVolunteer: roles.isEventVolunteer,
+      isPerkVolunteer: roles.isPerkVolunteer,
+    })
     .from(roles)
     .where(eq(roles.email, user.email.toLowerCase()))
     .limit(1);
 
   const role = roleRows[0];
-  if (!role?.isAdmin && !role?.isVolunteer) {
+  if (!role?.isAdmin && !role?.isVolunteer && !role?.isEventVolunteer && !role?.isPerkVolunteer) {
     return { user: null, status: 403 as const, error: "Volunteer or admin access required." };
+  }
+
+  return { user, status: 200 as const, error: null };
+}
+
+export async function requireEventVolunteerOrAdminForRequest(request: NextRequest | Request) {
+  const user = await getRequestUser(request);
+  if (!user) {
+    return { user: null, status: 401 as const, error: "Authentication required." };
+  }
+
+  const db = getDb();
+  const roleRows = await db
+    .select({
+      isAdmin: roles.isAdmin,
+      isVolunteer: roles.isVolunteer,
+      isEventVolunteer: roles.isEventVolunteer,
+    })
+    .from(roles)
+    .where(eq(roles.email, user.email.toLowerCase()))
+    .limit(1);
+
+  const role = roleRows[0];
+  if (!role?.isAdmin && !role?.isVolunteer && !role?.isEventVolunteer) {
+    return { user: null, status: 403 as const, error: "Event volunteer or admin access required." };
+  }
+
+  return { user, status: 200 as const, error: null };
+}
+
+export async function requirePerkVolunteerOrAdminForRequest(request: NextRequest | Request) {
+  const user = await getRequestUser(request);
+  if (!user) {
+    return { user: null, status: 401 as const, error: "Authentication required." };
+  }
+
+  const db = getDb();
+  const roleRows = await db
+    .select({
+      isAdmin: roles.isAdmin,
+      isVolunteer: roles.isVolunteer,
+      isPerkVolunteer: roles.isPerkVolunteer,
+    })
+    .from(roles)
+    .where(eq(roles.email, user.email.toLowerCase()))
+    .limit(1);
+
+  const role = roleRows[0];
+  if (!role?.isAdmin && !role?.isVolunteer && !role?.isPerkVolunteer) {
+    return { user: null, status: 403 as const, error: "Perk volunteer or admin access required." };
   }
 
   return { user, status: 200 as const, error: null };

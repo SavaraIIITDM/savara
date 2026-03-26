@@ -225,6 +225,8 @@ export type Database = {
           created_at: string;
           email: string;
           is_admin: boolean;
+          is_event_volunteer: boolean;
+          is_perk_volunteer: boolean;
           is_volunteer: boolean;
           updated_at: string;
         };
@@ -232,6 +234,8 @@ export type Database = {
           created_at?: string;
           email: string;
           is_admin?: boolean;
+          is_event_volunteer?: boolean;
+          is_perk_volunteer?: boolean;
           is_volunteer?: boolean;
           updated_at?: string;
         };
@@ -239,6 +243,8 @@ export type Database = {
           created_at?: string;
           email?: string;
           is_admin?: boolean;
+          is_event_volunteer?: boolean;
+          is_perk_volunteer?: boolean;
           is_volunteer?: boolean;
           updated_at?: string;
         };

@@ -40,7 +40,7 @@ export default async function DashboardHomePage() {
 
       <CertificateNameCard fullName={displayName} hasChangedCertificateName={hasChangedCertificateName} />
 
-      {(role.isVolunteer || role.isAdmin) && (
+      {(role.isVolunteer || role.isEventVolunteer || role.isAdmin) && (
         <article className="rounded-xl border p-5" style={{ borderColor: "rgba(212, 165, 116, 0.2)", background: "rgba(42, 31, 26, 0.42)" }}>
           <h2 className="text-xl font-bold uppercase">Event Check-In</h2>
           <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.8)" }}>
@@ -52,7 +52,7 @@ export default async function DashboardHomePage() {
         </article>
       )}
 
-      {(role.isVolunteer || role.isAdmin) && (
+      {(role.isVolunteer || role.isPerkVolunteer || role.isAdmin) && (
         <article className="rounded-xl border p-5" style={{ borderColor: "rgba(212, 165, 116, 0.2)", background: "rgba(42, 31, 26, 0.42)" }}>
           <h2 className="text-xl font-bold uppercase">Perk Check-In</h2>
           <p className="mt-2 text-sm" style={{ color: "rgba(245, 230, 211, 0.8)" }}>

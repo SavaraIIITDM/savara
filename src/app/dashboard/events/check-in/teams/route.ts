@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { requireVolunteerOrAdminRequest } from "@/lib/auth/route-helpers";
+import { requireEventVolunteerOrAdminRequest } from "@/lib/auth/route-helpers";
 import { listTeamsByEvent } from "@/lib/db/queries";
 
 export async function GET(request: Request) {
-  const access = await requireVolunteerOrAdminRequest(request);
+  const access = await requireEventVolunteerOrAdminRequest(request);
   if (access.error) {
     return access.error;
   }

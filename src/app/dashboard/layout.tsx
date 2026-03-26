@@ -32,7 +32,7 @@ export default async function DashboardLayout({
               {role.email} · {role.participantType} participant
             </p>
             <p className="text-xs" style={{ color: "rgba(245, 230, 211, 0.7)" }}>
-              Permissions: {role.isAdmin ? "admin" : role.isVolunteer ? "volunteer" : "participant"}
+              Permissions: {role.isAdmin ? "admin" : role.isVolunteer ? "volunteer" : role.isEventVolunteer ? "event_volunteer" : role.isPerkVolunteer ? "perk_volunteer" : "participant"}
             </p>
           </div>
 
@@ -40,11 +40,15 @@ export default async function DashboardLayout({
             <Link className="rounded-md border px-3 py-2 text-sm" style={{ borderColor: "rgba(212, 165, 116, 0.24)" }} href="/dashboard">
               Home
             </Link>
-            {(role.isVolunteer || role.isAdmin) && (
+            {(role.isVolunteer || role.isEventVolunteer || role.isAdmin) && (
               <>
                 <Link className="rounded-md border px-3 py-2 text-sm" style={{ borderColor: "rgba(212, 165, 116, 0.24)" }} href="/dashboard/events/check-in">
                   Event Check-In
                 </Link>
+              </>
+            )}
+            {(role.isVolunteer || role.isPerkVolunteer || role.isAdmin) && (
+              <>
                 <Link className="rounded-md border px-3 py-2 text-sm" style={{ borderColor: "rgba(212, 165, 116, 0.24)" }} href="/dashboard/perks/check-in">
                   Perk Check-In
                 </Link>

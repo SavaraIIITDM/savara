@@ -1,9 +1,9 @@
-import { requireVolunteerOrAdmin } from "@/lib/auth/guards";
+import { requirePerkVolunteerOrAdmin } from "@/lib/auth/guards";
 import { listActivePerks } from "@/lib/db/queries";
 import { PerkCheckInForms } from "@/components/dashboard/PerkCheckInForms";
 
 export default async function PerkCheckInPage() {
-  await requireVolunteerOrAdmin();
+  await requirePerkVolunteerOrAdmin();
   const perks = await listActivePerks();
 
   return (

@@ -89,6 +89,8 @@ export const profiles = pgTable("profiles", {
 export const roles = pgTable("roles", {
   email: text("email").primaryKey(),
   isVolunteer: boolean("is_volunteer").notNull(),
+  isEventVolunteer: boolean("is_event_volunteer").notNull().default(false),
+  isPerkVolunteer: boolean("is_perk_volunteer").notNull().default(false),
   isAdmin: boolean("is_admin").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),

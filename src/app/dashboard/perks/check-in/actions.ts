@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireVolunteerOrAdmin } from "@/lib/auth/guards";
+import { requirePerkVolunteerOrAdmin } from "@/lib/auth/guards";
 import { checkInPerkIndividual, removePerkCheckin } from "@/lib/db/queries";
 
 function extractQrToken(rawValue: string) {
@@ -23,7 +23,7 @@ function extractQrToken(rawValue: string) {
 }
 
 export async function checkInPerkIndividualAction(formData: FormData) {
-  const role = await requireVolunteerOrAdmin();
+  const role = await requirePerkVolunteerOrAdmin();
 
   const perkId = String(formData.get("perkId") ?? "").trim();
   const qrToken = extractQrToken(String(formData.get("qrToken") ?? ""));
@@ -54,7 +54,7 @@ export async function checkInPerkIndividualAction(formData: FormData) {
 }
 
 export async function removePerkCheckInAction(formData: FormData) {
-  await requireVolunteerOrAdmin();
+  await requirePerkVolunteerOrAdmin();
 
   const perkId = String(formData.get("perkId") ?? "").trim();
   const qrToken = extractQrToken(String(formData.get("qrToken") ?? ""));
