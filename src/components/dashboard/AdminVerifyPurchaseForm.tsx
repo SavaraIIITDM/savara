@@ -72,15 +72,34 @@ export function AdminVerifyPurchaseForm() {
         </select>
       </div>
 
-      <label className="mt-1 inline-flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          name="notifyByEmail"
-          className="h-4 w-4 rounded border"
-          style={{ borderColor: "rgba(212, 165, 116, 0.4)" }}
-        />
-        Notify via email
-      </label>
+      <fieldset className="mt-1">
+        <legend className="text-sm font-medium">Email Provider</legend>
+        <div className="mt-2 flex flex-wrap gap-4 text-sm">
+          <label className="inline-flex items-center gap-2">
+            <input
+              type="radio"
+              name="emailProvider"
+              value="gmail"
+              required
+              defaultChecked
+              className="h-4 w-4"
+              style={{ borderColor: "rgba(212, 165, 116, 0.4)" }}
+            />
+            GMail
+          </label>
+          <label className="inline-flex items-center gap-2">
+            <input
+              type="radio"
+              name="emailProvider"
+              value="resend"
+              required
+              className="h-4 w-4"
+              style={{ borderColor: "rgba(212, 165, 116, 0.4)" }}
+            />
+            Resend
+          </label>
+        </div>
+      </fieldset>
 
       <button
         type="submit"
