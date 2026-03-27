@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShieldCheck, Ticket, CalendarDays, ClipboardList, Gift, Users } from "lucide-react";
+import { ShieldCheck, Ticket, CalendarDays, ClipboardList, Gift, Users, Megaphone } from "lucide-react";
 import { requireAdmin } from "@/lib/auth/guards";
 import { getManagementHubStats } from "@/lib/db/queries";
 
@@ -54,6 +54,13 @@ export default async function ManagementHubPage() {
       description: "Resolve team disputes and remove invalid entries.",
       badge: `${stats.teams} teams`,
       icon: Users,
+    },
+    {
+      href: "/dashboard/admin/management/announcements",
+      title: "Announcements",
+      description: "Publish and remove public updates shown on landing page.",
+      badge: `${stats.announcements} live`,
+      icon: Megaphone,
     },
   ];
 

@@ -51,6 +51,30 @@ export type Database = {
         };
         Relationships: [];
       };
+      announcements: {
+        Row: {
+          body: string;
+          created_at: string;
+          created_by: string;
+          id: string;
+          title: string;
+        };
+        Insert: {
+          body: string;
+          created_at?: string;
+          created_by: string;
+          id?: string;
+          title: string;
+        };
+        Update: {
+          body?: string;
+          created_at?: string;
+          created_by?: string;
+          id?: string;
+          title?: string;
+        };
+        Relationships: [];
+      };
       event_checkins: {
         Row: {
           checked_in_at: string;

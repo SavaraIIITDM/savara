@@ -42,6 +42,14 @@ export const activationCodes = pgTable("activation_codes", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
 });
 
+export const announcements = pgTable("announcements", {
+  id: uuid("id").primaryKey(),
+  title: text("title").notNull(),
+  body: text("body").notNull(),
+  createdBy: uuid("created_by").notNull().references(() => users.id),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+});
+
 export const eventCheckins = pgTable("event_checkins", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
   eventId: uuid("event_id").notNull(),

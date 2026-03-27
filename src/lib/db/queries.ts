@@ -2,6 +2,7 @@ import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { getDb } from "@/lib/db/client";
 import {
   activationCodes,
+  announcements,
   eventCheckins,
   events,
   perkCheckins,
@@ -706,7 +707,7 @@ export async function getEventParticipants(eventId: string) {
 export async function getManagementHubStats() {
   const db = getDb();
 
-  const [volunteers, activeCodes, eventsCount, checkinsCount, perksCount, teamsCount] = await Promise.all([
+  const [volunteers, activeCodes, eventsCount, checkinsCount, perksCount, teamsCount, announcementsCount] = await Promise.all([
     db
       .select({ count: sql<number>`count(*)::int` })
       .from(roles)
@@ -716,6 +717,7 @@ export async function getManagementHubStats() {
     db.select({ count: sql<number>`count(*)::int` }).from(eventCheckins),
     db.select({ count: sql<number>`count(*)::int` }).from(perks),
     db.select({ count: sql<number>`count(*)::int` }).from(teams),
+    db.select({ count: sql<number>`count(*)::int` }).from(announcements),
   ]);
 
   return {
@@ -725,7 +727,65 @@ export async function getManagementHubStats() {
     checkins: checkinsCount[0]?.count ?? 0,
     perks: perksCount[0]?.count ?? 0,
     teams: teamsCount[0]?.count ?? 0,
+    announcements: announcementsCount[0]?.count ?? 0,
   };
+}
+
+export async function listAnnouncements() {
+  const db = getDb();
+  return db
+    .select({
+      id: announcements.id,
+      title: announcements.title,
+      body: announcements.body,
+      createdBy: announcements.createdBy,
+      createdAt: announcements.createdAt,
+    })
+    .from(announcements)
+    .orderBy(desc(announcements.createdAt));
+}
+
+export async function getLatestAnnouncement() {
+  const db = getDb();
+  const rows = await db
+    .select({
+      id: announcements.id,
+      title: announcements.title,
+      body: announcements.body,
+      createdBy: announcements.createdBy,
+      createdAt: announcements.createdAt,
+    })
+    .from(announcements)
+    .orderBy(desc(announcements.createdAt))
+    .limit(1);
+  return rows[0] ?? null;
+}
+
+export async function createAnnouncement(input: { title: string; body: string; createdBy: string }) {
+  const db = getDb();
+  const [row] = await db
+    .insert(announcements)
+    .values({
+      id: crypto.randomUUID(),
+      title: input.title.trim(),
+      body: input.body.trim(),
+      createdBy: input.createdBy,
+      createdAt: new Date(),
+    })
+    .returning({
+      id: announcements.id,
+      title: announcements.title,
+      body: announcements.body,
+      createdBy: announcements.createdBy,
+      createdAt: announcements.createdAt,
+    });
+  return row;
+}
+
+export async function deleteAnnouncement(id: string) {
+  const db = getDb();
+  const removed = await db.delete(announcements).where(eq(announcements.id, id)).returning({ id: announcements.id });
+  return Boolean(removed[0]);
 }
 
 export async function listVolunteers() {
