@@ -534,7 +534,7 @@ export default function SchedulePage() {
         </header>
 
         <section
-          className="sticky top-24 z-30 -mx-2 rounded-2xl border p-2 backdrop-blur-xl sm:top-28 sm:mx-0"
+          className="top-24 z-30 -mx-2 rounded-2xl border p-2 backdrop-blur-xl sm:top-28 sm:mx-0"
           style={{
             borderColor: "rgba(212,165,116,0.22)",
             background:
