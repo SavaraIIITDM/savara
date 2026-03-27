@@ -740,6 +740,7 @@ export async function listAnnouncements() {
       body: announcements.body,
       createdBy: announcements.createdBy,
       createdAt: announcements.createdAt,
+      ageSeconds: sql<number>`extract(epoch from (now() - ${announcements.createdAt}))::int`,
     })
     .from(announcements)
     .orderBy(desc(announcements.createdAt));
@@ -754,6 +755,7 @@ export async function getLatestAnnouncement() {
       body: announcements.body,
       createdBy: announcements.createdBy,
       createdAt: announcements.createdAt,
+      ageSeconds: sql<number>`extract(epoch from (now() - ${announcements.createdAt}))::int`,
     })
     .from(announcements)
     .orderBy(desc(announcements.createdAt))

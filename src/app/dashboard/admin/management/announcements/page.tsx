@@ -21,6 +21,7 @@ export default async function ManagementAnnouncementsPage() {
             title: item.title,
             body: item.body,
             createdAt: item.createdAt.toISOString(),
+            ageSeconds: item.ageSeconds,
           }))}
         />
       </div>

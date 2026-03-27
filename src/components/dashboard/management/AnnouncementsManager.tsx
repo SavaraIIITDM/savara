@@ -11,16 +11,15 @@ type AnnouncementRow = {
   title: string;
   body: string;
   createdAt: string;
+  ageSeconds: number;
 };
 
 type ActionState = { error?: string; success?: string };
 const initialAction: ActionState = {};
 
-function relativeTime(iso: string) {
-  const now = Date.now();
-  const then = new Date(iso).getTime();
-  const diff = Math.max(0, now - then);
-  const mins = Math.floor(diff / 60000);
+function relativeTimeFromAge(ageSeconds: number) {
+  const secs = Math.max(0, ageSeconds);
+  const mins = Math.floor(secs / 60);
   if (mins < 1) return "just now";
   if (mins < 60) return `${mins} minute${mins === 1 ? "" : "s"} ago`;
   const hours = Math.floor(mins / 60);
@@ -126,7 +125,7 @@ export function AnnouncementsManager({ initialAnnouncements }: { initialAnnounce
                 <span>
                   <span className="font-medium">{row.title}</span>
                   <span className="ml-2 text-xs" style={{ color: "rgba(245, 230, 211, 0.68)" }}>
-                    {relativeTime(row.createdAt)}
+                    {relativeTimeFromAge(row.ageSeconds)}
                   </span>
                 </span>
                 {expandedId === row.id ? <ChevronUp size={16} /> : <ChevronDown size={16} />}

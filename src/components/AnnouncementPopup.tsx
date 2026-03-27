@@ -8,13 +8,12 @@ type Announcement = {
   title: string;
   body: string;
   createdAt: string;
+  ageSeconds: number;
 };
 
-function relativeTime(iso: string) {
-  const now = Date.now();
-  const then = new Date(iso).getTime();
-  const diff = Math.max(0, now - then);
-  const mins = Math.floor(diff / 60000);
+function relativeTimeFromAge(ageSeconds: number) {
+  const secs = Math.max(0, ageSeconds);
+  const mins = Math.floor(secs / 60);
   if (mins < 1) return "just now";
   if (mins < 60) return `${mins} minute${mins === 1 ? "" : "s"} ago`;
   const hours = Math.floor(mins / 60);
@@ -25,7 +24,7 @@ function relativeTime(iso: string) {
 
 export function AnnouncementPopup({ announcement }: { announcement: Announcement | null }) {
   const [open, setOpen] = useState(Boolean(announcement));
-  const stamp = useMemo(() => (announcement ? relativeTime(announcement.createdAt) : ""), [announcement]);
+  const stamp = useMemo(() => (announcement ? relativeTimeFromAge(announcement.ageSeconds) : ""), [announcement]);
 
   if (!announcement || !open) {
     return null;

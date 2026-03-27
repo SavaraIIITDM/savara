@@ -18,6 +18,7 @@ export default async function Home() {
                 title: latest.title,
                 body: latest.body,
                 createdAt: latest.createdAt.toISOString(),
+                ageSeconds: latest.ageSeconds,
               }
             : null
         }

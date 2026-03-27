@@ -52,6 +52,7 @@ export async function publishAnnouncementAction(formData: FormData) {
       title: created.title,
       body: created.body,
       createdAt: created.createdAt.toISOString(),
+      ageSeconds: 0,
     },
   };
 }
