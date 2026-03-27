@@ -313,6 +313,24 @@ export async function verifyPurchase(input: {
   const normalizedEmail = normalizeEmail(input.purchaserEmail);
 
   return db.transaction(async (tx) => {
+    const existingCodeRows = await tx
+      .select({
+        code: activationCodes.code,
+        redeemedCount: activationCodes.redeemedCount,
+        ticketQuota: activationCodes.ticketQuota,
+      })
+      .from(activationCodes)
+      .where(eq(activationCodes.purchaserEmail, normalizedEmail))
+      .orderBy(desc(activationCodes.createdAt))
+      .limit(1);
+
+    const existingCode = existingCodeRows[0];
+    if (existingCode) {
+      throw new Error(
+        `activation code ${existingCode.code} already exists for this email. uses ${existingCode.redeemedCount}/${existingCode.ticketQuota}`,
+      );
+    }
+
     let code = randomToken(4).toUpperCase();
     let insertedId = crypto.randomUUID();
 
