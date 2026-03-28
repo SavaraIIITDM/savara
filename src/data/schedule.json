@@ -203,14 +203,6 @@
       "location": "H05 and H15"
     },
     {
-      "name": "Konjam Nadinga Boss",
-      "slug": null,
-      "start_time": "0900",
-      "end_time": "1200",
-      "event_type": "cult_informal",
-      "location": "H13"
-    },
-    {
       "name":"Social Media Challenge",
       "slug":null,
       "start_time":"1400",
@@ -245,14 +237,6 @@
   ],
   "3": [
     {
-      "name": "Robowars - 8KG",
-      "slug": "robowars-8kg",
-      "start_time": "0900",
-      "end_time": "1600",
-      "event_type": "flagship",
-      "location": "Skybridge"
-    },
-    {
       "name": "Game Jam",
       "slug": "game-jam",
       "start_time": "0900",
@@ -263,7 +247,7 @@
     {
       "name": "Sky Symphony",
       "slug": "sky-symphony",
-      "start_time": "",
+      "start_time": "1000",
       "end_time": "1700",
       "event_type": "flagship",
       "location": "Cricket Ground"
@@ -349,7 +333,7 @@
       "location": "Stage"
     },
     {
-      "name" : "TALK by Ankit",
+      "name" : "RIKON Panel Discussion",
       "slug": null,
       "start_time": "1000",
       "end_time": "1100",
@@ -363,6 +347,13 @@
       "end_time": "1700",
       "event_type": "",
       "location": "H05"
+    },
+    {
+      "name" : "Mine Maze",
+      "slug": "mind-maze",
+      "start_time":"1000",
+      "end_time":"1200",
+      "location":"H02"
     }
   ],
  "4": [
@@ -379,12 +370,12 @@
       "slug": "game-jam",
       "start_time": "0900",
       "end_time": "1100",
-      "event_type": "tech_informal",
+      "event_type": "flagship",
       "location": "H25"
     },
     {
       "name": "Motorsport Trivia",
-      "slug": null,
+      "slug":"motorsport-trivia-race-strategy",
       "start_time": "1000",
       "end_time": "1300",
       "event_type": "tech_informal",
@@ -426,7 +417,7 @@
       "name": "Karthick C - Designers Club Talk",
       "slug": null,
       "start_time": "1300",
-      "end_time": "1600",
+      "end_time": "1500",
       "event_type": "",
       "location": "H04"
     },
@@ -440,8 +431,8 @@
     },
     {
       "name": "Bit-Trix",
-      "slug": null,
-      "start_time": "1400",
+      "slug": "bit-trix",
+      "start_time": "1200",
       "end_time": "1700",
       "event_type": "tech_formal",
       "location": "H25"
@@ -498,7 +489,7 @@
   "5": [
     {
       "name": "Face Painting",
-      "slug": null,
+      "slug": "face-painting",
       "start_time": "1000",
       "end_time": "1300",
       "event_type": "tech_informal",
@@ -532,9 +523,9 @@
       "name": "Lens and Logic",
       "slug": "lens-logic",
       "start_time": "1400",
-      "end_time": "1700",
+      "end_time": "1600",
       "event_type": "tech_formal",
-      "location": "H44"
+      "location": "H04"
     },
     {
       "name": "Temporal Whishpers",
@@ -546,7 +537,7 @@
     },
     {
       "name": "Code Relay",
-      "slug": null,
+      "slug": "code-relay",
       "start_time": "1300",
       "end_time": "1700",
       "event_type": "tech_informal",
@@ -556,9 +547,9 @@
       "name": "Aero Innovation",
       "slug": "aero-innovation-challenge",
       "start_time": "1400",
-      "end_time": "1600",
+      "end_time": "1700",
       "event_type": "tech_formal",
-      "location": "H13 & H14"
+      "location": "H02"
     },
     {
       "name": "IEEE Paper Presentation",
@@ -571,16 +562,16 @@
     {
       "name": "Talk (Anish Basu Roy)",
       "slug": null,
-      "start_time": "1300",
-      "end_time": "1400",
+      "start_time": "1400",
+      "end_time": "1500",
       "event_type": "tech_formal",
       "location": "H05"
     },
     {
       "name": "Talk (Dr. John Augustine)",
       "slug": null,
-      "start_time": "1400",
-      "end_time": "1500",
+      "start_time": "1500",
+      "end_time": "1600",
       "event_type": "tech_formal",
       "location": "H05"
     },
@@ -594,8 +585,8 @@
     },
     {
       "name": "Dance Dumb Charades",
-      "slug": null,
-      "start_time": "1300",
+      "slug": "dance-dumb-charades",
+      "start_time": "1400",
       "end_time": "1700",
       "event_type": "tech_informal",
       "location": "Old library Foot Lights"
@@ -607,6 +598,22 @@
       "end_time": "2200",
       "event_type": "",
       "location": "STAGE"
+    },
+    {
+      "name" : "IEEE Paper Presentation"
+    , "slug" : "ieee-paper-presentation"
+    , "start_time" : "1000"
+    , "end_time" : "1300"
+    , "event_type" : "flagship"
+    , "location" : "H05"
+    },
+    {
+      "name": "Konjam Nadinga Boss",
+      "slug": "konjam-nadinga-boss",
+      "start_time": "1400",
+      "end_time": "1700",
+      "event_type": "cult_informal",
+      "location": "H13"
     }
   ]
 }
