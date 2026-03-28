@@ -163,14 +163,6 @@
       "location": "H14"
     },
     {
-      "name": "Triathlon",
-      "slug": "triathlon",
-      "start_time": "0900",
-      "end_time": "1600",
-      "event_type": "flagship",
-      "location": "H41, H43"
-    },
-    {
       "name": "Line Follower",
       "slug": "line-follower",
       "start_time": "0900",
