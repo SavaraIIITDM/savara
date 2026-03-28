@@ -17,20 +17,20 @@
       "location": "H15"
     },
     {
-      "name":"Spicmacay Flagship-tholubommalatam",
-      "slug":null,
-      "start_time":"1800",
-      "end_time":"2100",
-      "event_type":"",
-      "location":"OAT"
+      "name": "Spicmacay Flagship-tholubommalatam",
+      "slug": null,
+      "start_time": "1800",
+      "end_time": "2100",
+      "event_type": "",
+      "location": "OAT"
     },
     {
-      "name":"Street Dance Battle",
-      "slug":null,
-      "start_time":"2100",
-      "end_time":"2300",
-      "event_type":"cult_informal",
-      "location":"Skybridge"
+      "name": "Street Dance Battle",
+      "slug": null,
+      "start_time": "2100",
+      "end_time": "2300",
+      "event_type": "cult_informal",
+      "location": "Skybridge"
     },
     {
       "name": "Fragments of Time",
@@ -105,25 +105,25 @@
       "location": "Old Library"
     },
     {
-      "name":"Spicmacay - Tholubommalata workshop session 1",
-      "slug":null,
-      "start_time":"0900",
-      "end_time":"1200",
-      "event_type":"",
-      "location":"H16,H17"
+      "name": "Spicmacay - Tholubommalata workshop session 1",
+      "slug": null,
+      "start_time": "0900",
+      "end_time": "1200",
+      "event_type": "",
+      "location": "H16,H17"
     },
     {
-      "name":"Spicmacay - Tholubommalata workshop session 2",
-      "slug":null,
-      "start_time":"1300",
-      "end_time":"1600",
-      "event_type":"",
-      "location":"H16,H17"
+      "name": "Spicmacay - Tholubommalata workshop session 2",
+      "slug": null,
+      "start_time": "1300",
+      "end_time": "1600",
+      "event_type": "",
+      "location": "H16,H17"
     }
   ],
   "2": [
     {
-      "name": "Capture The Flag", 
+      "name": "Capture The Flag",
       "slug": "capture-the-flag",
       "start_time": "0900",
       "end_time": "1300",
@@ -147,12 +147,12 @@
       "location": "H44"
     },
     {
-      "name":"Spicmacay - Tholubommalata workshop session 3",
-      "slug":null,
-      "start_time":"0900",
-      "end_time":"1200",
-      "event_type":"",
-      "location":"H16,H17"
+      "name": "Spicmacay - Tholubommalata workshop session 3",
+      "slug": null,
+      "start_time": "0900",
+      "end_time": "1200",
+      "event_type": "",
+      "location": "H16,H17"
     },
     {
       "name": "MazeRover",
@@ -171,12 +171,12 @@
       "location": "L609"
     },
     {
-      "name" : "Bike stunt",
-      "slug" : null,
-      "start_time" : "1600",
-      "end_time" : "1700",
-      "event_type" : "cult_informal",
-      "location" : "College main gate to hostel road"
+      "name": "Bike stunt",
+      "slug": null,
+      "start_time": "1600",
+      "end_time": "1700",
+      "event_type": "cult_informal",
+      "location": "College main gate to hostel road"
     },
     {
       "name": "Vashisht Hackathon 3.O",
@@ -203,36 +203,36 @@
       "location": "H05 and H15"
     },
     {
-      "name":"Social Media Challenge",
-      "slug":null,
-      "start_time":"1400",
-      "end_time":"1600",
-      "event_type":"cult_informal",
-      "location":"H25"
+      "name": "Social Media Challenge",
+      "slug": null,
+      "start_time": "1400",
+      "end_time": "1600",
+      "event_type": "cult_informal",
+      "location": "H25"
     },
     {
-      "name":"TALK:Mukesh Kumar Ranjan",
-      "slug":null,
-      "start_time":"1400",
-      "end_time":"1600",
-      "event_type":"",
-      "location":"H05"
+      "name": "TALK:Mukesh Kumar Ranjan",
+      "slug": null,
+      "start_time": "1400",
+      "end_time": "1600",
+      "event_type": "",
+      "location": "H05"
     },
     {
-      "name":"TALK:Yogesh Bathina",
-      "slug":null,
-      "start_time":"1000",
-      "end_time":"1100",
-      "event_type":"",
-      "location":"H05"
+      "name": "TALK:Yogesh Bathina",
+      "slug": null,
+      "start_time": "1000",
+      "end_time": "1100",
+      "event_type": "",
+      "location": "H05"
     },
     {
-      "name":"TALK:KrithikVijaykumar",
-      "slug":null,
-      "start_time":"1100",
-      "end_time":"1200",
-      "event_type":"",
-      "location":"H05"
+      "name": "TALK:KrithikVijaykumar",
+      "slug": null,
+      "start_time": "1100",
+      "end_time": "1200",
+      "event_type": "",
+      "location": "H05"
     }
   ],
   "3": [
@@ -333,7 +333,7 @@
       "location": "Stage"
     },
     {
-      "name" : "RIKON Panel Discussion",
+      "name": "RIKON Panel Discussion",
       "slug": null,
       "start_time": "1000",
       "end_time": "1100",
@@ -341,7 +341,7 @@
       "location": "H05"
     },
     {
-      "name" : "TALK by Revathy Rehman",
+      "name": "TALK by Revathy Rehman",
       "slug": null,
       "start_time": "1500",
       "end_time": "1700",
@@ -349,14 +349,15 @@
       "location": "H05"
     },
     {
-      "name" : "Mine Maze",
+      "name": "Mine Maze",
       "slug": "mind-maze",
-      "start_time":"1000",
-      "end_time":"1200",
-      "location":"H02"
+      "start_time": "1000",
+      "end_time": "1200",
+      "event_type": "tech_informal",
+      "location": "H02"
     }
   ],
- "4": [
+  "4": [
     {
       "name": "One Line One Rythem",
       "slug": "one-line-one-rhythm",
@@ -375,7 +376,7 @@
     },
     {
       "name": "Motorsport Trivia",
-      "slug":"motorsport-trivia-race-strategy",
+      "slug": "motorsport-trivia-race-strategy",
       "start_time": "1000",
       "end_time": "1300",
       "event_type": "tech_informal",
@@ -600,12 +601,12 @@
       "location": "STAGE"
     },
     {
-      "name" : "IEEE Paper Presentation"
-    , "slug" : "ieee-paper-presentation"
-    , "start_time" : "1000"
-    , "end_time" : "1300"
-    , "event_type" : "flagship"
-    , "location" : "H05"
+      "name": "IEEE Paper Presentation",
+      "slug": "ieee-paper-presentation",
+      "start_time": "1000",
+      "end_time": "1300",
+      "event_type": "flagship",
+      "location": "H05"
     },
     {
       "name": "Konjam Nadinga Boss",
