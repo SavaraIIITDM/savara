@@ -63,7 +63,7 @@ PROJECT_FONT_OVERRIDES = {
     "futurabook": "public/FuturaBook.ttf",
 }
 FIT_WIDTH_RATIO = 0.95
-FIT_HEIGHT_RATIO = 0.72
+FIT_HEIGHT_RATIO = 0.62
 
 
 def _normalize_font_name(value: str) -> str:
@@ -210,11 +210,11 @@ def draw_text_in_bbox(
     font: ImageFont.FreeTypeFont,
     color: tuple[int, int, int],
     align: str = "center",  # "left" | "center" | "right"
+    valign: str = "center",  # "top" | "center" | "bottom"
 ):
     x, y, w, h = bbox
 
     # If configured font size is too large for the box, shrink to fit.
-    # This keeps names readable even when config size values are extreme.
     fitted_font = font
     if hasattr(font, "size") and hasattr(font, "font_variant"):
         current_size = max(1, int(getattr(font, "size", 1)))
@@ -229,21 +229,26 @@ def draw_text_in_bbox(
             current_size -= 1
             fitted_font = font.font_variant(size=current_size)
 
-    # Measure text
+    # Measure final fitted text
     bbox_text = draw.textbbox((0, 0), text, font=fitted_font)
     text_w = bbox_text[2] - bbox_text[0]
     text_h = bbox_text[3] - bbox_text[1]
 
-    # Horizontal alignment
+    # Horizontal alignment (Corrected for PIL offset)
     if align == "center":
-        tx = x + (w - text_w) // 2
+        tx = x + (w - text_w) // 2 - bbox_text[0]
     elif align == "right":
-        tx = x + w - text_w
+        tx = x + w - text_w - bbox_text[0]
     else:
-        tx = x
+        tx = x - bbox_text[0]
 
-    # Vertical center
-    ty = y + (h - text_h) // 2
+    # Vertical alignment (Corrected for PIL offset)
+    if valign == "top":
+        ty = y - bbox_text[1]
+    elif valign == "bottom":
+        ty = y + h - text_h - bbox_text[1]
+    else:
+        ty = y + (h - text_h) // 2 - bbox_text[1]
 
     draw.text((tx, ty), text, font=fitted_font, fill=color)
 
@@ -326,8 +331,9 @@ def generate_certificates(config_path: str, data_path: str):
             bbox = field["bbox"]  # [x, y, w, h]
             color = tuple(field["color"])  # [R, G, B]
             align = field.get("align", "center")
+            valign = field.get("valign", "center")
 
-            draw_text_in_bbox(draw, text, bbox, font, color, align)
+            draw_text_in_bbox(draw, text, bbox, font, color, align, valign)
 
         # Filename from first column value
         first_val = safe_filename(row.iloc[0])
