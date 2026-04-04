@@ -23,6 +23,7 @@ export async function updateCertificateNameAction(formData: FormData) {
   }
 
   revalidatePath("/dashboard");
+  revalidatePath("/dashboard/pcertificates");
   revalidatePath("/dashboard/ticket");
 
   return { success: "Certificate name updated.", updatedName: fullName };

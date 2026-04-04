@@ -14,7 +14,11 @@ import {
   tickets,
   users,
 } from "@/lib/db/schema";
-import { inferParticipantType, normalizeEmail, randomToken } from "@/lib/auth/utils";
+import {
+  inferParticipantType,
+  normalizeEmail,
+  randomToken,
+} from "@/lib/auth/utils";
 
 export async function getRoleRow(email: string) {
   const db = getDb();
@@ -48,7 +52,10 @@ export async function getProfileByUserId(userId: string) {
   return rows[0] ?? null;
 }
 
-export async function updateCertificateNameOnce(userId: string, nextName: string) {
+export async function updateCertificateNameOnce(
+  userId: string,
+  nextName: string,
+) {
   const db = getDb();
   const sanitizedName = nextName.trim().replace(/\s+/g, " ");
 
@@ -74,10 +81,10 @@ export async function updateCertificateNameOnce(userId: string, nextName: string
     throw new Error("You have already changed your certificate name once.");
   }
 
-  const currentName = (profile.fullName ?? "").trim().replace(/\s+/g, " ");
-  if (currentName && currentName === sanitizedName) {
-    throw new Error("Please enter a different name.");
-  }
+  // const currentName = (profile.fullName ?? "").trim().replace(/\s+/g, " ");
+  // if (currentName && currentName === sanitizedName) {
+  //   throw new Error("Please enter a different name.");
+  // }
 
   const updated = await db
     .update(profiles)
@@ -86,7 +93,12 @@ export async function updateCertificateNameOnce(userId: string, nextName: string
       hasChangedCertificateName: true,
       updatedAt: new Date(),
     })
-    .where(and(eq(profiles.id, userId), eq(profiles.hasChangedCertificateName, false)))
+    .where(
+      and(
+        eq(profiles.id, userId),
+        eq(profiles.hasChangedCertificateName, false),
+      ),
+    )
     .returning({ id: profiles.id });
 
   if (updated[0]) {
@@ -115,10 +127,18 @@ export async function getPendingActivationCodeForEmailDb(email: string) {
   const db = getDb();
   const normalizedEmail = normalizeEmail(email);
 
-  const profileRows = await db.select({ id: profiles.id }).from(profiles).where(eq(profiles.email, normalizedEmail)).limit(1);
+  const profileRows = await db
+    .select({ id: profiles.id })
+    .from(profiles)
+    .where(eq(profiles.email, normalizedEmail))
+    .limit(1);
   const profile = profileRows[0];
   if (profile) {
-    const ticketRows = await db.select({ id: tickets.id }).from(tickets).where(eq(tickets.userId, profile.id)).limit(1);
+    const ticketRows = await db
+      .select({ id: tickets.id })
+      .from(tickets)
+      .where(eq(tickets.userId, profile.id))
+      .limit(1);
     if (ticketRows[0]) {
       return null;
     }
@@ -176,7 +196,12 @@ export async function listRecentActivationCodes(limit = 20) {
 export async function listActiveEvents() {
   const db = getDb();
   return db
-    .select({ id: events.id, name: events.name, team_min_size: events.teamMinSize, team_max_size: events.teamMaxSize })
+    .select({
+      id: events.id,
+      name: events.name,
+      team_min_size: events.teamMinSize,
+      team_max_size: events.teamMaxSize,
+    })
     .from(events)
     .where(eq(events.isActive, true))
     .orderBy(asc(events.name));
@@ -225,6 +250,53 @@ export async function getMyParticipations(userId: string) {
   }>;
 }
 
+export async function getMyParticipationCertificates(userId: string) {
+  const db = getDb();
+  const result = await db.execute(sql`
+    select
+      ec.id as checkin_id,
+      e.id as event_id,
+      e.name as event_name,
+      ec.checked_in_at
+    from public.event_checkins ec
+    join public.tickets t on t.id = ec.ticket_id
+    join public.events e on e.id = ec.event_id
+    where t.user_id = ${userId}
+    order by ec.checked_in_at desc
+  `);
+  return result as unknown as Array<{
+    checkin_id: number;
+    event_id: string;
+    event_name: string;
+    checked_in_at: string;
+  }>;
+}
+
+export async function getMyParticipationCertificateByCheckinId(userId: string, checkinId: number) {
+  const db = getDb();
+  const result = await db.execute(sql`
+    select
+      ec.id as checkin_id,
+      e.name as event_name,
+      coalesce(p.full_name, u.full_name, u.email) as participant_name,
+      coalesce(p.has_changed_certificate_name, false) as has_changed_certificate_name
+    from public.event_checkins ec
+    join public.tickets t on t.id = ec.ticket_id
+    join public.events e on e.id = ec.event_id
+    left join public.profiles p on p.id = t.user_id
+    left join public.users u on u.id = t.user_id
+    where t.user_id = ${userId}
+      and ec.id = ${checkinId}
+    limit 1
+  `);
+  return (result as unknown as Array<{
+    checkin_id: number;
+    event_name: string;
+    participant_name: string | null;
+    has_changed_certificate_name: boolean;
+  }>)[0] ?? null;
+}
+
 export async function getMyPerkStatus(userId: string) {
   const db = getDb();
   const result = await db.execute(sql`
@@ -247,16 +319,28 @@ export async function getMyPerkStatus(userId: string) {
     where p.is_active = true
     order by p.name asc
   `);
-  return result as unknown as Array<{ perk_id: string; perk_name: string; attended: boolean }>;
+  return result as unknown as Array<{
+    perk_id: string;
+    perk_name: string;
+    attended: boolean;
+  }>;
 }
 
-export async function redeemActivationCode(userId: string, email: string, code: string) {
+export async function redeemActivationCode(
+  userId: string,
+  email: string,
+  code: string,
+) {
   const db = getDb();
   const activationCode = code.trim().toUpperCase();
   const participantType = inferParticipantType(email);
 
   return db.transaction(async (tx) => {
-    const existingTicketRows = await tx.select({ id: tickets.id }).from(tickets).where(eq(tickets.userId, userId)).limit(1);
+    const existingTicketRows = await tx
+      .select({ id: tickets.id })
+      .from(tickets)
+      .where(eq(tickets.userId, userId))
+      .limit(1);
     if (existingTicketRows[0]) {
       throw new Error("This account already has an activated ticket");
     }
@@ -283,7 +367,9 @@ export async function redeemActivationCode(userId: string, email: string, code: 
     }
 
     if (selectedCode.purchaseType !== participantType) {
-      throw new Error("Activation code type does not match your participant category");
+      throw new Error(
+        "Activation code type does not match your participant category",
+      );
     }
 
     await tx.insert(tickets).values({
@@ -298,7 +384,10 @@ export async function redeemActivationCode(userId: string, email: string, code: 
     const nextRedeemedCount = selectedCode.redeemedCount + 1;
     await tx
       .update(activationCodes)
-      .set({ redeemedCount: nextRedeemedCount, isActive: nextRedeemedCount < selectedCode.ticketQuota })
+      .set({
+        redeemedCount: nextRedeemedCount,
+        isActive: nextRedeemedCount < selectedCode.ticketQuota,
+      })
       .where(eq(activationCodes.id, selectedCode.id));
   });
 }
@@ -365,7 +454,11 @@ export async function verifyPurchase(input: {
     let ticketAssigned = false;
 
     if (profile && profile.participantType === input.purchaseType) {
-      const existingTicket = await tx.select({ id: tickets.id }).from(tickets).where(eq(tickets.userId, profile.id)).limit(1);
+      const existingTicket = await tx
+        .select({ id: tickets.id })
+        .from(tickets)
+        .where(eq(tickets.userId, profile.id))
+        .limit(1);
       if (!existingTicket[0]) {
         await tx.insert(tickets).values({
           id: crypto.randomUUID(),
@@ -392,25 +485,43 @@ export async function verifyPurchase(input: {
   });
 }
 
-export async function checkInIndividual(input: { eventId: string; qrToken: string; teamId?: string | null; actorUserId: string }) {
+export async function checkInIndividual(input: {
+  eventId: string;
+  qrToken: string;
+  teamId?: string | null;
+  actorUserId: string;
+}) {
   const db = getDb();
   return db.transaction(async (tx) => {
     const qr = input.qrToken.trim();
-    const ticketRows = await tx.select({ id: tickets.id }).from(tickets).where(eq(tickets.qrToken, qr)).limit(1);
+    const ticketRows = await tx
+      .select({ id: tickets.id })
+      .from(tickets)
+      .where(eq(tickets.qrToken, qr))
+      .limit(1);
     const ticket = ticketRows[0];
     if (!ticket) {
       throw new Error("Ticket not found for the scanned QR");
     }
 
     if (input.teamId) {
-      const teamRows = await tx.select({ eventId: teams.eventId }).from(teams).where(eq(teams.id, input.teamId)).limit(1);
+      const teamRows = await tx
+        .select({ eventId: teams.eventId })
+        .from(teams)
+        .where(eq(teams.id, input.teamId))
+        .limit(1);
       if (!teamRows[0] || teamRows[0].eventId !== input.eventId) {
         throw new Error("Selected team does not belong to the event");
       }
 
       await tx
         .insert(teamMembers)
-        .values({ teamId: input.teamId, ticketId: ticket.id, addedBy: input.actorUserId, createdAt: new Date() })
+        .values({
+          teamId: input.teamId,
+          ticketId: ticket.id,
+          addedBy: input.actorUserId,
+          createdAt: new Date(),
+        })
         .onConflictDoNothing();
     }
 
@@ -430,19 +541,32 @@ export async function checkInIndividual(input: { eventId: string; qrToken: strin
   });
 }
 
-export async function removeEventCheckinByTicket(eventId: string, ticketId: string) {
+export async function removeEventCheckinByTicket(
+  eventId: string,
+  ticketId: string,
+) {
   const db = getDb();
   return db.transaction(async (tx) => {
     const rows = await tx
       .select({ teamId: eventCheckins.teamId })
       .from(eventCheckins)
-      .where(and(eq(eventCheckins.eventId, eventId), eq(eventCheckins.ticketId, ticketId)))
+      .where(
+        and(
+          eq(eventCheckins.eventId, eventId),
+          eq(eventCheckins.ticketId, ticketId),
+        ),
+      )
       .limit(1);
     const teamId = rows[0]?.teamId ?? null;
 
     const removed = await tx
       .delete(eventCheckins)
-      .where(and(eq(eventCheckins.eventId, eventId), eq(eventCheckins.ticketId, ticketId)))
+      .where(
+        and(
+          eq(eventCheckins.eventId, eventId),
+          eq(eventCheckins.ticketId, ticketId),
+        ),
+      )
       .returning({ id: eventCheckins.id });
 
     if (!removed[0]) {
@@ -450,8 +574,19 @@ export async function removeEventCheckinByTicket(eventId: string, ticketId: stri
     }
 
     if (teamId) {
-      await tx.delete(teamMembers).where(and(eq(teamMembers.teamId, teamId), eq(teamMembers.ticketId, ticketId)));
-      const remaining = await tx.select({ id: teamMembers.teamId }).from(teamMembers).where(eq(teamMembers.teamId, teamId)).limit(1);
+      await tx
+        .delete(teamMembers)
+        .where(
+          and(
+            eq(teamMembers.teamId, teamId),
+            eq(teamMembers.ticketId, ticketId),
+          ),
+        );
+      const remaining = await tx
+        .select({ id: teamMembers.teamId })
+        .from(teamMembers)
+        .where(eq(teamMembers.teamId, teamId))
+        .limit(1);
       if (!remaining[0]) {
         await tx.delete(teams).where(eq(teams.id, teamId));
       }
@@ -463,7 +598,11 @@ export async function removeEventCheckinByTicket(eventId: string, ticketId: stri
 
 export async function removeEventCheckinByQr(eventId: string, qrToken: string) {
   const db = getDb();
-  const ticketRows = await db.select({ id: tickets.id }).from(tickets).where(eq(tickets.qrToken, qrToken.trim())).limit(1);
+  const ticketRows = await db
+    .select({ id: tickets.id })
+    .from(tickets)
+    .where(eq(tickets.qrToken, qrToken.trim()))
+    .limit(1);
   const ticket = ticketRows[0];
   if (!ticket) {
     return false;
@@ -490,7 +629,11 @@ export async function createTeamWithMembers(input: {
       throw new Error("Event not found or inactive");
     }
 
-    const leaderRows = await tx.select({ id: tickets.id }).from(tickets).where(eq(tickets.qrToken, input.leaderQr.trim())).limit(1);
+    const leaderRows = await tx
+      .select({ id: tickets.id })
+      .from(tickets)
+      .where(eq(tickets.qrToken, input.leaderQr.trim()))
+      .limit(1);
     const leader = leaderRows[0];
     if (!leader) {
       throw new Error("Leader ticket not found");
@@ -508,16 +651,31 @@ export async function createTeamWithMembers(input: {
 
     await tx
       .insert(teamMembers)
-      .values({ teamId, ticketId: leader.id, addedBy: input.actorUserId, createdAt: new Date() })
+      .values({
+        teamId,
+        ticketId: leader.id,
+        addedBy: input.actorUserId,
+        createdAt: new Date(),
+      })
       .onConflictDoNothing();
 
     await tx
       .insert(eventCheckins)
-      .values({ eventId: input.eventId, ticketId: leader.id, teamId, checkedInBy: input.actorUserId, checkedInAt: new Date() })
+      .values({
+        eventId: input.eventId,
+        ticketId: leader.id,
+        teamId,
+        checkedInBy: input.actorUserId,
+        checkedInAt: new Date(),
+      })
       .onConflictDoNothing();
 
     for (const memberQr of input.memberQrs) {
-      const memberRows = await tx.select({ id: tickets.id }).from(tickets).where(eq(tickets.qrToken, memberQr.trim())).limit(1);
+      const memberRows = await tx
+        .select({ id: tickets.id })
+        .from(tickets)
+        .where(eq(tickets.qrToken, memberQr.trim()))
+        .limit(1);
       const member = memberRows[0];
       if (!member) {
         throw new Error(`Member ticket not found for QR: ${memberQr}`);
@@ -525,16 +683,30 @@ export async function createTeamWithMembers(input: {
 
       await tx
         .insert(teamMembers)
-        .values({ teamId, ticketId: member.id, addedBy: input.actorUserId, createdAt: new Date() })
+        .values({
+          teamId,
+          ticketId: member.id,
+          addedBy: input.actorUserId,
+          createdAt: new Date(),
+        })
         .onConflictDoNothing();
 
       await tx
         .insert(eventCheckins)
-        .values({ eventId: input.eventId, ticketId: member.id, teamId, checkedInBy: input.actorUserId, checkedInAt: new Date() })
+        .values({
+          eventId: input.eventId,
+          ticketId: member.id,
+          teamId,
+          checkedInBy: input.actorUserId,
+          checkedInAt: new Date(),
+        })
         .onConflictDoNothing();
     }
 
-    const countRows = await tx.select({ count: sql<number>`count(*)::int` }).from(teamMembers).where(eq(teamMembers.teamId, teamId));
+    const countRows = await tx
+      .select({ count: sql<number>`count(*)::int` })
+      .from(teamMembers)
+      .where(eq(teamMembers.teamId, teamId));
     const memberCount = countRows[0]?.count ?? 0;
 
     if (memberCount < event.minSize) {
@@ -548,7 +720,11 @@ export async function createTeamWithMembers(input: {
   });
 }
 
-export async function joinTeamWithMembers(input: { teamId: string; memberQrs: string[]; actorUserId: string }) {
+export async function joinTeamWithMembers(input: {
+  teamId: string;
+  memberQrs: string[];
+  actorUserId: string;
+}) {
   const db = getDb();
   return db.transaction(async (tx) => {
     const teamRows = await tx
@@ -562,13 +738,20 @@ export async function joinTeamWithMembers(input: { teamId: string; memberQrs: st
       throw new Error("Team not found");
     }
 
-    const currentRows = await tx.select({ count: sql<number>`count(*)::int` }).from(teamMembers).where(eq(teamMembers.teamId, input.teamId));
+    const currentRows = await tx
+      .select({ count: sql<number>`count(*)::int` })
+      .from(teamMembers)
+      .where(eq(teamMembers.teamId, input.teamId));
     let currentCount = currentRows[0]?.count ?? 0;
     let added = 0;
 
     for (const rawQr of input.memberQrs) {
       const qr = rawQr.trim();
-      const memberRows = await tx.select({ id: tickets.id }).from(tickets).where(eq(tickets.qrToken, qr)).limit(1);
+      const memberRows = await tx
+        .select({ id: tickets.id })
+        .from(tickets)
+        .where(eq(tickets.qrToken, qr))
+        .limit(1);
       const member = memberRows[0];
       if (!member) {
         throw new Error(`Ticket not found for QR: ${rawQr}`);
@@ -577,7 +760,12 @@ export async function joinTeamWithMembers(input: { teamId: string; memberQrs: st
       const existingCheckin = await tx
         .select({ id: eventCheckins.id })
         .from(eventCheckins)
-        .where(and(eq(eventCheckins.eventId, team.eventId), eq(eventCheckins.ticketId, member.id)))
+        .where(
+          and(
+            eq(eventCheckins.eventId, team.eventId),
+            eq(eventCheckins.ticketId, member.id),
+          ),
+        )
         .limit(1);
       if (existingCheckin[0]) {
         throw new Error("Participant already registered for this event");
@@ -589,12 +777,23 @@ export async function joinTeamWithMembers(input: { teamId: string; memberQrs: st
 
       await tx
         .insert(teamMembers)
-        .values({ teamId: input.teamId, ticketId: member.id, addedBy: input.actorUserId, createdAt: new Date() })
+        .values({
+          teamId: input.teamId,
+          ticketId: member.id,
+          addedBy: input.actorUserId,
+          createdAt: new Date(),
+        })
         .onConflictDoNothing();
 
       await tx
         .insert(eventCheckins)
-        .values({ eventId: team.eventId, ticketId: member.id, teamId: input.teamId, checkedInBy: input.actorUserId, checkedInAt: new Date() })
+        .values({
+          eventId: team.eventId,
+          ticketId: member.id,
+          teamId: input.teamId,
+          checkedInBy: input.actorUserId,
+          checkedInAt: new Date(),
+        })
         .onConflictDoNothing();
 
       currentCount += 1;
@@ -605,7 +804,11 @@ export async function joinTeamWithMembers(input: { teamId: string; memberQrs: st
   });
 }
 
-export async function checkInPerkIndividual(input: { perkId: string; qrToken: string; actorUserId: string }) {
+export async function checkInPerkIndividual(input: {
+  perkId: string;
+  qrToken: string;
+  actorUserId: string;
+}) {
   const db = getDb();
   const qr = input.qrToken.trim();
   const ticketRows = await db
@@ -623,16 +826,28 @@ export async function checkInPerkIndividual(input: { perkId: string; qrToken: st
 
   const inserted = await db
     .insert(perkCheckins)
-    .values({ perkId: input.perkId, ticketId: ticket.id, checkedInBy: input.actorUserId, checkedInAt: new Date() })
+    .values({
+      perkId: input.perkId,
+      ticketId: ticket.id,
+      checkedInBy: input.actorUserId,
+      checkedInAt: new Date(),
+    })
     .onConflictDoNothing()
     .returning({ id: perkCheckins.id });
 
   return inserted[0] ? "checked_in" : "already_attended";
 }
 
-export async function removePerkCheckin(input: { perkId: string; qrToken: string }) {
+export async function removePerkCheckin(input: {
+  perkId: string;
+  qrToken: string;
+}) {
   const db = getDb();
-  const ticketRows = await db.select({ id: tickets.id }).from(tickets).where(eq(tickets.qrToken, input.qrToken.trim())).limit(1);
+  const ticketRows = await db
+    .select({ id: tickets.id })
+    .from(tickets)
+    .where(eq(tickets.qrToken, input.qrToken.trim()))
+    .limit(1);
   const ticket = ticketRows[0];
   if (!ticket) {
     return false;
@@ -640,13 +855,21 @@ export async function removePerkCheckin(input: { perkId: string; qrToken: string
 
   const removed = await db
     .delete(perkCheckins)
-    .where(and(eq(perkCheckins.perkId, input.perkId), eq(perkCheckins.ticketId, ticket.id)))
+    .where(
+      and(
+        eq(perkCheckins.perkId, input.perkId),
+        eq(perkCheckins.ticketId, ticket.id),
+      ),
+    )
     .returning({ id: perkCheckins.id });
 
   return Boolean(removed[0]);
 }
 
-export async function resolveParticipantByQr(input: { eventId: string; qrToken: string }) {
+export async function resolveParticipantByQr(input: {
+  eventId: string;
+  qrToken: string;
+}) {
   const db = getDb();
   const result = await db.execute(sql`
     select
@@ -668,7 +891,10 @@ export async function resolveParticipantByQr(input: { eventId: string; qrToken: 
   return (result as unknown as Array<Record<string, unknown>>)[0] ?? null;
 }
 
-export async function resolveInternalParticipantByQrForPerk(input: { perkId: string; qrToken: string }) {
+export async function resolveInternalParticipantByQrForPerk(input: {
+  perkId: string;
+  qrToken: string;
+}) {
   const db = getDb();
   const result = await db.execute(sql`
     select
@@ -725,12 +951,25 @@ export async function getEventParticipants(eventId: string) {
 export async function getManagementHubStats() {
   const db = getDb();
 
-  const [volunteers, activeCodes, eventsCount, checkinsCount, perksCount, teamsCount, announcementsCount] = await Promise.all([
+  const [
+    volunteers,
+    activeCodes,
+    eventsCount,
+    checkinsCount,
+    perksCount,
+    teamsCount,
+    announcementsCount,
+  ] = await Promise.all([
     db
       .select({ count: sql<number>`count(*)::int` })
       .from(roles)
-      .where(sql`${roles.isVolunteer} = true or ${roles.isEventVolunteer} = true or ${roles.isPerkVolunteer} = true`),
-    db.select({ count: sql<number>`count(*)::int` }).from(activationCodes).where(eq(activationCodes.isActive, true)),
+      .where(
+        sql`${roles.isVolunteer} = true or ${roles.isEventVolunteer} = true or ${roles.isPerkVolunteer} = true`,
+      ),
+    db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(activationCodes)
+      .where(eq(activationCodes.isActive, true)),
     db.select({ count: sql<number>`count(*)::int` }).from(events),
     db.select({ count: sql<number>`count(*)::int` }).from(eventCheckins),
     db.select({ count: sql<number>`count(*)::int` }).from(perks),
@@ -781,7 +1020,11 @@ export async function getLatestAnnouncement() {
   return rows[0] ?? null;
 }
 
-export async function createAnnouncement(input: { title: string; body: string; createdBy: string }) {
+export async function createAnnouncement(input: {
+  title: string;
+  body: string;
+  createdBy: string;
+}) {
   const db = getDb();
   const [row] = await db
     .insert(announcements)
@@ -804,7 +1047,10 @@ export async function createAnnouncement(input: { title: string; body: string; c
 
 export async function deleteAnnouncement(id: string) {
   const db = getDb();
-  const removed = await db.delete(announcements).where(eq(announcements.id, id)).returning({ id: announcements.id });
+  const removed = await db
+    .delete(announcements)
+    .where(eq(announcements.id, id))
+    .returning({ id: announcements.id });
   return Boolean(removed[0]);
 }
 
@@ -821,7 +1067,9 @@ export async function listVolunteers() {
       updatedAt: roles.updatedAt,
     })
     .from(roles)
-    .where(sql`${roles.isVolunteer} = true or ${roles.isEventVolunteer} = true or ${roles.isPerkVolunteer} = true`)
+    .where(
+      sql`${roles.isVolunteer} = true or ${roles.isEventVolunteer} = true or ${roles.isPerkVolunteer} = true`,
+    )
     .orderBy(asc(roles.email));
 }
 
@@ -836,7 +1084,11 @@ export async function grantVolunteer(email: string, roleType: AccessRoleType) {
       ? { isVolunteer: true, isEventVolunteer: false, isPerkVolunteer: false }
       : roleType === "event_volunteer"
         ? { isVolunteer: false, isEventVolunteer: true, isPerkVolunteer: false }
-        : { isVolunteer: false, isEventVolunteer: false, isPerkVolunteer: true };
+        : {
+            isVolunteer: false,
+            isEventVolunteer: false,
+            isPerkVolunteer: true,
+          };
 
   await db
     .insert(roles)
@@ -881,8 +1133,10 @@ export async function revokeVolunteer(email: string, roleType: AccessRoleType) {
 
     const nextFlags = {
       isVolunteer: roleType === "volunteer" ? false : row[0].isVolunteer,
-      isEventVolunteer: roleType === "event_volunteer" ? false : row[0].isEventVolunteer,
-      isPerkVolunteer: roleType === "perk_volunteer" ? false : row[0].isPerkVolunteer,
+      isEventVolunteer:
+        roleType === "event_volunteer" ? false : row[0].isEventVolunteer,
+      isPerkVolunteer:
+        roleType === "perk_volunteer" ? false : row[0].isPerkVolunteer,
     };
 
     if (row[0].isAdmin) {
@@ -896,7 +1150,11 @@ export async function revokeVolunteer(email: string, roleType: AccessRoleType) {
         })
         .where(eq(roles.email, normalizedEmail));
     } else {
-      if (!nextFlags.isVolunteer && !nextFlags.isEventVolunteer && !nextFlags.isPerkVolunteer) {
+      if (
+        !nextFlags.isVolunteer &&
+        !nextFlags.isEventVolunteer &&
+        !nextFlags.isPerkVolunteer
+      ) {
         await tx.delete(roles).where(eq(roles.email, normalizedEmail));
       } else {
         await tx
@@ -929,9 +1187,14 @@ export async function deleteTicketWithDependencies(ticketId: string) {
       return false;
     }
 
-    const leaderTeams = await tx.select({ id: teams.id }).from(teams).where(eq(teams.leaderTicketId, ticketId));
+    const leaderTeams = await tx
+      .select({ id: teams.id })
+      .from(teams)
+      .where(eq(teams.leaderTicketId, ticketId));
     for (const leaderTeam of leaderTeams) {
-      await tx.delete(eventCheckins).where(eq(eventCheckins.teamId, leaderTeam.id));
+      await tx
+        .delete(eventCheckins)
+        .where(eq(eventCheckins.teamId, leaderTeam.id));
       await tx.delete(teamMembers).where(eq(teamMembers.teamId, leaderTeam.id));
       await tx.delete(teams).where(eq(teams.id, leaderTeam.id));
     }
@@ -942,7 +1205,10 @@ export async function deleteTicketWithDependencies(ticketId: string) {
     await tx.delete(tickets).where(eq(tickets.id, ticketId));
 
     const usageRows = await tx
-      .select({ used: sql<number>`count(*)::int`, quota: activationCodes.ticketQuota })
+      .select({
+        used: sql<number>`count(*)::int`,
+        quota: activationCodes.ticketQuota,
+      })
       .from(activationCodes)
       .leftJoin(tickets, eq(activationCodes.id, tickets.activationCodeId))
       .where(eq(activationCodes.id, ticket.activationCodeId))
@@ -976,18 +1242,34 @@ export async function revokeCodeAndDeleteTickets(codeId: string) {
       throw new Error("Activation code not found.");
     }
 
-    const linkedTickets = await tx.select({ id: tickets.id }).from(tickets).where(eq(tickets.activationCodeId, codeId));
+    const linkedTickets = await tx
+      .select({ id: tickets.id })
+      .from(tickets)
+      .where(eq(tickets.activationCodeId, codeId));
     for (const linkedTicket of linkedTickets) {
-      const leaderTeams = await tx.select({ id: teams.id }).from(teams).where(eq(teams.leaderTicketId, linkedTicket.id));
+      const leaderTeams = await tx
+        .select({ id: teams.id })
+        .from(teams)
+        .where(eq(teams.leaderTicketId, linkedTicket.id));
       for (const leaderTeam of leaderTeams) {
-        await tx.delete(eventCheckins).where(eq(eventCheckins.teamId, leaderTeam.id));
-        await tx.delete(teamMembers).where(eq(teamMembers.teamId, leaderTeam.id));
+        await tx
+          .delete(eventCheckins)
+          .where(eq(eventCheckins.teamId, leaderTeam.id));
+        await tx
+          .delete(teamMembers)
+          .where(eq(teamMembers.teamId, leaderTeam.id));
         await tx.delete(teams).where(eq(teams.id, leaderTeam.id));
       }
 
-      await tx.delete(eventCheckins).where(eq(eventCheckins.ticketId, linkedTicket.id));
-      await tx.delete(perkCheckins).where(eq(perkCheckins.ticketId, linkedTicket.id));
-      await tx.delete(teamMembers).where(eq(teamMembers.ticketId, linkedTicket.id));
+      await tx
+        .delete(eventCheckins)
+        .where(eq(eventCheckins.ticketId, linkedTicket.id));
+      await tx
+        .delete(perkCheckins)
+        .where(eq(perkCheckins.ticketId, linkedTicket.id));
+      await tx
+        .delete(teamMembers)
+        .where(eq(teamMembers.ticketId, linkedTicket.id));
       await tx.delete(tickets).where(eq(tickets.id, linkedTicket.id));
     }
 
@@ -1065,9 +1347,13 @@ export async function getTicketAndCodesByEmail(emailRaw: string) {
   const profile = profileRows[0] ?? null;
 
   const userRows = !profile
-    ? await db.select({ id: users.id, email: users.email }).from(users).where(eq(users.email, email)).limit(1)
+    ? await db
+        .select({ id: users.id, email: users.email })
+        .from(users)
+        .where(eq(users.email, email))
+        .limit(1)
     : [];
-  const userId = profile?.id ?? (userRows[0]?.id ?? null);
+  const userId = profile?.id ?? userRows[0]?.id ?? null;
 
   const ticketRows = userId
     ? await db
@@ -1077,7 +1363,10 @@ export async function getTicketAndCodesByEmail(emailRaw: string) {
           activationCode: activationCodes.code,
         })
         .from(tickets)
-        .innerJoin(activationCodes, eq(activationCodes.id, tickets.activationCodeId))
+        .innerJoin(
+          activationCodes,
+          eq(activationCodes.id, tickets.activationCodeId),
+        )
         .where(eq(tickets.userId, userId))
         .limit(1)
     : [];
@@ -1109,12 +1398,23 @@ export async function getTicketAndCodesByEmail(emailRaw: string) {
         from public.tickets t
         left join public.profiles p on p.id = t.user_id
         left join public.users u on u.id = t.user_id
-        where t.activation_code_id in (${sql.join(codeIds.map((id) => sql`${id}`), sql`, `)})
+        where t.activation_code_id in (${sql.join(
+          codeIds.map((id) => sql`${id}`),
+          sql`, `,
+        )})
         order by t.created_at desc
       `)
     : [];
 
-  const ticketsByCode = new Map<string, Array<{ id: string; created_at: string; participant_type: string; email: string }>>();
+  const ticketsByCode = new Map<
+    string,
+    Array<{
+      id: string;
+      created_at: string;
+      participant_type: string;
+      email: string;
+    }>
+  >();
   for (const ticketRow of linkedTickets as unknown as Array<{
     id: string;
     activation_code_id: string;
@@ -1229,7 +1529,11 @@ export async function updateEvent(input: {
 
 export async function deleteEventIfNoCheckins(eventId: string) {
   const db = getDb();
-  const exists = await db.select({ id: events.id }).from(events).where(eq(events.id, eventId)).limit(1);
+  const exists = await db
+    .select({ id: events.id })
+    .from(events)
+    .where(eq(events.id, eventId))
+    .limit(1);
   if (!exists[0]) {
     return { deleted: false, checkins: 0, notFound: true };
   }
@@ -1245,11 +1549,17 @@ export async function deleteEventIfNoCheckins(eventId: string) {
     return { deleted: false, checkins: count, notFound: false };
   }
 
-  const removed = await db.delete(events).where(eq(events.id, eventId)).returning({ id: events.id });
+  const removed = await db
+    .delete(events)
+    .where(eq(events.id, eventId))
+    .returning({ id: events.id });
   return { deleted: Boolean(removed[0]), checkins: 0, notFound: false };
 }
 
-export async function listCheckinAudit(input: { eventId: string; email?: string }) {
+export async function listCheckinAudit(input: {
+  eventId: string;
+  email?: string;
+}) {
   const db = getDb();
   const normalizedEmail = normalizeEmail(input.email ?? "");
   const hasEmailFilter = normalizedEmail.length > 0;
@@ -1299,7 +1609,13 @@ export async function getCheckinAuditStats(eventId: string) {
     where event_id = ${eventId}
   `);
 
-  const row = (rows as unknown as Array<{ total: number; team: number; individual: number }>)[0];
+  const row = (
+    rows as unknown as Array<{
+      total: number;
+      team: number;
+      individual: number;
+    }>
+  )[0];
   return {
     total: row?.total ?? 0,
     team: row?.team ?? 0,
@@ -1310,7 +1626,10 @@ export async function getCheckinAuditStats(eventId: string) {
 export async function deleteCheckinAuditEntry(checkinId: number) {
   const db = getDb();
   const rows = await db
-    .select({ eventId: eventCheckins.eventId, ticketId: eventCheckins.ticketId })
+    .select({
+      eventId: eventCheckins.eventId,
+      ticketId: eventCheckins.ticketId,
+    })
     .from(eventCheckins)
     .where(eq(eventCheckins.id, checkinId))
     .limit(1);
@@ -1357,13 +1676,21 @@ export async function createPerk(input: { name: string; isActive: boolean }) {
 
 export async function setPerkActive(perkId: string, isActive: boolean) {
   const db = getDb();
-  const [row] = await db.update(perks).set({ isActive }).where(eq(perks.id, perkId)).returning({ id: perks.id });
+  const [row] = await db
+    .update(perks)
+    .set({ isActive })
+    .where(eq(perks.id, perkId))
+    .returning({ id: perks.id });
   return Boolean(row);
 }
 
 export async function deletePerkIfNoCheckins(perkId: string) {
   const db = getDb();
-  const exists = await db.select({ id: perks.id }).from(perks).where(eq(perks.id, perkId)).limit(1);
+  const exists = await db
+    .select({ id: perks.id })
+    .from(perks)
+    .where(eq(perks.id, perkId))
+    .limit(1);
   if (!exists[0]) {
     return { deleted: false, checkins: 0, notFound: true };
   }
@@ -1378,7 +1705,10 @@ export async function deletePerkIfNoCheckins(perkId: string) {
     return { deleted: false, checkins: count, notFound: false };
   }
 
-  const removed = await db.delete(perks).where(eq(perks.id, perkId)).returning({ id: perks.id });
+  const removed = await db
+    .delete(perks)
+    .where(eq(perks.id, perkId))
+    .returning({ id: perks.id });
   return { deleted: Boolean(removed[0]), checkins: 0, notFound: false };
 }
 
@@ -1395,10 +1725,17 @@ export async function getPerkRedemptionSummary() {
     order by p.name asc
   `);
 
-  return rows as unknown as Array<{ id: string; name: string; redemptions: number }>;
+  return rows as unknown as Array<{
+    id: string;
+    name: string;
+    redemptions: number;
+  }>;
 }
 
-export async function listPerkAudit(input: { perkId?: string; email?: string }) {
+export async function listPerkAudit(input: {
+  perkId?: string;
+  email?: string;
+}) {
   const db = getDb();
   const normalizedEmail = normalizeEmail(input.email ?? "");
   const perkId = input.perkId?.trim();
@@ -1437,7 +1774,10 @@ export async function listPerkAudit(input: { perkId?: string; email?: string }) 
 
 export async function deletePerkAuditEntry(checkinId: number) {
   const db = getDb();
-  const removed = await db.delete(perkCheckins).where(eq(perkCheckins.id, checkinId)).returning({ id: perkCheckins.id });
+  const removed = await db
+    .delete(perkCheckins)
+    .where(eq(perkCheckins.id, checkinId))
+    .returning({ id: perkCheckins.id });
   return Boolean(removed[0]);
 }
 
@@ -1459,10 +1799,18 @@ export async function listTeamsForManagement(eventId: string) {
     order by tm.created_at desc
   `);
 
-  return rows as unknown as Array<{ id: string; name: string; leader_email: string; member_count: number }>;
+  return rows as unknown as Array<{
+    id: string;
+    name: string;
+    leader_email: string;
+    member_count: number;
+  }>;
 }
 
-export async function listTeamMembersForManagement(teamId: string, eventId: string) {
+export async function listTeamMembersForManagement(
+  teamId: string,
+  eventId: string,
+) {
   const db = getDb();
   const rows = await db.execute(sql`
     select
@@ -1488,28 +1836,56 @@ export async function listTeamMembersForManagement(teamId: string, eventId: stri
   }>;
 }
 
-export async function removeTeamMemberForManagement(input: { teamId: string; eventId: string; ticketId: string }) {
+export async function removeTeamMemberForManagement(input: {
+  teamId: string;
+  eventId: string;
+  ticketId: string;
+}) {
   const db = getDb();
   return db.transaction(async (tx) => {
-    const teamRow = await tx.select({ id: teams.id }).from(teams).where(and(eq(teams.id, input.teamId), eq(teams.eventId, input.eventId))).limit(1);
+    const teamRow = await tx
+      .select({ id: teams.id })
+      .from(teams)
+      .where(and(eq(teams.id, input.teamId), eq(teams.eventId, input.eventId)))
+      .limit(1);
     if (!teamRow[0]) {
       throw new Error("Team not found for selected event.");
     }
 
-    await tx.delete(eventCheckins).where(and(eq(eventCheckins.eventId, input.eventId), eq(eventCheckins.teamId, input.teamId), eq(eventCheckins.ticketId, input.ticketId)));
+    await tx
+      .delete(eventCheckins)
+      .where(
+        and(
+          eq(eventCheckins.eventId, input.eventId),
+          eq(eventCheckins.teamId, input.teamId),
+          eq(eventCheckins.ticketId, input.ticketId),
+        ),
+      );
     const removed = await tx
       .delete(teamMembers)
-      .where(and(eq(teamMembers.teamId, input.teamId), eq(teamMembers.ticketId, input.ticketId)))
+      .where(
+        and(
+          eq(teamMembers.teamId, input.teamId),
+          eq(teamMembers.ticketId, input.ticketId),
+        ),
+      )
       .returning({ teamId: teamMembers.teamId });
 
     return Boolean(removed[0]);
   });
 }
 
-export async function deleteTeamIfNoCheckins(input: { teamId: string; eventId: string }) {
+export async function deleteTeamIfNoCheckins(input: {
+  teamId: string;
+  eventId: string;
+}) {
   const db = getDb();
   return db.transaction(async (tx) => {
-    const teamRow = await tx.select({ id: teams.id }).from(teams).where(and(eq(teams.id, input.teamId), eq(teams.eventId, input.eventId))).limit(1);
+    const teamRow = await tx
+      .select({ id: teams.id })
+      .from(teams)
+      .where(and(eq(teams.id, input.teamId), eq(teams.eventId, input.eventId)))
+      .limit(1);
     if (!teamRow[0]) {
       throw new Error("Team not found for selected event.");
     }
@@ -1517,7 +1893,12 @@ export async function deleteTeamIfNoCheckins(input: { teamId: string; eventId: s
     const rows = await tx
       .select({ count: sql<number>`count(*)::int` })
       .from(eventCheckins)
-      .where(and(eq(eventCheckins.teamId, input.teamId), eq(eventCheckins.eventId, input.eventId)))
+      .where(
+        and(
+          eq(eventCheckins.teamId, input.teamId),
+          eq(eventCheckins.eventId, input.eventId),
+        ),
+      )
       .limit(1);
     const count = rows[0]?.count ?? 0;
 
