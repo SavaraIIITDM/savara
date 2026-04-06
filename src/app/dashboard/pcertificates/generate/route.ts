@@ -16,7 +16,7 @@ function getFriendlyFileName(checkinId: number) {
 function runGenerator(name: string, eventName: string, checkinId: number) {
   return new Promise<void>((resolve, reject) => {
     const command = spawn(
-      "python3",
+      "venv/bin/python3",
       [
         "scripts/generate_pcertificate.py",
         "--config",
