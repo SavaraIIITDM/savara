@@ -1,5 +1,5 @@
 {
-  "template": "public/pcert_template.jpg",
+  "template": "public/pcert_template.png",
   "output_dir": "pcerts",
   "image_format": "PNG",
   "image_width": 3509,

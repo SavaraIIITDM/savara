@@ -176,7 +176,7 @@ def generate(
     image_format = config.get("image_format", "PNG").upper()
     fields = config["fields"]
 
-    template = Image.open(template_path).convert("RGBA")
+    template = Image.open(template_path).convert("RGB")
     draw_image = template.copy()
     draw = ImageDraw.Draw(draw_image)
 
@@ -218,8 +218,8 @@ def generate(
 
     output_path = out_dir / out_name
     save_image = draw_image
-    if image_format == "JPEG":
-        save_image = draw_image.convert("RGB")
+    # if image_format == "JPEG":
+    #     save_image = draw_image.convert("RGB")
     save_image.save(output_path, image_format)
     return output_path
 
