@@ -202,6 +202,41 @@ def load_font(
     return font
 
 
+import re
+
+ORDINAL_RE = re.compile(r"^(\d+)(st|nd|rd|th)$", re.IGNORECASE)
+
+
+def draw_ordinal(draw, text, base_x, base_y, font, color, superscript_ratio=0.55):
+    m = ORDINAL_RE.match(text.strip())
+    if not m:
+        draw.text((base_x, base_y), text, font=font, fill=color)
+        return
+
+    number, suffix = m.group(1), m.group(2)
+    sup_size = max(8, int(font.size * superscript_ratio))
+    sup_font = font.font_variant(size=sup_size)
+
+    # Draw number
+    draw.text((base_x, base_y), number, font=font, fill=color)
+    nb = draw.textbbox((0, 0), number, font=font)
+    num_w = nb[2] - nb[0]
+
+    raise_by = int(font.size * 0.4) - 15
+    sx = base_x + num_w + 2
+    sy = base_y - raise_by
+
+    offsets = [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)]
+    letter_spacing = 3  # adjust this
+
+    cx = sx
+    for ch in suffix:
+        for ox, oy in offsets:
+            draw.text((cx + ox, sy + oy), ch, font=sup_font, fill=color)
+        cb = draw.textbbox((0, 0), ch, font=sup_font)
+        cx += (cb[2] - cb[0]) + letter_spacing
+
+
 # ── Text drawing ───────────────────────────────────────────────────────────
 def draw_text_in_bbox(
     draw: ImageDraw.ImageDraw,
@@ -250,7 +285,11 @@ def draw_text_in_bbox(
     else:
         ty = y + (h - text_h) // 2 - bbox_text[1]
 
-    draw.text((tx, ty), text, font=fitted_font, fill=color)
+    m = ORDINAL_RE.match(text.strip())
+    if m:
+        draw_ordinal(draw, text.strip(), tx, ty, fitted_font, color)
+    else:
+        draw.text((tx, ty), text, font=fitted_font, fill=color)
 
 
 # ── Safe filename ──────────────────────────────────────────────────────────
