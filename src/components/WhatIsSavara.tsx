@@ -108,22 +108,6 @@ export default function WhatIsSavara() {
                     creativity, and culture.
                 </p>
 
-                {/* Sub-description */}
-                <p
-                    className={`mx-auto mt-6 max-w-2xl text-base font-medium leading-relaxed text-pretty transition-all duration-1000 delay-500 ease-out sm:text-lg ${isVisible
-                        ? "opacity-100 translate-y-0"
-                        : "opacity-0 translate-y-6"
-                        }`}
-                    style={{
-                        fontFamily: "var(--font-rajdhani), sans-serif",
-                        color: "rgba(245, 230, 211, 0.55)",
-                    }}
-                >
-                    Under the banner of the theme of this year{" "}
-                    <strong style={{ color: "var(--savara-gold)", fontWeight: 600 }}>Chronosync</strong>,
-                    this edition transcends time itself — where the ancient meets the
-                    futuristic in a spectacle unlike any other.
-                </p>
             </div>
         </section>
     );

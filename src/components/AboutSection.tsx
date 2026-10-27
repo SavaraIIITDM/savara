@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -52,8 +51,6 @@ const galleryImages = [
     height: 480,
   },
 ];
-
-const eventsBrochurePath = "/SAVARA_FEST_26_BROCHURE__compressed.pdf";
 
 export default function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -222,7 +219,7 @@ export default function AboutSection() {
               color: "rgba(245, 230, 211, 0.75)",
             }}
           >
-            Join us for Savāra 2026, the flagship techno-cultural fest of IIITDM
+            Join us for Savāra 2027, the flagship techno-cultural fest of IIITDM
             Kancheepuram, a five-day celebration of innovation, creativity, and
             culture.
             <br />
@@ -232,61 +229,6 @@ export default function AboutSection() {
             dynamic stage.
           </p>
 
-          {/* About fest actions */}
-          <div
-            className={`mt-10 flex flex-wrap items-center gap-4 transition-all duration-700 delay-500 ease-out ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
-          >
-            <Link
-              href="/events"
-              className="group relative overflow-hidden rounded-full p-0.5"
-              style={{
-                background:
-                  "linear-gradient(135deg, #e65100, #c62828, #4a148c)",
-              }}
-            >
-              <span
-                className="block rounded-full px-6 py-3 transition-all duration-300 group-hover:bg-transparent"
-                style={{ background: "var(--savara-warm-black)" }}
-              >
-                <span
-                  className="text-sm font-bold uppercase tracking-widest group-hover:text-white"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #e65100, #d4a574, #4a148c)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  Explore Events
-                </span>
-              </span>
-            </Link>
-
-            <a
-              href={eventsBrochurePath}
-              download
-              className="group rounded-full px-6 py-3 transition-all duration-300 hover:scale-[1.02]"
-              style={{
-                border: "1px solid rgba(212, 165, 116, 0.28)",
-                background: "rgba(245, 230, 211, 0.06)",
-              }}
-            >
-              <span
-                className="text-sm font-bold uppercase tracking-widest"
-                style={{
-                  fontFamily: "var(--font-rajdhani), sans-serif",
-                  color: "rgba(245, 230, 211, 0.94)",
-                }}
-              >
-                Download Events Brochure
-              </span>
-            </a>
-          </div>
         </div>
       </div>
 

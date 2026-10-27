@@ -38,15 +38,6 @@ export default function Footer() {
             >
               SAVĀRA
             </h2>
-            <p
-              className="mt-1 text-sm font-medium tracking-wide"
-              style={{
-                fontFamily: "var(--font-rajdhani), sans-serif",
-                color: footerBodyColor,
-              }}
-            >
-              Chronosync — Where Ancient Meets Future
-            </p>
           </div>
 
           {/* Contact Us Section */}
@@ -89,7 +80,7 @@ export default function Footer() {
 
               {/* Phone */}
               <a
-                href="tel:+919391131165"
+                href="tel:+919182735769"
                 className="group flex items-start gap-3 transition-colors duration-300"
                 style={{ color: footerLinkColor }}
                 onMouseEnter={(e) =>
@@ -104,7 +95,7 @@ export default function Footer() {
                   className="relative text-sm font-medium"
                   style={{ fontFamily: "var(--font-rajdhani), sans-serif" }}
                 >
-                  +91 93911 31165
+                  +91 91827 35769
                   <span
                     className="absolute bottom-0 left-0 w-0 h-px transition-all duration-300 group-hover:w-full"
                     style={{ background: "var(--savara-gold)" }}
@@ -247,7 +238,7 @@ export default function Footer() {
               color: "rgba(245, 230, 211, 0.62)",
             }}
           >
-            &copy; 2026 SAVĀRA Chronosync — IIITDM Kancheepuram. All rights
+            &copy; 2027 SAVĀRA — IIITDM Kancheepuram. All rights
             reserved.
           </p>
         </div>

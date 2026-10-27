@@ -55,7 +55,7 @@ export async function GET() {
               color: "rgba(47,24,10,0.8)",
             }}
           >
-            Savara 2026 Pass
+            Savara 2027 Pass
           </div>
 
           <div

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 
 export default function HomeHeroStatic() {
   return (
@@ -11,28 +10,10 @@ export default function HomeHeroStatic() {
         data-hero-title
         className="relative z-10 flex flex-col items-center justify-center px-4 text-center"
       >
-        <Link
-          href="/tickets"
-          className="mb-5 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] sm:text-xs"
-          style={{
-            fontFamily: "var(--font-rajdhani), sans-serif",
-            borderColor: "rgba(212, 165, 116, 0.45)",
-            background: "rgba(42, 31, 26, 0.64)",
-            color: "rgba(245, 230, 211, 0.92)",
-          }}
-        >
-          <span
-            className="inline-block h-2 w-2 rounded-full animate-[pulse_1.6s_ease-in-out_infinite]"
-            style={{ background: "#f09431" }}
-          />
-          <span>
-            Savaara tickets live : Grab them now and enjoy your events
-          </span>
-        </Link>
         <div className="mb-4">
           <Image
             src="/white_logo_hero.webp"
-            alt="SAVĀRA Chronosync"
+            alt="SAVĀRA 2027"
             width={1200}
             height={480}
             priority

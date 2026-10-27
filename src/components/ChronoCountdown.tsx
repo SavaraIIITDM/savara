@@ -1,23 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-
-const TARGET_IST_MS = Date.UTC(2026, 2, 26, 18, 30, 0); // 27 Mar 2026, 00:00 IST
-const SECOND = 1000;
-const MINUTE = 60 * SECOND;
-const HOUR = 60 * MINUTE;
-const DAY = 24 * HOUR;
-
-function getTimeParts(nowMs: number) {
-  const remaining = Math.max(0, TARGET_IST_MS - nowMs);
-
-  const days = Math.floor(remaining / DAY);
-  const hours = Math.floor((remaining % DAY) / HOUR);
-  const minutes = Math.floor((remaining % HOUR) / MINUTE);
-  const seconds = Math.floor((remaining % MINUTE) / SECOND);
-
-  return { days, hours, minutes, seconds };
-}
+import { COUNTDOWN_TARGET_MS, getCountdownParts } from "@/lib/site-release";
 
 function TimeUnit({
   value,
@@ -43,7 +27,7 @@ export default function ChronoCountdown() {
     const update = () => {
       const current = Date.now();
       setNowMs(current);
-      if (current >= TARGET_IST_MS) setIsComplete(true);
+      if (current >= COUNTDOWN_TARGET_MS) setIsComplete(true);
     };
 
     update();
@@ -52,16 +36,20 @@ export default function ChronoCountdown() {
   }, []);
 
   const time = useMemo(
-    () => getTimeParts(nowMs ?? TARGET_IST_MS),
+    () => getCountdownParts(nowMs ?? COUNTDOWN_TARGET_MS),
     [nowMs],
   );
 
   return (
-    <div className="mt-4 flex w-full flex-col items-center">
+    <div
+      className="mt-4 flex w-full flex-col items-center"
+      role="timer"
+      aria-label={nowMs === null ? "Countdown to April 1, 2027, midnight IST" : `${time.days} days, ${time.hours} hours, ${time.minutes} minutes, ${time.seconds} seconds until April 1, 2027, midnight IST`}
+    >
       <div className="w-full max-w-4xl px-3 sm:px-6">
         {isComplete ? (
           <div className="chrono-breach-text">
-            Time Gate Open
+            Savāra is here
           </div>
         ) : (
           <div className="chrono-digits-row flex items-center justify-center gap-3 sm:gap-5">

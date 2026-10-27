@@ -1,8 +1,12 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/session";
 import { getDashboardRole, type DashboardRole } from "@/lib/auth/roles";
+import { isDisabledRoute } from "@/lib/site-release";
 
 export async function requireDashboardUser() {
+  // Server actions must also be disabled, even when posted to another URL.
+  if (isDisabledRoute("/dashboard")) redirect("/");
+
   const user = await getCurrentUser();
 
   if (!user) {

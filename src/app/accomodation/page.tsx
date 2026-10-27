@@ -77,7 +77,7 @@ export default function AccomodationPage() {
             color: "rgba(245, 230, 211, 0.75)",
           }}
         >
-          Complete your accommodation booking for Savara 2026. The accommodation
+          Complete your accommodation booking for Savara 2027. The accommodation
           charge is INR 500 per head.
         </p>
 

@@ -57,12 +57,12 @@ export async function sendActivationCodeEmail(params: {
   await mailer.sendMail({
     from: `"IIITDM Fest" <${sender}>`,
     to: params.to,
-    subject: "Savara 2026 Ticket Activation Code",
-    text: `Thank you for purchasing Savara 2026 tickets! Your activation code is ${params.activationCode}. Ticket capacity: ${params.ticketCount}. Login to redeem: ${dashboardUrl}`,
+    subject: "Savara 2027 Ticket Activation Code",
+    text: `Thank you for purchasing Savara 2027 tickets! Your activation code is ${params.activationCode}. Ticket capacity: ${params.ticketCount}. Login to redeem: ${dashboardUrl}`,
     html: `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
-        <h2 style="margin-bottom: 8px;">Your Savara 2026 Ticket Activation Code</h2>
-        <p style="margin: 0 0 10px;">Thank you for purchasing Savara 2026 tickets!</p>
+        <h2 style="margin-bottom: 8px;">Your Savara 2027 Ticket Activation Code</h2>
+        <p style="margin: 0 0 10px;">Thank you for purchasing Savara 2027 tickets!</p>
         <p style="margin: 0 0 10px;">Enter this code in the savara.in dashboard to activate tickets.</p>
         <p style="margin: 0 0 4px;"><strong>Activation code:</strong> ${params.activationCode}</p>
         <p style="margin: 0 0 16px;"><strong>Code is valid for</strong> ${params.ticketCount} users.</p>

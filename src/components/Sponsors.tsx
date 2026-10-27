@@ -94,7 +94,7 @@ const sponsorshipBrochureTotalPages = 18;
 const sponsorshipBrochurePages = Array.from(
   { length: sponsorshipBrochureTotalPages },
   (_, index) =>
-    `/media/sponsor-brochure/page-${String(index + 1).padStart(2, "0")}.jpg`,
+    `/media/sponsor-brochure-2027/page-${String(index + 1).padStart(2, "0")}.jpg`,
 );
 
 export default function Sponsors() {
@@ -191,7 +191,7 @@ export default function Sponsors() {
               </h3>
             </div>
             <a
-              href={sponsorshipBrochurePages[brochurePage - 1]}
+               href="/Savara_2027_brochure.pdf"
               download
               className="rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition-all hover:scale-[1.02]"
               style={{
@@ -200,19 +200,19 @@ export default function Sponsors() {
                 background: "rgba(42,31,26,0.42)",
               }}
             >
-              Download Page
+               Download Brochure
             </a>
           </div>
 
           <div className="rounded-2xl border border-[rgba(212,165,116,0.25)] bg-[rgba(10,4,8,0.78)] p-4 sm:p-6">
             <div className="mx-auto w-full max-w-3xl">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-[rgba(212,165,116,0.2)] bg-black/30">
+              <div className="relative aspect-video overflow-hidden rounded-xl border border-[rgba(212,165,116,0.2)] bg-black/30">
                 <Image
                   src={sponsorshipBrochurePages[brochurePage - 1]}
-                  alt={`Sponsorship brochure page ${brochurePage}`}
+                  alt={`Savara 2027 sponsorship brochure page ${brochurePage}`}
                   fill
-                  priority={brochurePage <= 2}
-                  className="object-cover"
+                  sizes="(max-width: 768px) 90vw, 768px"
+                  className="object-contain"
                   style={{
                     transition: "transform 360ms ease, opacity 360ms ease",
                     transform: isFlipping

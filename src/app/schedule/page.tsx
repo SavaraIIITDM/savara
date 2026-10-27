@@ -516,7 +516,7 @@ export default function SchedulePage() {
               color: "rgba(245,230,211,0.58)",
             }}
           >
-            SAVARA 2026
+            SAVARA 2027
           </p>
           <h1
             className="mt-2 text-3xl font-black uppercase leading-tight sm:text-5xl"
@@ -529,7 +529,7 @@ export default function SchedulePage() {
               backgroundClip: "text",
             }}
           >
-            Savara 2026 - Schedule
+            Savara 2027 - Schedule
           </h1>
         </header>
 

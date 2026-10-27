@@ -22,8 +22,8 @@ const rajdhani = Rajdhani({
 });
 
 export const metadata: Metadata = {
-  title: "SAVĀRA 2026",
-  description: "SAVĀRA ChronoSync — The flagship techno-cultural fest of IIITDM Kancheepuram. Where the ancient meets the future.",
+  title: "SAVĀRA 2027",
+  description: "The flagship techno-cultural fest of IIITDM Kancheepuram.",
   manifest: "/site.webmanifest",
   icons: {
     icon: [
